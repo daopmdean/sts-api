@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ namespace STS
 {
     public class Program
     {
-        public static async void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
