@@ -2,10 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data;
+using Data.Repositories.Implementations;
+using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,10 +27,32 @@ namespace STS
 
         public IConfiguration Configuration { get; }
 
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            services.AddDbContext<DataContext>(options =>
+            {
+                string connectionString = Configuration.GetConnectionString("DevelopmentConnection");
+                options.UseSqlServer(connectionString, b => b.MigrationsAssembly("STS"));
+            });
+
+            ConfigureServices(services);
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            services.AddDbContext<DataContext>(options =>
+            {
+                string connectionString = Configuration.GetConnectionString("ProductionConnection");
+                options.UseSqlServer(connectionString, b => b.MigrationsAssembly("STS"));
+            });
+
+            ConfigureServices(services);
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

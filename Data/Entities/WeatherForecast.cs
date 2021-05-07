@@ -1,6 +1,6 @@
 using System;
 
-namespace STS
+namespace Data.Entities
 {
     public class WeatherForecast
     {
