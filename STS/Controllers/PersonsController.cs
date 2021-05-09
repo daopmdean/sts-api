@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Data.Entities;
-using Data.Models;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Service.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,7 +31,7 @@ namespace STS.Controllers
             {
                 return Ok(_repository.GetById(id));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest("Person not found");
             }

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Data.Models
+namespace Service.Models
 {
     public class PersonUpdateInfo
     {
