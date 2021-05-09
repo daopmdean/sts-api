@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Data.Entities;
+using Data.Models;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace STS.Controllers
 {
-    public class PersonController : ApiBaseController
+    public class PersonsController : ApiBaseController
     {
         private readonly IPersonRepository _repository;
 
-        public PersonController(IPersonRepository repository)
+        public PersonsController(IPersonRepository repository)
         {
             _repository = repository;
         }
@@ -28,7 +29,15 @@ namespace STS.Controllers
         [HttpGet("{id}")]
         public ActionResult<Person> GetById(int id)
         {
-            return Ok(_repository.GetById(id));
+            try
+            {
+                return Ok(_repository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Person not found");
+            }
+
         }
 
         [HttpPost]
@@ -40,16 +49,22 @@ namespace STS.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Person> Update(int id, Person personUpdateInfo)
+        public ActionResult<Person> Update(int id, PersonUpdateInfo personUpdateInfo)
         {
             Person person = _repository.GetById(id);
+            person.Name = personUpdateInfo.Name;
+            _repository.Update(person);
+            _repository.SaveChanges();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<String> Delete()
+        public ActionResult Delete(int id)
         {
-            return "dsa";
+            Person person = _repository.GetById(id);
+            _repository.Delete(person);
+            _repository.SaveChanges();
+            return NoContent();
         }
     }
 }

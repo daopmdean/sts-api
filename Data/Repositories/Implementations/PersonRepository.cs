@@ -31,9 +31,8 @@ namespace Data.Repositories.Implementations
             _context.People.Add(person);
         }
 
-        public void Update(int id, Person person)
+        public void Update(Person person)
         {
-
             _context.Entry(person).State = EntityState.Modified;
         }
 

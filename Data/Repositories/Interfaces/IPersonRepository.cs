@@ -9,7 +9,7 @@ namespace Data.Repositories.Interfaces
         IEnumerable<Person> Get();
         Person GetById(int id);
         void Create(Person person);
-        void Update(int id, Person person);
+        void Update(Person person);
         void Delete(Person person);
         bool SaveChanges();
     }
