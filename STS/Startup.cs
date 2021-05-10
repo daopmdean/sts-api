@@ -1,6 +1,4 @@
 using Data;
-using Data.Repositories.Implementations;
-using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using STS.Extensions;
 
 namespace STS
 {
@@ -45,7 +44,8 @@ namespace STS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddApplicationServices();
+            services.AddIdentityServices();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -68,6 +68,12 @@ namespace STS
 
             app.UseRouting();
 
+            app.UseCors(cors => cors
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins(""));
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

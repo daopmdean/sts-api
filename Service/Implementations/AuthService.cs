@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Service.Inplementations
+namespace Service.Implementations
 {
     public class AuthService
     {

@@ -5,6 +5,7 @@ using Data;
 using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Service.Interfaces;
 using Service.Models;
 
 namespace STS.Controllers
@@ -12,14 +13,16 @@ namespace STS.Controllers
     public class AuthController : ApiBaseController
     {
         private readonly DataContext _context;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(DataContext context)
+        public AuthController(DataContext context, ITokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(RegisterInfo info)
+        public async Task<ActionResult<UserReturn>> Register(RegisterInfo info)
         {
             if (await UserExist(info.Username))
             {
@@ -40,11 +43,16 @@ namespace STS.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return user;
+            return new UserReturn
+            {
+                Status = 200,
+                Username = user.Username,
+                Token = _tokenService.GenerateToken(user)
+            };
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login(LoginInfo info)
+        public async Task<ActionResult<UserReturn>> Login(LoginInfo info)
         {
             User user = await _context.Users
                 .SingleOrDefaultAsync(x => x.Username == info.Username.ToLower());
@@ -64,7 +72,12 @@ namespace STS.Controllers
                     return Unauthorized("Invalid Password");
             }
 
-            return Ok(user);
+            return new UserReturn
+            {
+                Status = 200,
+                Username = user.Username,
+                Token = _tokenService.GenerateToken(user)
+            }; ;
         }
 
         private async Task<bool> UserExist(string username)

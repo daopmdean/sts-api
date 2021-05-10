@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Data.Entities;
 using Data.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Models;
 
@@ -9,6 +10,7 @@ using Service.Models;
 
 namespace STS.Controllers
 {
+    [Authorize]
     public class PersonsController : ApiBaseController
     {
         private readonly IPersonRepository _repository;
