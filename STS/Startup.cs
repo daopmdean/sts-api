@@ -45,7 +45,7 @@ namespace STS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationServices();
-            services.AddIdentityServices();
+            services.AddIdentityServices(Configuration);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

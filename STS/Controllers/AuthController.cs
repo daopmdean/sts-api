@@ -1,10 +1,7 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
-using Data;
-using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Service.Exceptions;
 using Service.Interfaces;
 using Service.Models;
 
@@ -12,78 +9,59 @@ namespace STS.Controllers
 {
     public class AuthController : ApiBaseController
     {
-        private readonly DataContext _context;
-        private readonly ITokenService _tokenService;
+        private readonly IAuthService _service;
 
-        public AuthController(DataContext context, ITokenService tokenService)
+        public AuthController(IAuthService service)
         {
-            _context = context;
-            _tokenService = tokenService;
+            _service = service;
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserReturn>> Register(RegisterInfo info)
+        public async Task<IActionResult> Register(RegisterInfo info)
         {
-            if (await UserExist(info.Username))
+            try
             {
-                return BadRequest("Username already exist!");
+                return Ok(await _service.Register(info));
             }
-
-            using var hmac = new HMACSHA512();
-
-            var user = new User
+            catch (AppException appEx)
             {
-                Username = info.Username.ToLower(),
-                FirstName = info.FirstName,
-                LastName = info.LastName,
-                Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password)),
-                PasswordSalt = hmac.Key
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return new UserReturn
+                return BadRequest(new ErrorReturn
+                {
+                    StatusCode = appEx.StatusCode,
+                    Message = appEx.Message
+                });
+            }
+            catch (Exception ex)
             {
-                Status = 200,
-                Username = user.Username,
-                Token = _tokenService.GenerateToken(user)
-            };
+                return BadRequest(new ErrorReturn
+                {
+                    Message = ex.Message
+                });
+            }
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserReturn>> Login(LoginInfo info)
+        public async Task<IActionResult> Login(LoginInfo info)
         {
-            User user = await _context.Users
-                .SingleOrDefaultAsync(x => x.Username == info.Username.ToLower());
-
-            if (user == null)
+            try
             {
-                return Unauthorized("Invalid username");
+                return Ok(await _service.Login(info));
             }
-
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-            var computedHash = hmac
-                .ComputeHash(Encoding.UTF8.GetBytes(info.Password));
-
-            for (int i = 0; i < computedHash.Length; i++)
+            catch (AppException appEx)
             {
-                if (computedHash[i] != user.Password[i])
-                    return Unauthorized("Invalid Password");
+                return BadRequest(new ErrorReturn
+                {
+                    StatusCode = appEx.StatusCode,
+                    Message = appEx.Message
+                });
             }
-
-            return new UserReturn
+            catch (Exception ex)
             {
-                Status = 200,
-                Username = user.Username,
-                Token = _tokenService.GenerateToken(user)
-            }; ;
-        }
-
-        private async Task<bool> UserExist(string username)
-        {
-            return await _context.Users.AnyAsync(
-                x => x.Username == username.ToLower());
+                return BadRequest(new ErrorReturn
+                {
+                    Message = ex.Message
+                });
+            }
         }
     }
 }

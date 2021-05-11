@@ -13,6 +13,8 @@ namespace STS.Extensions
             this IServiceCollection services)
         {
             services.AddScoped<IPersonRepository, PersonRepository>();
+
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
 
             return services;
