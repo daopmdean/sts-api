@@ -1,7 +1,7 @@
 ﻿using System;
-namespace Service.Models
+namespace Service.Models.Requests
 {
-    public class LoginInfo
+    public class LoginRequest
     {
         public string Username { get; set; }
         public string Password { get; set; }

@@ -12,6 +12,7 @@ namespace STS.Extensions
         public static IServiceCollection AddApplicationServices(
             this IServiceCollection services)
         {
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IPersonRepository, PersonRepository>();
 
             services.AddScoped<IAuthService, AuthService>();

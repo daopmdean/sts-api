@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service.Models;
+using Service.Models.Requests;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,17 +22,17 @@ namespace STS.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Person>> Get()
+        public async Task<ActionResult<IEnumerable<Person>>> Get()
         {
-            return Ok(_repository.Get());
+            return Ok(await _repository.GetAllAsync());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Person> GetById(int id)
+        public async Task<ActionResult<Person>> GetById(int id)
         {
             try
             {
-                return Ok(_repository.GetById(id));
+                return Ok(await _repository.GetByIdAsync(id));
             }
             catch (Exception)
             {
@@ -41,29 +42,29 @@ namespace STS.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Person> Create(Person person)
+        public async Task<ActionResult<Person>> Create(Person person)
         {
-            _repository.Create(person);
-            _repository.SaveChanges();
-            return NoContent();
+            await _repository.CreateAsync(person);
+            await _repository.SaveChangesAsync();
+            return Ok(person);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Person> Update(int id, PersonUpdateInfo personUpdateInfo)
+        public async Task<ActionResult<Person>> Update(int id, PersonUpdateRequest personUpdateInfo)
         {
-            Person person = _repository.GetById(id);
+            Person person = await _repository.GetByIdAsync(id);
             person.Name = personUpdateInfo.Name;
             _repository.Update(person);
-            _repository.SaveChanges();
+            await _repository.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            Person person = _repository.GetById(id);
+            Person person = await _repository.GetByIdAsync(id);
             _repository.Delete(person);
-            _repository.SaveChanges();
+            await _repository.SaveChangesAsync();
             return NoContent();
         }
     }

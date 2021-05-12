@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
 using Service.Interfaces;
-using Service.Models;
+using Service.Models.Requests;
+using Service.Models.Responses;
 
 namespace STS.Controllers
 {
@@ -17,7 +18,7 @@ namespace STS.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterInfo info)
+        public async Task<IActionResult> Register(RegisterRequest info)
         {
             try
             {
@@ -25,7 +26,7 @@ namespace STS.Controllers
             }
             catch (AppException appEx)
             {
-                return BadRequest(new ErrorReturn
+                return BadRequest(new ErrorResponses
                 {
                     StatusCode = appEx.StatusCode,
                     Message = appEx.Message
@@ -33,7 +34,7 @@ namespace STS.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorReturn
+                return BadRequest(new ErrorResponses
                 {
                     Message = ex.Message
                 });
@@ -41,7 +42,7 @@ namespace STS.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginInfo info)
+        public async Task<IActionResult> Login(LoginRequest info)
         {
             try
             {
@@ -49,7 +50,7 @@ namespace STS.Controllers
             }
             catch (AppException appEx)
             {
-                return BadRequest(new ErrorReturn
+                return Unauthorized(new ErrorResponses
                 {
                     StatusCode = appEx.StatusCode,
                     Message = appEx.Message
@@ -57,7 +58,7 @@ namespace STS.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorReturn
+                return Unauthorized(new ErrorResponses
                 {
                     Message = ex.Message
                 });

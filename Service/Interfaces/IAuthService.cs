@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Service.Models;
+﻿using System.Threading.Tasks;
+using Service.Models.Requests;
+using Service.Models.Responses;
 
 namespace Service.Interfaces
 {
     public interface IAuthService
     {
-        Task<UserReturn> Register(RegisterInfo info);
-        Task<UserReturn> Login(LoginInfo info);
+        Task<UserResponse> Register(RegisterRequest info);
+        Task<UserResponse> Login(LoginRequest info);
     }
 }

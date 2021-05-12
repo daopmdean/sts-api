@@ -9,7 +9,7 @@ namespace Data.Repositories.Implementations
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        private readonly DataContext _context;
+        protected readonly DataContext _context;
         private DbSet<T> _entities;
 
         public BaseRepository(DataContext context)
@@ -18,7 +18,7 @@ namespace Data.Repositories.Implementations
             _entities = _context.Set<T>();
         }
 
-        public async Task Create(T entity)
+        public async Task CreateAsync(T entity)
         {
             await _entities.AddAsync(entity);
         }
@@ -33,18 +33,18 @@ namespace Data.Repositories.Implementations
             _entities.Remove(person);
         }
 
-        public async Task<PagedList<T>> Get(PaginationParams @params)
+        public async Task<PagedList<T>> GetAsync(PaginationParams @params)
         {
             return await PagedList<T>
                 .CreateAsync(_entities.AsQueryable(), @params.PageNumber, @params.PageSize);
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _entities.ToListAsync();
         }
 
-        public async Task<T> GetById(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
             return await _entities.FindAsync(id);
         }

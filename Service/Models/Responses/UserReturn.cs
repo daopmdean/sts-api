@@ -1,7 +1,7 @@
 ﻿using System;
-namespace Service.Models
+namespace Service.Models.Responses
 {
-    public class UserReturn
+    public class UserResponse
     {
         public int Status { get; set; }
         public string Username { get; set; }

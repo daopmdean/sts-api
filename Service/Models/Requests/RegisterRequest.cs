@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Service.Models
+namespace Service.Models.Requests
 {
-    public class RegisterInfo
+    public class RegisterRequest
     {
         [MinLength(4)]
         public string Username { get; set; }

@@ -10,6 +10,8 @@
     <Folder Include="Models\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Enums\" />
+    <Folder Include="Models\Requests\" />
+    <Folder Include="Models\Responses\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />

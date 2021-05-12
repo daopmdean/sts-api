@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Service.Enums;
 using Service.Exceptions;
 using Service.Interfaces;
-using Service.Models;
+using Service.Models.Requests;
+using Service.Models.Responses;
 
 namespace Service.Implementations
 {
@@ -22,7 +23,7 @@ namespace Service.Implementations
             _tokenService = tokenService;
         }
 
-        public async Task<UserReturn> Login(LoginInfo info)
+        public async Task<UserResponse> Login(LoginRequest info)
         {
             User user = await _context.Users
                 .SingleOrDefaultAsync(x => x.Username == info.Username.ToLower());
@@ -44,7 +45,7 @@ namespace Service.Implementations
                         (int)StatusCode.Unauthorized, "Invalid Password");
             }
 
-            return new UserReturn
+            return new UserResponse
             {
                 Status = 200,
                 Username = user.Username,
@@ -52,7 +53,7 @@ namespace Service.Implementations
             };
         }
 
-        public async Task<UserReturn> Register(RegisterInfo info)
+        public async Task<UserResponse> Register(RegisterRequest info)
         {
             if (await UserExist(info.Username))
             {
@@ -77,7 +78,7 @@ namespace Service.Implementations
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return new UserReturn
+            return new UserResponse
             {
                 Status = 200,
                 Username = user.Username,
