@@ -11,7 +11,7 @@ using Service.Models.Requests;
 
 namespace STS.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "")]
     public class PersonsController : ApiBaseController
     {
         private readonly IPersonRepository _repository;

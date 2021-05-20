@@ -26,7 +26,7 @@ namespace STS.Controllers
             }
             catch (AppException appEx)
             {
-                return BadRequest(new ErrorResponses
+                return BadRequest(new ErrorResponse
                 {
                     StatusCode = appEx.StatusCode,
                     Message = appEx.Message
@@ -34,7 +34,7 @@ namespace STS.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponses
+                return BadRequest(new ErrorResponse
                 {
                     Message = ex.Message
                 });
@@ -50,7 +50,7 @@ namespace STS.Controllers
             }
             catch (AppException appEx)
             {
-                return Unauthorized(new ErrorResponses
+                return Unauthorized(new ErrorResponse
                 {
                     StatusCode = appEx.StatusCode,
                     Message = appEx.Message
@@ -58,7 +58,7 @@ namespace STS.Controllers
             }
             catch (Exception ex)
             {
-                return Unauthorized(new ErrorResponses
+                return Unauthorized(new ErrorResponse
                 {
                     Message = ex.Message
                 });

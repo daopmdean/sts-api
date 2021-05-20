@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
@@ -35,6 +36,7 @@ namespace Data.Repositories.Implementations
 
         public async Task<PagedList<T>> GetAsync(PaginationParams @params)
         {
+
             return await PagedList<T>
                 .CreateAsync(_entities.AsQueryable(), @params.PageNumber, @params.PageSize);
         }
