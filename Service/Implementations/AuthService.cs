@@ -31,7 +31,7 @@ namespace Service.Implementations
             if (user == null)
             {
                 throw new AppException(
-                    (int)StatusCode.Unauthorized, "Invalid username");
+                    (int)StatusCode.UnAuthorized, "Invalid username");
             }
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -42,12 +42,12 @@ namespace Service.Implementations
             {
                 if (computedHash[i] != user.Password[i])
                     throw new AppException(
-                        (int)StatusCode.Unauthorized, "Invalid Password");
+                        (int)StatusCode.UnAuthorized, "Invalid Password");
             }
 
             return new UserResponse
             {
-                Status = 200,
+                Status = (int)StatusCode.Ok,
                 Username = user.Username,
                 Token = _tokenService.GenerateToken(user)
             };
@@ -80,7 +80,7 @@ namespace Service.Implementations
 
             return new UserResponse
             {
-                Status = 200,
+                Status = (int)StatusCode.Ok,
                 Username = user.Username,
                 Token = _tokenService.GenerateToken(user)
             };
