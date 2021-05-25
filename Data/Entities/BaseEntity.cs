@@ -1,8 +1,10 @@
 ﻿using System;
+using Data.Enums;
+
 namespace Data.Entities
 {
     public class BaseEntity
     {
-        public object Status { get; set; }
+        public Status Status { get; set; }
     }
 }
