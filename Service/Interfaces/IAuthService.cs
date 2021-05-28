@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Service.Models.Requests;
-using Service.Models.Responses;
+using Data.Models.Requests;
+using Data.Models.Responses;
 
 namespace Service.Interfaces
 {

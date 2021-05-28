@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Data.Entities;
+using Data.Models.Responses;
 using Data.Repositories.Interfaces;
 using Service.Interfaces;
-using Service.Models.Responses;
 
 namespace Service.Implementations
 {
@@ -24,11 +22,12 @@ namespace Service.Implementations
 
         public async Task<IEnumerable<UserOverview>> GetUserOverviews()
         {
-            IQueryable<User> users = (await _repository.GetAllAsync()).AsQueryable();
-            users = users.Where(user => user.Username.Contains(""));
+            //var users = (await _repository.GetAllAsync()).AsQueryable();
+            //users = users.Where(user => user.Username.Contains(""));
 
-            var result = users.ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
-            return result;
+            //var result = users.ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
+
+            return await _repository.GetAllUsersAsync();
         }
     }
 }

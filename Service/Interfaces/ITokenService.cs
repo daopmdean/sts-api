@@ -1,5 +1,4 @@
-﻿using System;
-using Data.Entities;
+﻿using Data.Entities;
 
 namespace Service.Interfaces
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Service.Models.Requests
+namespace Data.Models.Requests
 {
     public class RegisterRequest
     {

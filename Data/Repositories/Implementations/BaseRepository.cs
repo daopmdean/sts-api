@@ -11,7 +11,7 @@ namespace Data.Repositories.Implementations
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly DataContext _context;
-        private DbSet<T> _entities;
+        protected DbSet<T> _entities;
 
         public BaseRepository(DataContext context)
         {
@@ -41,7 +41,7 @@ namespace Data.Repositories.Implementations
                 .CreateAsync(_entities.AsQueryable(), @params.PageNumber, @params.PageSize);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _entities.ToListAsync();
         }

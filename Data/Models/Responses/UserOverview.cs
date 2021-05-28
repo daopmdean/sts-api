@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
 
-namespace Service.Models.Responses
+namespace Data.Models.Responses
 {
     public class UserOverview
     {

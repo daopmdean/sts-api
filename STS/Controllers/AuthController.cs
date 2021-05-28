@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Data.Models.Requests;
+using Data.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
 using Service.Interfaces;
-using Service.Models.Requests;
-using Service.Models.Responses;
 
 namespace STS.Controllers
 {

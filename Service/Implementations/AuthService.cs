@@ -3,12 +3,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Data;
 using Data.Entities;
+using Data.Models.Requests;
+using Data.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 using Service.Enums;
 using Service.Exceptions;
 using Service.Interfaces;
-using Service.Models.Requests;
-using Service.Models.Responses;
 
 namespace Service.Implementations
 {

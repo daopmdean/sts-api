@@ -8,13 +8,26 @@ POST: /api/auth/login
 POST: /api/auth/register
 ```
 
+## Management
+
+```
+GET: /api/users/brand-managements
+GET: /api/users/store-managements
+GET: /api/users/staff
+GET: /api/users/{id}
+
+```
+
 ## Working schedule
 
-
 ### General
+
 ```
+
 ```
+
 ### Staff
+
 ```
 GET: /api/shifts/{staff_id}/current-week
 
@@ -32,7 +45,9 @@ POST: /api/shifts/change/register
 
 POST: /api/shifts/change/accept
 ```
+
 ### Manager
+
 ```
 GET: /api/shifts/day-off
 
@@ -51,16 +66,8 @@ POST: /api/shifts/change/approve
 POST: /api/shifts/change/deny
 ```
 
+## Store set up
 
+```
 
-
-
-
-
-
-
-
-
-
-
-
+```

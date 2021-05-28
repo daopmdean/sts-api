@@ -1,7 +1,6 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Data.Entities;
-using Service.Models.Responses;
+using Data.Models.Responses;
 
 namespace Service.Helpers
 {

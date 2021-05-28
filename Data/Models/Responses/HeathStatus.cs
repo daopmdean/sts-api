@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Service.Models.Responses
+namespace Data.Models.Responses
 {
     public class HeathStatus
     {

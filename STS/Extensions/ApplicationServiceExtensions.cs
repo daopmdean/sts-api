@@ -16,7 +16,6 @@ namespace STS.Extensions
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<IAuthService, AuthService>();

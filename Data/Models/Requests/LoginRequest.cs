@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Service.Models.Requests
+namespace Data.Models.Requests
 {
     public class LoginRequest
     {
