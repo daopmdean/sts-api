@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using Data.Enums;
+
 namespace Data.Entities
 {
     public class Brand
@@ -10,5 +12,15 @@ namespace Data.Entities
         public string LogoImg { get; set; }
 
         public string Hotline { get; set; }
+
+        public Status Status { get; set; }
+
+        public ICollection<Position> Positions { get; set; }
+
+        public ICollection<Staff> Staffs { get; set; }
+
+        public ICollection<Store> Stores { get; set; }
+
+        public ICollection<Skill> Skills { get; set; }
     }
 }

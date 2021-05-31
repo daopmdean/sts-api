@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Data.Entities
 {
@@ -11,5 +12,11 @@ namespace Data.Entities
         public Store Store { get; set; }
 
         public DateTime DateStart { get; set; }
+
+        public ICollection<WeekScheduleDetail> WeekScheduleDetails { get; set; }
+
+        public ICollection<StaffScheduleDetail> StaffScheduleDetails { get; set; }
+
+        public ICollection<ShiftRegister> ShiftRegisters { get; set; }
     }
 }
