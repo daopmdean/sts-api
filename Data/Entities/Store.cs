@@ -3,7 +3,7 @@ using Data.Enums;
 
 namespace Data.Entities
 {
-    public class Store
+    public class Store : BaseEntity
     {
         public string Id { get; set; }
 
@@ -14,8 +14,6 @@ namespace Data.Entities
         public string Address { get; set; }
 
         public string Phone { get; set; }
-
-        public Status Status { get; set; }
 
         public ICollection<StoreStaff> StoreStaffs { get; set; }
 
