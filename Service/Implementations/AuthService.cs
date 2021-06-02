@@ -26,6 +26,7 @@ namespace Service.Implementations
         public async Task<UserResponse> Login(LoginRequest info)
         {
             User user = await _context.Users
+                .Include(user => user.Role)
                 .SingleOrDefaultAsync(x => x.Username == info.Username.ToLower());
 
             if (user == null)

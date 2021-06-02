@@ -24,6 +24,21 @@ namespace STS.Extensions
                     };
                 });
 
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequiredAdmin", policy
+                    => policy.RequireRole("admin"));
+
+                opt.AddPolicy("RequiredBrandManager", policy
+                    => policy.RequireRole("brand manager"));
+
+                opt.AddPolicy("RequiredStoreManager", policy
+                    => policy.RequireRole("store manager"));
+
+                opt.AddPolicy("RequiredStaff", policy
+                    => policy.RequireRole("staff"));
+            });
+
             return services;
         }
     }

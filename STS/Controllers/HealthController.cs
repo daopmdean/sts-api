@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace STS.Controllers
 {
+    [Route("api/health")]
     public class HealthController : ApiBaseController
     {
         public HealthController()

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Interfaces;
 
@@ -6,6 +7,7 @@ using Service.Interfaces;
 
 namespace STS.Controllers
 {
+    [Route("api/users")]
     public class UsersController : ApiBaseController
     {
         private readonly IUserService _service;
@@ -15,42 +17,18 @@ namespace STS.Controllers
             _service = service;
         }
 
-        // api/users/brand-managements
-        [HttpGet("brand-managements")]
-        public async Task<ActionResult> GetBrandManagements()
+        [Authorize(Policy = "RequiredStaff")]
+        [HttpGet]
+        public async Task<ActionResult> GetUsers()
         {
             return Ok(await _service.GetUserOverviews());
         }
 
-        // api/users/brand-managements/{id}
-        [HttpGet("brand-managements/{id}")]
-        public async Task<ActionResult> GetBrandManagement(string id)
+        [HttpGet("{username}")]
+        public async Task<ActionResult> GetUser(string username)
         {
-            return Ok("individual brand management: " + id);
+            return Ok(await _service.GetUserOverviews());
         }
 
-        [HttpGet("store-managements")]
-        public async Task<ActionResult> GetStoreManagements()
-        {
-            return Ok("store management");
-        }
-
-        [HttpGet("store-managements/{id}")]
-        public async Task<ActionResult> GetStoreManagement(string id)
-        {
-            return Ok("individual store management: " + id);
-        }
-
-        [HttpGet("staff")]
-        public async Task<ActionResult> GetStaff()
-        {
-            return Ok("staff");
-        }
-
-        [HttpGet("staff/{id}")]
-        public async Task<ActionResult> GetIndividualStaff(string id)
-        {
-            return Ok("staff: " + id);
-        }
     }
 }

@@ -25,7 +25,7 @@ namespace Service.Implementations
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Username),
-                //new Claim(ClaimTypes.Role, user.Role.Name)
+                new Claim(ClaimTypes.Role, user.Role.Name)
             };
 
             var creds = new SigningCredentials(

@@ -8,6 +8,7 @@ using Service.Interfaces;
 
 namespace STS.Controllers
 {
+    [Route("api/auth")]
     public class AuthController : ApiBaseController
     {
         private readonly IAuthService _service;
