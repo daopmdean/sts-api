@@ -72,6 +72,7 @@ namespace Service.Implementations
                 Address = info.Address,
                 Phone = info.Phone,
                 DateOfBirth = info.DateOfBirth,
+                RoleId = 2,
                 Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password)),
                 PasswordSalt = hmac.Key
             };

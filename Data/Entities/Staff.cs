@@ -1,19 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Data.Enums;
 
 namespace Data.Entities
 {
     public class Staff
     {
-        public int Id { get; set; }
+        [Key]
+        public string Username { get; set; }
 
-        public string Name { get; set; }
-
-        public string Phone { get; set; }
-
-        public string Address { get; set; }
-
-        public string PhotoUrl { get; set; }
+        public User User { get; set; }
 
         public StaffType Type { get; set; }
 
@@ -22,10 +18,6 @@ namespace Data.Entities
         public int BrandId { get; set; }
 
         public Brand Brand { get; set; }
-
-        public int PositionId { get; set; }
-
-        public Position Position { get; set; }
 
         public ICollection<StaffSkill> StaffSkills { get; set; }
 

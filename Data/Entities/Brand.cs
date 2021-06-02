@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using Data.Enums;
 
 namespace Data.Entities
 {
-    public class Brand
+    public class Brand : BaseEntity
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 
@@ -13,11 +12,11 @@ namespace Data.Entities
 
         public string Hotline { get; set; }
 
-        public Status Status { get; set; }
+        public ICollection<BrandManager> BrandManagers { get; set; }
 
-        public ICollection<Position> Positions { get; set; }
+        public ICollection<StoreManager> StoreManagers { get; set; }
 
-        public ICollection<Staff> Staffs { get; set; }
+        public ICollection<Staff> Staff { get; set; }
 
         public ICollection<Store> Stores { get; set; }
 

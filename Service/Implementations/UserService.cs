@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Data.Models.Responses;
+using Data.Pagings;
 using Data.Repositories.Interfaces;
 using Service.Interfaces;
 
@@ -20,14 +21,19 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<UserOverview>> GetUserOverviews()
+        public async Task<PagedList<UserOverview>> GetBrandManagers(UserParams @params)
         {
-            //var users = (await _repository.GetAllAsync()).AsQueryable();
-            //users = users.Where(user => user.Username.Contains(""));
+            return await _repository.GetBrandManagersAsync(@params);
+        }
 
-            //var result = users.ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
+        public Task<PagedList<UserOverview>> GetStaff(UserParams @params)
+        {
+            throw new System.NotImplementedException();
+        }
 
-            return await _repository.GetAllUsersAsync();
+        public Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

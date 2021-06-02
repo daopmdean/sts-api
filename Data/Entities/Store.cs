@@ -5,7 +5,7 @@ namespace Data.Entities
 {
     public class Store : BaseEntity
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string BrandId { get; set; }
 
