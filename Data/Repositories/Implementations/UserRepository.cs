@@ -16,7 +16,8 @@ namespace Data.Repositories.Implementations
     {
         private readonly IMapper _mapper;
 
-        public UserRepository(DataContext context, IMapper mapper) : base(context)
+        public UserRepository(DataContext context,
+            IMapper mapper) : base(context)
         {
             _mapper = mapper;
         }
@@ -62,6 +63,11 @@ namespace Data.Repositories.Implementations
         public async Task<PagedList<UserOverview>> GetStoreManagersAsync(
             UserParams @params)
         {
+            var brand = await _context.Brands
+                .FirstOrDefaultAsync(b => b.Id == @params.BrandId);
+
+
+
             var query = _entities
                 .AsQueryable()
                 .OrderBy(u => u.Username)

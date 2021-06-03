@@ -62,5 +62,46 @@ namespace STS.Controllers
             });
         }
 
+        [HttpPost]
+        public async Task<ActionResult> CreateUser(string username)
+        {
+            var user = await _service.GetUser(username);
+            if (user != null)
+                return Ok(user);
+
+            return BadRequest(new ErrorResponse
+            {
+                StatusCode = 400,
+                Message = "Username not found"
+            });
+        }
+
+        [HttpPut("{username}")]
+        public async Task<ActionResult> UpdateUser(string username)
+        {
+            var user = await _service.GetUser(username);
+            if (user != null)
+                return Ok(user);
+
+            return BadRequest(new ErrorResponse
+            {
+                StatusCode = 400,
+                Message = "Username not found"
+            });
+        }
+
+        [HttpDelete("{username}")]
+        public async Task<ActionResult> DeleteUser(string username)
+        {
+            var user = await _service.GetUser(username);
+            if (user != null)
+                return Ok(user);
+
+            return BadRequest(new ErrorResponse
+            {
+                StatusCode = 400,
+                Message = "Username not found"
+            });
+        }
     }
 }
