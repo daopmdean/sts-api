@@ -19,24 +19,23 @@ namespace Data.Repositories.Implementations
             _entities = _context.Set<T>();
         }
 
-        public async Task CreateAsync(T entity)
+        public virtual async Task CreateAsync(T entity)
         {
             await _entities.AddAsync(entity);
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Delete(T person)
+        public virtual void Delete(T person)
         {
             _entities.Remove(person);
         }
 
-        public async Task<PagedList<T>> GetAsync(PaginationParams @params)
+        public virtual async Task<PagedList<T>> GetAsync(PaginationParams @params)
         {
-
             return await PagedList<T>
                 .CreateAsync(_entities.AsQueryable(), @params.PageNumber, @params.PageSize);
         }
@@ -46,12 +45,12 @@ namespace Data.Repositories.Implementations
             return await _entities.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             return await _entities.FindAsync(id);
         }
 
-        public async Task<bool> SaveChangesAsync()
+        public virtual async Task<bool> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync() > 0;
         }

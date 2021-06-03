@@ -62,46 +62,28 @@ namespace STS.Controllers
             });
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateUser(string username)
+        [HttpPost("store-manager")]
+        public async Task<ActionResult> CreateStoreManager(string username)
         {
-            var user = await _service.GetUser(username);
-            if (user != null)
-                return Ok(user);
+            return Ok();
+        }
 
-            return BadRequest(new ErrorResponse
-            {
-                StatusCode = 400,
-                Message = "Username not found"
-            });
+        [HttpPost("staff")]
+        public async Task<ActionResult> CreateStaff(string username)
+        {
+            return Ok();
         }
 
         [HttpPut("{username}")]
         public async Task<ActionResult> UpdateUser(string username)
         {
-            var user = await _service.GetUser(username);
-            if (user != null)
-                return Ok(user);
-
-            return BadRequest(new ErrorResponse
-            {
-                StatusCode = 400,
-                Message = "Username not found"
-            });
+            return Ok();
         }
 
         [HttpDelete("{username}")]
         public async Task<ActionResult> DeleteUser(string username)
         {
-            var user = await _service.GetUser(username);
-            if (user != null)
-                return Ok(user);
-
-            return BadRequest(new ErrorResponse
-            {
-                StatusCode = 400,
-                Message = "Username not found"
-            });
+            return Ok();
         }
     }
 }

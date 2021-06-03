@@ -1,23 +1,36 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Data.Models.Requests;
 using Data.Models.Responses;
+using Data.Pagings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
+using STS.Extensions;
 
 namespace STS.Controllers
 {
+    [Authorize]
     [Route("api/brands")]
     public class BrandsController : ApiBaseController
     {
-        public BrandsController()
+        private readonly IBrandService _service;
+
+        public BrandsController(IBrandService service)
         {
+            _service = service;
         }
 
-        [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BrandOverview>>> GetBrands()
+        public async Task<ActionResult<IEnumerable<BrandOverview>>> GetBrands(
+            BrandParams @params)
         {
-            return Ok();
+            var result = await _service.GetBrands(@params);
+
+            Response.AddPaginationHeader(result.CurrentPage,
+                result.PageSize, result.TotalCount, result.TotalPages);
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -28,7 +41,8 @@ namespace STS.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<BrandOverview>>> CreateBrand()
+        public async Task<ActionResult<IEnumerable<BrandOverview>>> CreateBrand(
+            BrandCreate brand)
         {
             return Ok();
         }

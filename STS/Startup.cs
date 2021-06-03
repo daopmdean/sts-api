@@ -47,6 +47,7 @@ namespace STS
             services.AddApplicationServices();
             services.AddIdentityServices(Configuration);
             services.AddControllers();
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "STS", Version = "v1" });
@@ -71,7 +72,7 @@ namespace STS
             app.UseCors(cors => cors
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .WithOrigins(""));
+                .AllowAnyOrigin());
 
             app.UseAuthentication();
             app.UseAuthorization();
