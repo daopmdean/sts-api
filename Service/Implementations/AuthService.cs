@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Data;
 using Data.Entities;
 using Data.Models.Requests;
@@ -16,11 +17,14 @@ namespace Service.Implementations
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public AuthService(DataContext context, ITokenService tokenService)
+        public AuthService(DataContext context,
+            ITokenService tokenService, IMapper mapper)
         {
             _context = context;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         public async Task<UserResponse> Login(LoginRequest info)
@@ -63,19 +67,25 @@ namespace Service.Implementations
 
             using var hmac = new HMACSHA512();
 
-            var user = new User
-            {
-                Username = info.Username.ToLower(),
-                FirstName = info.FirstName,
-                LastName = info.LastName,
-                Email = info.Email,
-                Address = info.Address,
-                Phone = info.Phone,
-                DateOfBirth = info.DateOfBirth,
-                RoleId = 2,
-                Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password)),
-                PasswordSalt = hmac.Key
-            };
+            //var user = new User
+            //{
+            //    Username = info.Username.ToLower(),
+            //    FirstName = info.FirstName,
+            //    LastName = info.LastName,
+            //    Email = info.Email,
+            //    Address = info.Address,
+            //    Phone = info.Phone,
+            //    DateOfBirth = info.DateOfBirth,
+            //    RoleId = 2,
+            //    Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password)),
+            //    PasswordSalt = hmac.Key
+            //};
+
+            var user = _mapper.Map<User>(info);
+            user.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password));
+            user.PasswordSalt = hmac.Key;
+            user.RoleId = 2;
+            user.Role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == 2);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

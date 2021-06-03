@@ -26,14 +26,14 @@ namespace Service.Implementations
             return await _repository.GetBrandManagersAsync(@params);
         }
 
-        public Task<PagedList<UserOverview>> GetStaff(UserParams @params)
+        public async Task<PagedList<UserOverview>> GetStaff(UserParams @params)
         {
-            throw new System.NotImplementedException();
+            return await _repository.GetStaffAsync(@params);
         }
 
-        public Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params)
+        public async Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params)
         {
-            throw new System.NotImplementedException();
+            return await _repository.GetStoreManagersAsync(@params);
         }
     }
 }

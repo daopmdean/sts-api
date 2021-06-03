@@ -28,25 +28,42 @@ namespace Data.Repositories.Implementations
                 .ToListAsync();
         }
 
-        public async Task<PagedList<UserOverview>> GetBrandManagersAsync(UserParams @params)
+        public async Task<PagedList<UserOverview>> GetBrandManagersAsync(
+            UserParams @params)
         {
             var query = _entities
                 .AsQueryable()
+                .OrderBy(u => u.Username)
                 .Where(u => u.RoleId == 2)
                 .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
-            return await PagedList<UserOverview>.CreateAsync(query, @params.PageNumber, @params.PageSize);
-            //@params.BrandId
 
+            return await PagedList<UserOverview>
+                .CreateAsync(query, @params.PageNumber, @params.PageSize);
         }
 
-        public Task<PagedList<UserOverview>> GetStaffAsync(UserParams @params)
+        public async Task<PagedList<UserOverview>> GetStaffAsync(UserParams @params)
         {
-            throw new NotImplementedException();
+            var query = _entities
+                .AsQueryable()
+                .OrderBy(u => u.Username)
+                .Where(u => u.RoleId == 4)
+                .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
+
+            return await PagedList<UserOverview>
+                .CreateAsync(query, @params.PageNumber, @params.PageSize);
         }
 
-        public Task<PagedList<UserOverview>> GetStoreManagersAsync(UserParams @params)
+        public async Task<PagedList<UserOverview>> GetStoreManagersAsync(
+            UserParams @params)
         {
-            throw new NotImplementedException();
+            var query = _entities
+                .AsQueryable()
+                .OrderBy(u => u.Username)
+                .Where(u => u.RoleId == 3)
+                .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
+
+            return await PagedList<UserOverview>
+                .CreateAsync(query, @params.PageNumber, @params.PageSize);
         }
     }
 }

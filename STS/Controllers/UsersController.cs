@@ -26,15 +26,18 @@ namespace STS.Controllers
         public async Task<ActionResult<IEnumerable<UserOverview>>> GetUsers(
             [FromQuery] UserParams @params)
         {
-            PagedList<UserOverview> result = null;
+            PagedList<UserOverview> result;
+
             switch (@params.Position)
             {
                 case "brand-manager":
                     result = await _service.GetBrandManagers(@params);
                     break;
                 case "store-manager":
+                    result = await _service.GetStoreManagers(@params);
                     break;
                 case "staff":
+                    result = await _service.GetStaff(@params);
                     break;
                 default:
                     return BadRequest();

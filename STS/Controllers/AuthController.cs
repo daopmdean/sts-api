@@ -37,7 +37,9 @@ namespace STS.Controllers
             {
                 return BadRequest(new ErrorResponse
                 {
-                    Message = ex.Message
+                    StatusCode = 500,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
