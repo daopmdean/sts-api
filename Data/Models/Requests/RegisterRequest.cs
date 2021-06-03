@@ -17,6 +17,8 @@ namespace Data.Models.Requests
 
         public DateTime DateOfBirth { get; set; }
 
+        public string Gender { get; set; }
+
         [EmailAddress]
         public string Email { get; set; }
 

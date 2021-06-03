@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Data.Entities;
 using Data.Models.Responses;
 using Data.Pagings;
 
@@ -10,5 +11,6 @@ namespace Service.Interfaces
         Task<PagedList<UserOverview>> GetBrandManagers(UserParams @params);
         Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params);
         Task<PagedList<UserOverview>> GetStaff(UserParams @params);
+        Task<User> GetUser(string username);
     }
 }

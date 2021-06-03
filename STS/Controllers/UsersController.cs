@@ -51,7 +51,15 @@ namespace STS.Controllers
         [HttpGet("{username}")]
         public async Task<ActionResult> GetUser(string username)
         {
-            return Ok();
+            var user = await _service.GetUser(username);
+            if (user != null)
+                return Ok(user);
+
+            return BadRequest(new ErrorResponse
+            {
+                StatusCode = 400,
+                Message = "Username not found"
+            });
         }
 
     }

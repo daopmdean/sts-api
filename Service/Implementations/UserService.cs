@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Data.Entities;
 using Data.Models.Responses;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
@@ -34,6 +36,11 @@ namespace Service.Implementations
         public async Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params)
         {
             return await _repository.GetStoreManagersAsync(@params);
+        }
+
+        public async Task<User> GetUser(string username)
+        {
+            return await _repository.GetByUsernameAsync(username);
         }
     }
 }

@@ -67,20 +67,6 @@ namespace Service.Implementations
 
             using var hmac = new HMACSHA512();
 
-            //var user = new User
-            //{
-            //    Username = info.Username.ToLower(),
-            //    FirstName = info.FirstName,
-            //    LastName = info.LastName,
-            //    Email = info.Email,
-            //    Address = info.Address,
-            //    Phone = info.Phone,
-            //    DateOfBirth = info.DateOfBirth,
-            //    RoleId = 2,
-            //    Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password)),
-            //    PasswordSalt = hmac.Key
-            //};
-
             var user = _mapper.Map<User>(info);
             user.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password));
             user.PasswordSalt = hmac.Key;
