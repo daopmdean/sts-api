@@ -13,6 +13,7 @@ namespace Service.Helpers
             CreateMap<Role, RoleResponse>();
             CreateMap<RegisterRequest, User>()
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
+            CreateMap<Brand, BrandOverview>();
         }
     }
 }

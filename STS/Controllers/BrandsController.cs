@@ -23,7 +23,7 @@ namespace STS.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BrandOverview>>> GetBrands(
-            BrandParams @params)
+            [FromQuery] BrandParams @params)
         {
             var result = await _service.GetBrands(@params);
 
