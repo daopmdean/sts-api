@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Data;
 using Data.Entities;
+using Data.Enums;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,9 @@ namespace Service.Implementations
         {
             User user = await _context.Users
                 .Include(user => user.Role)
-                .SingleOrDefaultAsync(x => x.Username == info.Username.ToLower());
+                .SingleOrDefaultAsync(x =>
+                    x.Username == info.Username.ToLower()
+                    && x.Status == Status.Active);
 
             if (user == null)
             {

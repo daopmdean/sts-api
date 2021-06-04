@@ -30,15 +30,18 @@ namespace Data.Repositories.Implementations
             _context.Entry(entity).State = EntityState.Modified;
         }
 
-        public virtual void Delete(T person)
+        public virtual void Delete(T entity)
         {
-            _entities.Remove(person);
+            entity.Status = Enums.Status.Deleted;
         }
 
         public virtual async Task<PagedList<T>> GetAsync(PaginationParams @params)
         {
+            var source = _entities
+                .Where(e => e.Status == Enums.Status.Active);
+
             return await PagedList<T>
-                .CreateAsync(_entities.AsQueryable(), @params.PageNumber, @params.PageSize);
+                .CreateAsync(source, @params.PageNumber, @params.PageSize);
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
@@ -48,8 +51,12 @@ namespace Data.Repositories.Implementations
 
         public virtual async Task<T> GetByIdAsync(int id)
         {
-            _entities.Where(entity => entity.Status == Enums.Status.Active);
-            return await _entities.FindAsync(id);
+            var result = await _entities.FindAsync(id);
+
+            if (result.Status == Enums.Status.Active)
+                return result;
+
+            return null;
         }
 
         public virtual async Task<bool> SaveChangesAsync()
