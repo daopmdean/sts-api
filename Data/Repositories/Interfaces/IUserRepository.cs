@@ -12,6 +12,7 @@ namespace Data.Repositories.Interfaces
         Task<PagedList<UserOverview>> GetBrandManagersAsync(UserParams @params);
         Task<PagedList<UserOverview>> GetStoreManagersAsync(UserParams @params);
         Task<PagedList<UserOverview>> GetStaffAsync(UserParams @params);
+        Task<User> GetUserByUsernameAsync(string username);
         Task<UserInfoResponse> GetByUsernameAsync(string username);
     }
 }

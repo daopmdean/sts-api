@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Data.Entities;
+using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
+using Service.Exceptions;
 using Service.Interfaces;
 
 namespace Service.Implementations
@@ -41,6 +43,20 @@ namespace Service.Implementations
         public async Task<UserInfoResponse> GetUser(string username)
         {
             return await _repository.GetByUsernameAsync(username);
+        }
+
+        public async Task UpdateUser(string username,
+            UserUpdate updateInfo)
+        {
+            var user = await _repository.GetUserByUsernameAsync(username);
+
+            _mapper.Map(updateInfo, user);
+            _repository.Update(user);
+
+            if (await _repository.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not update user");
         }
     }
 }

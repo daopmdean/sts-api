@@ -78,5 +78,11 @@ namespace Data.Repositories.Implementations
             return await PagedList<UserOverview>
                 .CreateAsync(query, @params.PageNumber, @params.PageSize);
         }
+
+        public async Task<User> GetUserByUsernameAsync(string username)
+        {
+            return await _entities
+                .FirstOrDefaultAsync(user => user.Username == username);
+        }
     }
 }

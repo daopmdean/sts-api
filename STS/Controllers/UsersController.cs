@@ -1,27 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Exceptions;
 using Service.Interfaces;
 using STS.Extensions;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace STS.Controllers
 {
+    [Authorize]
     [Route("api/users")]
     public class UsersController : ApiBaseController
     {
         private readonly IUserService _service;
 
-        public UsersController(IUserService service)
+        private readonly IMapper _mapper;
+
+        public UsersController(IUserService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserOverview>>> GetUsers(
             [FromQuery] UserParams @params)
@@ -52,6 +57,7 @@ namespace STS.Controllers
         public async Task<ActionResult> GetUser(string username)
         {
             var user = await _service.GetUser(username);
+
             if (user != null)
                 return Ok(user);
 
@@ -63,21 +69,46 @@ namespace STS.Controllers
         }
 
         [HttpPost("store-manager")]
-        public async Task<ActionResult> CreateStoreManager(string username)
+        public async Task<ActionResult> CreateStoreManager(
+            RegisterRequest userInfo)
         {
             return Ok();
         }
 
         [HttpPost("staff")]
-        public async Task<ActionResult> CreateStaff(string username)
+        public async Task<ActionResult> CreateStaff(
+            RegisterRequest userInfo)
         {
             return Ok();
         }
 
         [HttpPut("{username}")]
-        public async Task<ActionResult> UpdateUser(string username)
+        public async Task<ActionResult> UpdateUser(string username,
+            UserUpdate updateInfo)
         {
-            return Ok();
+            var loggedInUser = await _service.GetUser(User.GetUsername());
+
+            if (loggedInUser.Username != username)
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = 400,
+                    Message = "You can not edit other user"
+                });
+
+            try
+            {
+                await _service.UpdateUser(username, updateInfo);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+
+            return NoContent();
         }
 
         [HttpDelete("{username}")]

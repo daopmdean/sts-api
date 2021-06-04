@@ -64,9 +64,7 @@ namespace Service.Implementations
         public async Task<UserTokenResponse> Register(RegisterRequest info)
         {
             if (await UserExist(info.Username))
-            {
                 throw new AppException(400, "Username already exist");
-            }
 
             using var hmac = new HMACSHA512();
 
@@ -77,7 +75,9 @@ namespace Service.Implementations
             user.Role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == 2);
 
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+
+            if (await _context.SaveChangesAsync() > 0)
+                throw new AppException(400, "Can not register user");
 
             return new UserTokenResponse
             {
