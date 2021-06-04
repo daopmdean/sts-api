@@ -27,7 +27,7 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
-        public async Task<UserResponse> Login(LoginRequest info)
+        public async Task<UserTokenResponse> Login(LoginRequest info)
         {
             User user = await _context.Users
                 .Include(user => user.Role)
@@ -50,7 +50,7 @@ namespace Service.Implementations
                         (int)StatusCode.UnAuthorized, "Invalid Password");
             }
 
-            return new UserResponse
+            return new UserTokenResponse
             {
                 Status = (int)StatusCode.Ok,
                 Username = user.Username,
@@ -58,7 +58,7 @@ namespace Service.Implementations
             };
         }
 
-        public async Task<UserResponse> Register(RegisterRequest info)
+        public async Task<UserTokenResponse> Register(RegisterRequest info)
         {
             if (await UserExist(info.Username))
             {
@@ -76,7 +76,7 @@ namespace Service.Implementations
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return new UserResponse
+            return new UserTokenResponse
             {
                 Status = (int)StatusCode.Ok,
                 Username = user.Username,

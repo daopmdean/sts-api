@@ -10,6 +10,7 @@ namespace Service.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<User, UserOverview>();
+            CreateMap<User, UserInfoResponse>();
             CreateMap<Role, RoleResponse>();
             CreateMap<RegisterRequest, User>()
                 .ForMember(dest => dest.Password, opt => opt.Ignore());

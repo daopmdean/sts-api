@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Data.Models.Responses
 {
-    public class UserResponse
+    public class UserTokenResponse
     {
         public int Status { get; set; }
         public string Username { get; set; }
