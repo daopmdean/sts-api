@@ -3,7 +3,7 @@ namespace Data.Enums
 {
     public enum StaffType
     {
-        FullTime,
-        PartTime
+        FullTime = 0,
+        PartTime = 1
     }
 }

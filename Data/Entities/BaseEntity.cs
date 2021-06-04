@@ -5,6 +5,6 @@ namespace Data.Entities
 {
     public class BaseEntity
     {
-        public Status Status { get; set; }
+        public Status Status { get; set; } = Status.Active;
     }
 }

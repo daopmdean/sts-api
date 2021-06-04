@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Data.Entities
 {
-    public class ShiftAttendance
+    public class ShiftAttendance : BaseEntity
     {
         public int Id { get; set; }
 

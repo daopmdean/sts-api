@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Entities;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories.Implementations
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         protected readonly DataContext _context;
         protected DbSet<T> _entities;
@@ -47,6 +48,7 @@ namespace Data.Repositories.Implementations
 
         public virtual async Task<T> GetByIdAsync(int id)
         {
+            _entities.Where(entity => entity.Status == Enums.Status.Active);
             return await _entities.FindAsync(id);
         }
 
