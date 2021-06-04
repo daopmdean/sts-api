@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class User
+    public class User : BaseEntity
     {
         [Key]
         public string Username { get; set; }

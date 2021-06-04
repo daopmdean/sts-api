@@ -2,7 +2,7 @@
 
 namespace Data.Entities
 {
-    public class BrandManager
+    public class BrandManager : BaseEntity
     {
         [Key]
         public string Username { get; set; }

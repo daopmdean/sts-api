@@ -3,7 +3,7 @@ using Data.Enums;
 
 namespace Data.Entities
 {
-    public class ShiftRegister
+    public class ShiftRegister : BaseEntity
     {
         public int Id { get; set; }
 
@@ -20,8 +20,5 @@ namespace Data.Entities
         public DateTime TimeEnd { get; set; }
 
         public string PreferSkill { get; set; }
-
-        public Status Status { get; set; }
-
     }
 }

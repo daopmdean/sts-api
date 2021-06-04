@@ -1,6 +1,6 @@
 ﻿namespace Data.Entities
 {
-    public class StaffScheduleDetail
+    public class StaffScheduleDetail : BaseEntity
     {
         public int Id { get; set; }
 

@@ -3,7 +3,7 @@ using Data.Enums;
 
 namespace Data.Entities
 {
-    public class ShiftAssignment
+    public class ShiftAssignment : BaseEntity
     {
         public int Id { get; set; }
 
@@ -30,7 +30,5 @@ namespace Data.Entities
         public int ReferenceId { get; set; }
 
         public ShiftAssignment ShiftReference { get; set; }
-
-        public Status Status { get; set; }
     }
 }

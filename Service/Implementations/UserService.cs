@@ -38,7 +38,7 @@ namespace Service.Implementations
             return await _repository.GetStoreManagersAsync(@params);
         }
 
-        public async Task<User> GetUser(string username)
+        public async Task<UserInfoResponse> GetUser(string username)
         {
             return await _repository.GetByUsernameAsync(username);
         }

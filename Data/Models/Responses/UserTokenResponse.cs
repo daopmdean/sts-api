@@ -1,5 +1,4 @@
-﻿using System;
-namespace Data.Models.Responses
+﻿namespace Data.Models.Responses
 {
     public class UserTokenResponse
     {

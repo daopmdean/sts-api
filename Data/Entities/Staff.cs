@@ -4,7 +4,7 @@ using Data.Enums;
 
 namespace Data.Entities
 {
-    public class Staff
+    public class Staff : BaseEntity
     {
         [Key]
         public string Username { get; set; }
@@ -12,8 +12,6 @@ namespace Data.Entities
         public User User { get; set; }
 
         public StaffType Type { get; set; }
-
-        public Status Status { get; set; }
 
         public int BrandId { get; set; }
 

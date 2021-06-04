@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Data.Entities
 {
-    public class ShiftLog
+    public class ShiftLog : BaseEntity
     {
         public int Id { get; set; }
 

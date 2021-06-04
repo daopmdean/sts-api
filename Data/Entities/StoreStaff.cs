@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using Data.Enums;
 
 namespace Data.Entities
 {
-    public class StoreStaff
+    public class StoreStaff : BaseEntity
     {
         public string StoreId { get; set; }
 
@@ -17,7 +15,5 @@ namespace Data.Entities
         public bool IsPrimaryStore { get; set; }
 
         public DateTime DateStart { get; set; }
-
-        public Status Status { get; set; }
     }
 }

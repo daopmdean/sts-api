@@ -2,7 +2,7 @@
 
 namespace Data.Entities
 {
-    public class Position
+    public class Position : BaseEntity
     {
         public int Id { get; set; }
 
@@ -13,7 +13,5 @@ namespace Data.Entities
         public string Mode { get; set; }
 
         public string Name { get; set; }
-
-        public Status Status { get; set; }
     }
 }

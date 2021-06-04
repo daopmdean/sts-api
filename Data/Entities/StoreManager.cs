@@ -2,7 +2,7 @@
 
 namespace Data.Entities
 {
-    public class StoreManager
+    public class StoreManager : BaseEntity
     {
         [Key]
         public string Username { get; set; }

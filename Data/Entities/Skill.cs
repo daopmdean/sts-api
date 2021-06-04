@@ -4,7 +4,7 @@ using Data.Enums;
 
 namespace Data.Entities
 {
-    public class Skill
+    public class Skill : BaseEntity
     {
         public int Id { get; set; }
 
@@ -15,8 +15,6 @@ namespace Data.Entities
         public string Name { get; set; }
 
         public string Description { get; set; }
-
-        public Status Status { get; set; }
 
         public ICollection<StaffSkill> StaffSkills { get; set; }
     }

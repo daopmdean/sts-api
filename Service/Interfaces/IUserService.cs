@@ -11,6 +11,6 @@ namespace Service.Interfaces
         Task<PagedList<UserOverview>> GetBrandManagers(UserParams @params);
         Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params);
         Task<PagedList<UserOverview>> GetStaff(UserParams @params);
-        Task<User> GetUser(string username);
+        Task<UserInfoResponse> GetUser(string username);
     }
 }

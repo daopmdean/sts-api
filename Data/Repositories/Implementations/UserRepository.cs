@@ -41,10 +41,12 @@ namespace Data.Repositories.Implementations
                 .CreateAsync(query, @params.PageNumber, @params.PageSize);
         }
 
-        public async Task<User> GetByUsernameAsync(string username)
+        public async Task<UserInfoResponse> GetByUsernameAsync(string username)
         {
-            return await _entities
+            var user = await _entities
                 .FirstOrDefaultAsync(user => user.Username == username);
+
+            return _mapper.Map<UserInfoResponse>(user);
         }
 
         public async Task<PagedList<UserOverview>> GetStaffAsync(UserParams @params)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public class WeekSchedule
+    public class WeekSchedule : BaseEntity
     {
         public int Id { get; set; }
 

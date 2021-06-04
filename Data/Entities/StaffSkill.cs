@@ -2,7 +2,7 @@
 
 namespace Data.Entities
 {
-    public class StaffSkill
+    public class StaffSkill : BaseEntity
     {
         public int StaffId { get; set; }
 

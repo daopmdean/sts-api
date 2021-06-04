@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Data.Entities
 {
-    public class WeekScheduleDetail
+    public class WeekScheduleDetail : BaseEntity
     {
         public int Id { get; set; }
 
