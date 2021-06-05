@@ -19,12 +19,9 @@ namespace STS.Controllers
     {
         private readonly IUserService _service;
 
-        private readonly IMapper _mapper;
-
-        public UsersController(IUserService service, IMapper mapper)
+        public UsersController(IUserService service)
         {
             _service = service;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -72,6 +69,7 @@ namespace STS.Controllers
         public async Task<ActionResult> CreateStoreManager(
             RegisterRequest userInfo)
         {
+
             return Ok();
         }
 
@@ -89,11 +87,13 @@ namespace STS.Controllers
             var loggedInUser = await _service.GetUserAsync(User.GetUsername());
 
             if (loggedInUser.Username != username)
+            {
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = 400,
                     Message = "You can not edit other user"
                 });
+            }
 
             try
             {
@@ -114,7 +114,20 @@ namespace STS.Controllers
         [HttpDelete("{username}")]
         public async Task<ActionResult> DeleteUser(string username)
         {
-            return Ok();
+            try
+            {
+                await _service.DeleteUserAsync(username);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+
+            return NoContent();
         }
     }
 }

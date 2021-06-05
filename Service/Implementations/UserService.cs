@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
@@ -23,6 +19,16 @@ namespace Service.Implementations
         {
             _repository = repository;
             _mapper = mapper;
+        }
+
+        public Task CreateStaff(RegisterRequest user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CreateStoreManager(RegisterRequest user)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task DeleteUserAsync(string username)
