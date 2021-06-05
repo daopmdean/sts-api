@@ -35,10 +35,21 @@ namespace STS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<BrandOverview>>> GetBrand(
+        public async Task<ActionResult<BrandOverview>> GetBrand(
             int id)
         {
-            return Ok(await _service.GetBrand(id));
+            try
+            {
+                return Ok(await _service.GetBrand(id));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
         }
 
         [HttpPost]

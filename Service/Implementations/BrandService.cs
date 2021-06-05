@@ -46,7 +46,12 @@ namespace Service.Implementations
 
         public async Task<Brand> GetBrand(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            var brand = await _repository.GetByIdAsync(id);
+
+            if (brand == null)
+                throw new AppException(400, "Brand not found or has been deleted");
+
+            return brand;
         }
 
         public async Task<PagedList<BrandOverview>> GetBrands(BrandParams @params)

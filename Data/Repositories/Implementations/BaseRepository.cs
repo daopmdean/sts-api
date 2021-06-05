@@ -55,7 +55,7 @@ namespace Data.Repositories.Implementations
         {
             var result = await _entities.FindAsync(id);
 
-            if (result.Status == Enums.Status.Active)
+            if (result?.Status == Enums.Status.Active)
                 return result;
 
             return null;
