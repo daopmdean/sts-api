@@ -56,7 +56,7 @@ namespace STS.Controllers
         [HttpGet("{username}")]
         public async Task<ActionResult> GetUser(string username)
         {
-            var user = await _service.GetUser(username);
+            var user = await _service.GetUserAsync(username);
 
             if (user != null)
                 return Ok(user);
@@ -86,7 +86,7 @@ namespace STS.Controllers
         public async Task<ActionResult> UpdateUser(string username,
             UserUpdate updateInfo)
         {
-            var loggedInUser = await _service.GetUser(User.GetUsername());
+            var loggedInUser = await _service.GetUserAsync(User.GetUsername());
 
             if (loggedInUser.Username != username)
                 return BadRequest(new ErrorResponse
@@ -97,7 +97,7 @@ namespace STS.Controllers
 
             try
             {
-                await _service.UpdateUser(username, updateInfo);
+                await _service.UpdateUserAsync(username, updateInfo);
             }
             catch (AppException ex)
             {

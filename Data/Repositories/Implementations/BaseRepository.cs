@@ -46,7 +46,9 @@ namespace Data.Repositories.Implementations
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _entities.ToListAsync();
+            return await _entities
+                .Where(e => e.Status == Enums.Status.Active)
+                .ToListAsync();
         }
 
         public virtual async Task<T> GetByIdAsync(int id)

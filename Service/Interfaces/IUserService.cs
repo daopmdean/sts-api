@@ -12,7 +12,8 @@ namespace Service.Interfaces
         Task<PagedList<UserOverview>> GetBrandManagers(UserParams @params);
         Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params);
         Task<PagedList<UserOverview>> GetStaff(UserParams @params);
-        Task<UserInfoResponse> GetUser(string username);
-        Task UpdateUser(string username, UserUpdate updateInfo);
+        Task<UserInfoResponse> GetUserAsync(string username);
+        Task UpdateUserAsync(string username, UserUpdate updateInfo);
+        Task DeleteUserAsync(string username);
     }
 }

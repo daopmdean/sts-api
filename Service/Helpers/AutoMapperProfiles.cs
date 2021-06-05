@@ -12,11 +12,14 @@ namespace Service.Helpers
             CreateMap<User, UserOverview>();
             CreateMap<User, UserInfoResponse>();
             CreateMap<UserUpdate, User>();
-
-            CreateMap<Role, RoleResponse>();
             CreateMap<RegisterRequest, User>()
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
+
+            CreateMap<Role, RoleResponse>();
+
             CreateMap<Brand, BrandOverview>();
+            CreateMap<BrandCreate, Brand>();
+            CreateMap<BrandUpdate, Brand>();
         }
     }
 }

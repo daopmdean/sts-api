@@ -5,6 +5,7 @@ using Data.Models.Responses;
 using Data.Pagings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Exceptions;
 using Service.Interfaces;
 using STS.Extensions;
 
@@ -37,28 +38,67 @@ namespace STS.Controllers
         public async Task<ActionResult<IEnumerable<BrandOverview>>> GetBrand(
             int id)
         {
-            return Ok();
+            return Ok(await _service.GetBrand(id));
         }
 
         [HttpPost]
         public async Task<ActionResult<IEnumerable<BrandOverview>>> CreateBrand(
             BrandCreate brand)
         {
-            return Ok();
+            try
+            {
+                await _service.CreateBrand(brand);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+
+            return NoContent();
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<IEnumerable<BrandOverview>>> UpdateBrand(
-            int id)
+            int id, BrandUpdate brandUpdate)
         {
-            return Ok();
+            try
+            {
+                await _service.UpdateBrand(id, brandUpdate);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<IEnumerable<BrandOverview>>> DeleteBrand(
             int id)
         {
-            return Ok();
+            try
+            {
+                await _service.DeleteBrand(id);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+
+            return NoContent();
         }
     }
 }

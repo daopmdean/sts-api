@@ -24,6 +24,7 @@ namespace Data.Repositories.Implementations
         public async Task<IEnumerable<UserOverview>> GetAllUsersAsync()
         {
             return await _entities
+                .Where(e => e.Status == Enums.Status.Active)
                 .ProjectTo<UserOverview>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -35,6 +36,7 @@ namespace Data.Repositories.Implementations
                 .AsQueryable()
                 .OrderBy(u => u.Username)
                 .Where(u => u.RoleId == 2)
+                .Where(e => e.Status == Enums.Status.Active)
                 .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
 
             return await PagedList<UserOverview>
@@ -44,13 +46,16 @@ namespace Data.Repositories.Implementations
         public async Task<UserInfoResponse> GetByUsernameAsync(string username)
         {
             var user = await _entities
+                .Where(e => e.Status == Enums.Status.Active)
                 .FirstOrDefaultAsync(user => user.Username == username);
 
             return _mapper.Map<UserInfoResponse>(user);
         }
 
-        public async Task<PagedList<UserOverview>> GetStaffAsync(UserParams @params)
+        public async Task<PagedList<UserOverview>> GetStaffAsync(
+            UserParams @params)
         {
+            // not implemented
             var query = _entities
                 .AsQueryable()
                 .OrderBy(u => u.Username)
@@ -64,6 +69,7 @@ namespace Data.Repositories.Implementations
         public async Task<PagedList<UserOverview>> GetStoreManagersAsync(
             UserParams @params)
         {
+            // not implemented
             var brand = await _context.Brands
                 .FirstOrDefaultAsync(b => b.Id == @params.BrandId);
 
@@ -82,6 +88,7 @@ namespace Data.Repositories.Implementations
         public async Task<User> GetUserByUsernameAsync(string username)
         {
             return await _entities
+                .Where(e => e.Status == Enums.Status.Active)
                 .FirstOrDefaultAsync(user => user.Username == username);
         }
     }

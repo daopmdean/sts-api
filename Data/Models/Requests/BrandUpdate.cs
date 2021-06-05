@@ -1,6 +1,6 @@
-﻿namespace Data.Models.Responses
+﻿namespace Data.Models.Requests
 {
-    public class BrandOverview
+    public class BrandUpdate
     {
         public string Name { get; set; }
 

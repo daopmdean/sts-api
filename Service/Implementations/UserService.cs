@@ -25,6 +25,17 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
+        public async Task DeleteUserAsync(string username)
+        {
+            var user = await _repository.GetUserByUsernameAsync(username);
+            _repository.Delete(user);
+
+            if (await _repository.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not delete user");
+        }
+
         public async Task<PagedList<UserOverview>> GetBrandManagers(UserParams @params)
         {
             return await _repository.GetBrandManagersAsync(@params);
@@ -40,12 +51,12 @@ namespace Service.Implementations
             return await _repository.GetStoreManagersAsync(@params);
         }
 
-        public async Task<UserInfoResponse> GetUser(string username)
+        public async Task<UserInfoResponse> GetUserAsync(string username)
         {
             return await _repository.GetByUsernameAsync(username);
         }
 
-        public async Task UpdateUser(string username,
+        public async Task UpdateUserAsync(string username,
             UserUpdate updateInfo)
         {
             var user = await _repository.GetUserByUsernameAsync(username);

@@ -19,10 +19,11 @@ namespace Data.Repositories.Implementations
             _mapper = mapper;
         }
 
-        public async Task<PagedList<BrandOverview>> GetBrandsAsync(BrandParams @params)
+        public async Task<PagedList<BrandOverview>> GetBrandsAsync(
+            BrandParams @params)
         {
             var source = _entities
-                .AsQueryable()
+                .Where(b => b.Status == Enums.Status.Active)
                 .OrderBy(b => b.Name)
                 .ProjectTo<BrandOverview>(_mapper.ConfigurationProvider);
 
