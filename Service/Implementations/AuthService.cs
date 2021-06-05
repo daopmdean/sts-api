@@ -76,7 +76,7 @@ namespace Service.Implementations
 
             _context.Users.Add(user);
 
-            if (await _context.SaveChangesAsync() > 0)
+            if (await _context.SaveChangesAsync() <= 0)
                 throw new AppException(400, "Can not register user");
 
             return new UserTokenResponse
