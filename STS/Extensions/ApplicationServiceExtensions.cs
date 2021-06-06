@@ -18,11 +18,13 @@ namespace STS.Extensions
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
+            services.AddScoped<IStoreRepository, StoreRepository>();
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<IStoreService, StoreService>();
 
             return services;
         }

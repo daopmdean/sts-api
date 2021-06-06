@@ -20,6 +20,10 @@ namespace Service.Helpers
             CreateMap<Brand, BrandOverview>();
             CreateMap<BrandCreate, Brand>();
             CreateMap<BrandUpdate, Brand>();
+
+            CreateMap<Store, StoreOverview>();
+            CreateMap<StoreCreate, Store>();
+            CreateMap<StoreUpdate, Store>();
         }
     }
 }

@@ -36,6 +36,10 @@ namespace Service.Implementations
         public async Task DeleteBrand(int id)
         {
             var brand = await _repository.GetByIdAsync(id);
+
+            if (brand == null)
+                throw new AppException(400, "Brand not found");
+
             _repository.Delete(brand);
 
             if (await _repository.SaveChangesAsync())
@@ -62,7 +66,13 @@ namespace Service.Implementations
         public async Task UpdateBrand(int id, BrandUpdate brandUpdate)
         {
             var brand = await _repository.GetByIdAsync(id);
+
+            if (brand == null)
+                throw new AppException(400, "Brand not found");
+
             _mapper.Map(brandUpdate, brand);
+
+            _repository.Update(brand);
 
             if (await _repository.SaveChangesAsync())
                 return;
