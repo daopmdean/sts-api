@@ -11,9 +11,12 @@ namespace Data
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Brand> Brands { get; set; }
-        public DbSet<BrandManager> BrandManagers { get; set; }
         public DbSet<Store> Stores { get; set; }
-        public DbSet<StoreManager> StoreManagers { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+
+        public DbSet<WeekSchedule> WeekSchedules { get; set; }
+        public DbSet<StaffScheduleDetail> StaffScheduleDetails { get; set; }
+        public DbSet<WeekScheduleDetail> WeekScheduleDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,16 +27,35 @@ namespace Data
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId);
 
-            modelBuilder.Entity<BrandManager>()
-                .HasOne(bm => bm.Brand)
-                .WithMany(b => b.BrandManagers)
-                .HasForeignKey(b => b.BrandId);
+            modelBuilder.Entity<Store>()
+                .HasOne(s => s.Brand)
+                .WithMany(b => b.Stores)
+                .HasForeignKey(s => s.BrandId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<WeekSchedule>()
+                .HasOne(ws => ws.Store)
+                .WithMany(s => s.WeekSchedules)
+                .HasForeignKey(ws => ws.StoreId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<WeekScheduleDetail>()
+                .HasOne(wsd => wsd.WeekSchedule)
+                .WithMany(ws => ws.WeekScheduleDetails)
+                .HasForeignKey(wsd => wsd.WeekScheduleId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<StaffScheduleDetail>()
+                .HasOne(ssd => ssd.WeekSchedule)
+                .WithMany(ws => ws.StaffScheduleDetails)
+                .HasForeignKey(ssd => ssd.WeekScheduleId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<StoreStaff>()
-                .HasKey(ss => new { ss.StaffId, ss.StoreId });
+                .HasKey(ss => new { ss.Username, ss.StoreId });
 
             modelBuilder.Entity<StaffSkill>()
-                .HasKey(ss => new { ss.StaffId, ss.SkillId });
+                .HasKey(ss => new { ss.Username, ss.SkillId });
 
         }
     }

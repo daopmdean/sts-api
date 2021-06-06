@@ -65,20 +65,6 @@ namespace STS.Controllers
             });
         }
 
-        [HttpPost("store-manager")]
-        public async Task<ActionResult> CreateStoreManager(
-            RegisterRequest userInfo)
-        {
-
-            return Ok();
-        }
-
-        [HttpPost("staff")]
-        public async Task<ActionResult> CreateStaff(
-            RegisterRequest userInfo)
-        {
-            return Ok();
-        }
 
         [HttpPut("{username}")]
         public async Task<ActionResult> UpdateUser(string username,

@@ -8,11 +8,11 @@ namespace Data.Entities
 
         public Store Store { get; set; }
 
-        public string StaffId { get; set; }
+        public string Username { get; set; }
 
-        public Staff Staff { get; set; }
+        public User User { get; set; }
 
-        public bool IsPrimaryStore { get; set; }
+        public bool IsPrimaryStaff { get; set; }
 
         public DateTime DateStart { get; set; }
     }

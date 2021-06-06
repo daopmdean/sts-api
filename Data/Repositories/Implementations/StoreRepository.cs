@@ -20,11 +20,25 @@ namespace Data.Repositories.Implementations
             _mapper = mapper;
         }
 
-        public async Task<PagedList<StoreOverview>> GetStoresAsync(StoreParams @params)
+        public async Task<PagedList<StoreOverview>> GetStoresAsync(
+            StoreParams @params)
         {
             var source = _entities
                 .Where(b => b.Status == Enums.Status.Active)
                 .OrderBy(b => b.Name)
+                .ProjectTo<StoreOverview>(_mapper.ConfigurationProvider);
+
+            return await PagedList<StoreOverview>
+                .CreateAsync(source, @params.PageNumber, @params.PageSize);
+        }
+
+        public async Task<PagedList<StoreOverview>> GetStoresAsync(int brandId,
+            StoreParams @params)
+        {
+            var source = _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.BrandId == brandId)
+                .OrderBy(s => s.Name)
                 .ProjectTo<StoreOverview>(_mapper.ConfigurationProvider);
 
             return await PagedList<StoreOverview>

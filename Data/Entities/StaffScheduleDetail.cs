@@ -8,9 +8,9 @@
 
         public WeekSchedule WeekSchedule { get; set; }
 
-        public int StaffId { get; set; }
+        public int Username { get; set; }
 
-        public Staff Staff { get; set; }
+        public User User { get; set; }
 
         public int MinHours { get; set; }
 

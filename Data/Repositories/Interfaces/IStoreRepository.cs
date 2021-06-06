@@ -9,5 +9,7 @@ namespace Data.Repositories.Interfaces
     public interface IStoreRepository : IBaseRepository<Store>
     {
         Task<PagedList<StoreOverview>> GetStoresAsync(StoreParams @params);
+        Task<PagedList<StoreOverview>> GetStoresAsync(int brandId,
+            StoreParams @params);
     }
 }

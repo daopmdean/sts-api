@@ -15,7 +15,7 @@ namespace STS.Controllers
         [HttpGet]
         public ActionResult<HeathStatus> Get()
         {
-            HeathStatus status = new HeathStatus
+            HeathStatus status = new()
             {
                 Message = "OK",
                 DatabaseConnection = "OK"

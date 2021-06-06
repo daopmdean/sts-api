@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -7,11 +6,11 @@ using Data.Pagings;
 
 namespace Service.Interfaces
 {
-    public interface IStoreService
+    public interface ISkillService
     {
-        Task<PagedList<StoreOverview>> GetStores(StoreParams @params);
-        Task<PagedList<StoreOverview>> GetStores(int brandId,
-            StoreParams @params);
+        Task<PagedList<SkillOverview>> GetSkills(SkillParams @params);
+        Task<PagedList<SkillOverview>> GetSkills(int brandId,
+            SkillParams @params);
         Task<Store> GetStore(int id);
         Task<Store> CreateStore(StoreCreate storeCreate);
         Task UpdateStore(int id, StoreUpdate storeUpdate);

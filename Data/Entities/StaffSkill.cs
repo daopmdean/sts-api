@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Data.Entities
+﻿namespace Data.Entities
 {
     public class StaffSkill : BaseEntity
     {
-        public int StaffId { get; set; }
+        public int Username { get; set; }
 
-        public Staff Staff { get; set; }
+        public User User { get; set; }
 
         public int SkillId { get; set; }
 

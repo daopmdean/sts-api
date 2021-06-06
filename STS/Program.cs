@@ -21,6 +21,7 @@ namespace STS
             {
                 var context = services.GetRequiredService<DataContext>();
                 await context.Database.MigrateAsync();
+                Seeding.SeedData.SeedRolesIfNeeded(context);
             }
             catch (Exception ex)
             {

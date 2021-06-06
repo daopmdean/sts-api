@@ -7,7 +7,7 @@ namespace Data.Entities
     {
         public int Id { get; set; }
 
-        public string BrandId { get; set; }
+        public int BrandId { get; set; }
 
         public Brand Brand { get; set; }
 

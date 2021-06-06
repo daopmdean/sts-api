@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Data.Enums;
+﻿using System.Collections.Generic;
 
 namespace Data.Entities
 {
@@ -16,6 +14,6 @@ namespace Data.Entities
 
         public string Description { get; set; }
 
-        public ICollection<StaffSkill> StaffSkills { get; set; }
+        public ICollection<StaffSkill> UserSkills { get; set; }
     }
 }

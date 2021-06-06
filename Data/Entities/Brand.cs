@@ -12,11 +12,7 @@ namespace Data.Entities
 
         public string Hotline { get; set; }
 
-        public ICollection<BrandManager> BrandManagers { get; set; }
-
-        public ICollection<StoreManager> StoreManagers { get; set; }
-
-        public ICollection<Staff> Staff { get; set; }
+        public ICollection<User> Users { get; set; }
 
         public ICollection<Store> Stores { get; set; }
 

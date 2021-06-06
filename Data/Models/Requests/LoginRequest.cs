@@ -1,5 +1,4 @@
-﻿using System;
-namespace Data.Models.Requests
+﻿namespace Data.Models.Requests
 {
     public class LoginRequest
     {

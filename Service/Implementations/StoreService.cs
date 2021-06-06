@@ -13,21 +13,30 @@ namespace Service.Implementations
 {
     public class StoreService : IStoreService
     {
-        private readonly IStoreRepository _repository;
+        private readonly IStoreRepository _storeRepo;
+        private readonly IBrandRepository _brandRepo;
         private readonly IMapper _mapper;
 
-        public StoreService(IStoreRepository repository, IMapper mapper)
+        public StoreService(IStoreRepository storeRepo,
+            IBrandRepository brandRepo, IMapper mapper)
         {
-            _repository = repository;
+            _storeRepo = storeRepo;
+            _brandRepo = brandRepo;
             _mapper = mapper;
         }
 
         public async Task<Store> CreateStore(StoreCreate storeCreate)
         {
-            var store = _mapper.Map<Store>(storeCreate);
-            await _repository.CreateAsync(store);
+            var brand = await _brandRepo.GetByIdAsync(storeCreate.BrandId);
 
-            if (await _repository.SaveChangesAsync())
+            if (brand == null)
+                throw new AppException(400,
+                    "Conflicted with the FOREIGN KEY constraint, brandId does not exist");
+
+            var store = _mapper.Map<Store>(storeCreate);
+            await _storeRepo.CreateAsync(store);
+
+            if (await _storeRepo.SaveChangesAsync())
                 return store;
 
             throw new AppException(400, "Can not create store");
@@ -35,14 +44,14 @@ namespace Service.Implementations
 
         public async Task DeleteStore(int id)
         {
-            var store = await _repository.GetByIdAsync(id);
+            var store = await _storeRepo.GetByIdAsync(id);
 
             if (store == null)
                 throw new AppException(400, "Store not found");
 
-            _repository.Delete(store);
+            _storeRepo.Delete(store);
 
-            if (await _repository.SaveChangesAsync())
+            if (await _storeRepo.SaveChangesAsync())
                 return;
 
             throw new AppException(400, "Can not delete store");
@@ -50,7 +59,7 @@ namespace Service.Implementations
 
         public async Task<Store> GetStore(int id)
         {
-            var store = await _repository.GetByIdAsync(id);
+            var store = await _storeRepo.GetByIdAsync(id);
 
             if (store == null)
                 throw new AppException(400, "Store not found or has been deleted");
@@ -60,21 +69,27 @@ namespace Service.Implementations
 
         public async Task<PagedList<StoreOverview>> GetStores(StoreParams @params)
         {
-            return await _repository.GetStoresAsync(@params);
+            return await _storeRepo.GetStoresAsync(@params);
+        }
+
+        public async Task<PagedList<StoreOverview>> GetStores(int brandId,
+            StoreParams @params)
+        {
+            return await _storeRepo.GetStoresAsync(brandId, @params);
         }
 
         public async Task UpdateStore(int id, StoreUpdate storeUpdate)
         {
-            var store = await _repository.GetByIdAsync(id);
+            var store = await _storeRepo.GetByIdAsync(id);
 
             if (store == null)
                 throw new AppException(400, "Store not found");
 
             _mapper.Map(storeUpdate, store);
 
-            _repository.Update(store);
+            _storeRepo.Update(store);
 
-            if (await _repository.SaveChangesAsync())
+            if (await _storeRepo.SaveChangesAsync())
                 return;
 
             throw new AppException(400, "Can not update brand");

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Data.Entities;
+﻿using System.Threading.Tasks;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;

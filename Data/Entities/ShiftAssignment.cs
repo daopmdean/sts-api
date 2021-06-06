@@ -7,9 +7,9 @@ namespace Data.Entities
     {
         public int Id { get; set; }
 
-        public int StaffId { get; set; }
+        public int Username { get; set; }
 
-        public Staff Staff { get; set; }
+        public User User { get; set; }
 
         public int StoreId { get; set; }
 
