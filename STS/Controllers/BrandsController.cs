@@ -15,18 +15,21 @@ namespace STS.Controllers
     [Route("api/brands")]
     public class BrandsController : ApiBaseController
     {
-        private readonly IBrandService _service;
+        private readonly IBrandService _brandService;
+        private readonly IStoreService _storeService;
 
-        public BrandsController(IBrandService service)
+        public BrandsController(IBrandService brandService,
+            IStoreService storeService)
         {
-            _service = service;
+            _brandService = brandService;
+            _storeService = storeService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BrandOverview>>> GetBrands(
             [FromQuery] BrandParams @params)
         {
-            var result = await _service.GetBrands(@params);
+            var result = await _brandService.GetBrands(@params);
 
             Response.AddPaginationHeader(result.CurrentPage,
                 result.PageSize, result.TotalCount, result.TotalPages);
@@ -40,7 +43,25 @@ namespace STS.Controllers
         {
             try
             {
-                return Ok(await _service.GetBrand(id));
+                return Ok(await _brandService.GetBrand(id));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{brandId}/stores")]
+        public async Task<ActionResult<BrandOverview>> GetStoresOfBrand(
+            int brandId, [FromQuery] StoreParams @params)
+        {
+            try
+            {
+                return Ok(await _storeService.GetStores(brandId, @params));
             }
             catch (AppException ex)
             {
@@ -58,7 +79,7 @@ namespace STS.Controllers
         {
             try
             {
-                await _service.CreateBrand(brand);
+                return Ok(await _brandService.CreateBrand(brand));
             }
             catch (AppException ex)
             {
@@ -68,8 +89,6 @@ namespace STS.Controllers
                     Message = ex.Message
                 });
             }
-
-            return NoContent();
         }
 
         [HttpPut("{id}")]
@@ -78,7 +97,7 @@ namespace STS.Controllers
         {
             try
             {
-                await _service.UpdateBrand(id, brandUpdate);
+                await _brandService.UpdateBrand(id, brandUpdate);
             }
             catch (AppException ex)
             {
@@ -98,7 +117,7 @@ namespace STS.Controllers
         {
             try
             {
-                await _service.DeleteBrand(id);
+                await _brandService.DeleteBrand(id);
             }
             catch (AppException ex)
             {

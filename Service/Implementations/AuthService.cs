@@ -92,5 +92,17 @@ namespace Service.Implementations
             return await _context.Users.AnyAsync(
                 user => user.Username == username.ToLower());
         }
+
+        public class HashResult
+        {
+            public string Hashed;
+
+            public string Salt;
+        }
+
+        public static HashResult HashPassword(string password)
+        {
+            return new HashResult();
+        }
     }
 }

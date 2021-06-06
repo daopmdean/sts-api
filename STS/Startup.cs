@@ -23,6 +23,7 @@ namespace STS
         {
             services.AddDbContext<DataContext>(options =>
             {
+                //string connectionString = Configuration.GetConnectionString("ProductionConnection");
                 string connectionString = Configuration.GetConnectionString("DevelopmentConnection");
                 options.UseSqlServer(connectionString, b => b.MigrationsAssembly("STS"));
             });
@@ -46,7 +47,8 @@ namespace STS
         {
             services.AddApplicationServices();
             services.AddIdentityServices(Configuration);
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(
+                opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddCors();
             services.AddSwaggerGen(c =>
             {

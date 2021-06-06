@@ -33,6 +33,12 @@ namespace Data
                 .HasForeignKey(s => s.BrandId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Skill>()
+                .HasOne(s => s.Brand)
+                .WithMany(b => b.Skills)
+                .HasForeignKey(s => s.BrandId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<WeekSchedule>()
                 .HasOne(ws => ws.Store)
                 .WithMany(s => s.WeekSchedules)

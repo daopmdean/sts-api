@@ -1,11 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using Data;
+using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Service.Interfaces;
 
 namespace STS
 {
@@ -20,8 +22,13 @@ namespace STS
             try
             {
                 var context = services.GetRequiredService<DataContext>();
+                var userRepo = services.GetRequiredService<IUserRepository>();
+                var authService = services.GetRequiredService<IAuthService>();
+
                 await context.Database.MigrateAsync();
                 Seeding.SeedData.SeedRolesIfNeeded(context);
+                await Seeding.SeedData.SeedUsersIfNeeded(context,
+                    authService, userRepo);
             }
             catch (Exception ex)
             {

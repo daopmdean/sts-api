@@ -1,21 +1,63 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
+using Data.Repositories.Interfaces;
+using Service.Exceptions;
 using Service.Interfaces;
 
 namespace Service.Implementations
 {
     public class SkillService : ISkillService
     {
-        public Task<Store> CreateStore(StoreCreate storeCreate)
+        private readonly ISkillRepository _skillRepo;
+        private readonly IBrandRepository _brandRepo;
+        private readonly IMapper _mapper;
+
+        public SkillService(ISkillRepository skillRepo,
+            IBrandRepository brandRepo, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _skillRepo = skillRepo;
+            _brandRepo = brandRepo;
+            _mapper = mapper;
         }
 
-        public Task DeleteStore(int id)
+        public async Task<Skill> CreateSkill(SkillCreate skillCreate)
+        {
+            var brand = await _brandRepo.GetByIdAsync(skillCreate.BrandId);
+
+            if (brand == null)
+                throw new AppException(400,
+                    "Conflicted with the FOREIGN KEY constraint, brandId does not exist");
+
+            var skill = _mapper.Map<Skill>(skillCreate);
+            await _skillRepo.CreateAsync(skill);
+
+            if (await _skillRepo.SaveChangesAsync())
+                return skill;
+
+            throw new AppException(400, "Can not create skill");
+        }
+
+        public async Task DeleteSkill(int id)
+        {
+            var skill = await _skillRepo.GetByIdAsync(id);
+
+            if (skill == null)
+                throw new AppException(400, "Skill not found");
+
+            _skillRepo.Delete(skill);
+
+            if (await _skillRepo.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not delete skill");
+        }
+
+        public Task<Skill> GetSkill(int id)
         {
             throw new NotImplementedException();
         }
@@ -30,12 +72,7 @@ namespace Service.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<Store> GetStore(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateStore(int id, StoreUpdate storeUpdate)
+        public Task UpdateSkill(int id, SkillUpdate skillUpdate)
         {
             throw new NotImplementedException();
         }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Data.Enums;
 
 namespace Data.Entities
 {

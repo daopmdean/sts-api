@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
@@ -54,12 +55,12 @@ namespace STS.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<BrandOverview>>> CreateStore(
+        public async Task<ActionResult<Store>> CreateStore(
             StoreCreate store)
         {
             try
             {
-                await _service.CreateStore(store);
+                return Ok(await _service.CreateStore(store));
             }
             catch (AppException ex)
             {
@@ -69,8 +70,6 @@ namespace STS.Controllers
                     Message = ex.Message
                 });
             }
-
-            return NoContent();
         }
 
         [HttpPut("{id}")]
