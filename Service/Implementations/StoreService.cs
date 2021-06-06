@@ -92,7 +92,7 @@ namespace Service.Implementations
             if (await _storeRepo.SaveChangesAsync())
                 return;
 
-            throw new AppException(400, "Can not update brand");
+            throw new AppException(400, "Can not update store");
         }
     }
 }

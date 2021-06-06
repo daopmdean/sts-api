@@ -37,7 +37,7 @@ namespace STS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<BrandOverview>>> GetStore(
+        public async Task<ActionResult> GetStore(
             int id)
         {
             try
@@ -73,7 +73,7 @@ namespace STS.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<IEnumerable<BrandOverview>>> UpdateStore(
+        public async Task<ActionResult> UpdateStore(
             int id, StoreUpdate storeUpdate)
         {
             try

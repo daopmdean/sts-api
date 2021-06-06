@@ -17,12 +17,14 @@ namespace STS.Controllers
     {
         private readonly IBrandService _brandService;
         private readonly IStoreService _storeService;
+        private readonly ISkillService _skillService;
 
         public BrandsController(IBrandService brandService,
-            IStoreService storeService)
+            IStoreService storeService, ISkillService skillService)
         {
             _brandService = brandService;
             _storeService = storeService;
+            _skillService = skillService;
         }
 
         [HttpGet]
@@ -61,7 +63,31 @@ namespace STS.Controllers
         {
             try
             {
-                return Ok(await _storeService.GetStores(brandId, @params));
+                var stores = await _storeService.GetStores(brandId, @params);
+                Response.AddPaginationHeader(stores.CurrentPage,
+                    stores.PageSize, stores.TotalCount, stores.TotalPages);
+                return Ok(stores);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{brandId}/skills")]
+        public async Task<ActionResult> GetSkillsOfBrand(
+            int brandId, [FromQuery] SkillParams @params)
+        {
+            try
+            {
+                var skills = await _skillService.GetSkills(brandId, @params);
+                Response.AddPaginationHeader(skills.CurrentPage,
+                    skills.PageSize, skills.TotalCount, skills.TotalPages);
+                return Ok(skills);
             }
             catch (AppException ex)
             {

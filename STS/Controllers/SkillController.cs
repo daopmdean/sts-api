@@ -37,5 +37,63 @@ namespace STS.Controllers
                 });
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetSkill(
+            int id)
+        {
+            try
+            {
+                return Ok(await _service.GetSkill(id));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateSkill(
+            int id, SkillUpdate skillUpdate)
+        {
+            try
+            {
+                await _service.UpdateSkill(id, skillUpdate);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteSkill(
+            int id)
+        {
+            try
+            {
+                await _service.DeleteSkill(id);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+
+            return NoContent();
+        }
     }
 }

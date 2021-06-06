@@ -57,9 +57,14 @@ namespace Service.Implementations
             throw new AppException(400, "Can not delete skill");
         }
 
-        public Task<Skill> GetSkill(int id)
+        public async Task<Skill> GetSkill(int id)
         {
-            throw new NotImplementedException();
+            var skill = await _skillRepo.GetByIdAsync(id);
+
+            if (skill == null)
+                throw new AppException(400, "Skill not found or has been deleted");
+
+            return skill;
         }
 
         public Task<PagedList<SkillOverview>> GetSkills(SkillParams @params)
@@ -67,14 +72,27 @@ namespace Service.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<PagedList<SkillOverview>> GetSkills(int brandId, SkillParams @params)
+        public async Task<PagedList<SkillOverview>> GetSkills(int brandId,
+            SkillParams @params)
         {
-            throw new NotImplementedException();
+            return await _skillRepo.GetSkillsAsync(brandId, @params);
         }
 
-        public Task UpdateSkill(int id, SkillUpdate skillUpdate)
+        public async Task UpdateSkill(int id, SkillUpdate skillUpdate)
         {
-            throw new NotImplementedException();
+            var skill = await _skillRepo.GetByIdAsync(id);
+
+            if (skill == null)
+                throw new AppException(400, "Skill not found");
+
+            _mapper.Map(skillUpdate, skill);
+
+            _skillRepo.Update(skill);
+
+            if (await _skillRepo.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not update skill");
         }
     }
 }

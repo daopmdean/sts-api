@@ -1,5 +1,4 @@
-﻿using System;
-namespace Data.Pagings
+﻿namespace Data.Pagings
 {
     public class StoreParams : PaginationParams
     {
