@@ -59,8 +59,8 @@ namespace STS.Seeding
                 {
                     Username = "staff",
                     Password = "123456",
-                    FirstName = "Staff",
-                    LastName = "Me"
+                    FirstName = "Trung",
+                    LastName = "Do"
                 },
                 new RegisterRequest
                 {
@@ -68,6 +68,20 @@ namespace STS.Seeding
                     Password = "123456",
                     FirstName = "admin",
                     LastName = "admin"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffeehousestore",
+                    Password = "123456",
+                    FirstName = "Cuong",
+                    LastName = "Ly"
+                },
+                new RegisterRequest
+                {
+                    Username = "passiostore",
+                    Password = "123456",
+                    FirstName = "Mai",
+                    LastName = "Vu"
                 }
             };
 
@@ -82,8 +96,18 @@ namespace STS.Seeding
             var staff = await userRepository.GetUserByUsernameAsync("staff");
             staff.RoleId = 4;
 
+            var store1 = await userRepository.GetUserByUsernameAsync(
+                "coffeehousestore");
+            store1.RoleId = 3;
+
+            var store2 = await userRepository.GetUserByUsernameAsync(
+                "passiostore");
+            store2.RoleId = 3;
+
             userRepository.Update(admin);
             userRepository.Update(staff);
+            userRepository.Update(store1);
+            userRepository.Update(store2);
 
             context.SaveChanges();
         }

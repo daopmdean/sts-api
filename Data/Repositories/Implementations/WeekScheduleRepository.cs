@@ -1,9 +1,17 @@
 ﻿using System;
+using AutoMapper;
+using Data.Entities;
+using Data.Repositories.Interfaces;
+
 namespace Data.Repositories.Implementations
 {
-    public class WeekScheduleRepository
+    public class WeekScheduleRepository : BaseRepository<WeekSchedule>,
+        IWeekScheduleRepository
     {
-        public WeekScheduleRepository()
+        private readonly IMapper _mapper;
+
+        public WeekScheduleRepository(DataContext context,
+            IMapper mapper) : base(context)
         {
         }
     }

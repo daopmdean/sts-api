@@ -17,13 +17,16 @@ namespace STS.Controllers
     {
         private readonly IBrandService _brandService;
         private readonly IStoreService _storeService;
+        private readonly IUserService _userService;
         private readonly ISkillService _skillService;
 
         public BrandsController(IBrandService brandService,
-            IStoreService storeService, ISkillService skillService)
+            IStoreService storeService, IUserService userService,
+            ISkillService skillService)
         {
             _brandService = brandService;
             _storeService = storeService;
+            _userService = userService;
             _skillService = skillService;
         }
 
@@ -33,8 +36,7 @@ namespace STS.Controllers
         {
             var result = await _brandService.GetBrands(@params);
 
-            Response.AddPaginationHeader(result.CurrentPage,
-                result.PageSize, result.TotalCount, result.TotalPages);
+            Response.AddPaginationHeader(result);
 
             return Ok(result);
         }
@@ -64,9 +66,29 @@ namespace STS.Controllers
             try
             {
                 var stores = await _storeService.GetStores(brandId, @params);
-                Response.AddPaginationHeader(stores.CurrentPage,
-                    stores.PageSize, stores.TotalCount, stores.TotalPages);
+                Response.AddPaginationHeader(stores);
                 return Ok(stores);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{brandId}/users")]
+        public async Task<ActionResult<BrandOverview>> GetUsersOfBrand(
+            int brandId, [FromQuery] UserParams @params)
+        {
+            try
+            {
+                var users = await _userService.GetUsersAsync(brandId, @params);
+
+                Response.AddPaginationHeader(users);
+                return Ok(users);
             }
             catch (AppException ex)
             {
@@ -85,8 +107,7 @@ namespace STS.Controllers
             try
             {
                 var skills = await _skillService.GetSkills(brandId, @params);
-                Response.AddPaginationHeader(skills.CurrentPage,
-                    skills.PageSize, skills.TotalCount, skills.TotalPages);
+                Response.AddPaginationHeader(skills);
                 return Ok(skills);
             }
             catch (AppException ex)

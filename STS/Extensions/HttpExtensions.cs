@@ -19,5 +19,19 @@ namespace STS.Extensions
             response.Headers.Add("Pagination", JsonSerializer.Serialize(paginationHeader, options));
             response.Headers.Add("Access-Control-Expose-Headers", "Pagination");
         }
+
+        public static void AddPaginationHeader<T>(this HttpResponse response,
+            PagedList<T> source) where T : class
+        {
+            var paginationHeader = new PaginationHeader(source.CurrentPage,
+                source.PageSize, source.TotalCount, source.TotalPages);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            response.Headers.Add("Pagination", JsonSerializer.Serialize(paginationHeader, options));
+            response.Headers.Add("Access-Control-Expose-Headers", "Pagination");
+        }
     }
 }

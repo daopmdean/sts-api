@@ -29,6 +29,31 @@ namespace Data.Repositories.Implementations
                 .ToListAsync();
         }
 
+        public async Task<PagedList<UserOverview>> GetUsersAsync(
+            UserParams @params)
+        {
+            var query = _entities
+                .OrderBy(u => u.Username)
+                .Where(e => e.Status == Enums.Status.Active)
+                .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
+
+            return await PagedList<UserOverview>
+                .CreateAsync(query, @params.PageNumber, @params.PageSize);
+        }
+
+        public async Task<PagedList<UserOverview>> GetUsersAsync(int brandId,
+            UserParams @params)
+        {
+            var query = _entities
+                .OrderBy(u => u.Username)
+                .Where(u => u.Status == Enums.Status.Active)
+                .Where(u => u.BrandId == brandId)
+                .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
+
+            return await PagedList<UserOverview>
+                .CreateAsync(query, @params.PageNumber, @params.PageSize);
+        }
+
         public async Task<PagedList<UserOverview>> GetBrandManagersAsync(
             UserParams @params)
         {
@@ -70,10 +95,8 @@ namespace Data.Repositories.Implementations
             UserParams @params)
         {
             // not implemented
-            var brand = await _context.Brands
-                .FirstOrDefaultAsync(b => b.Id == @params.BrandId);
-
-
+            //var brand = await _context.Brands
+            //    .FirstOrDefaultAsync(b => b.Id == @params.BrandId);
 
             var query = _entities
                 .AsQueryable()
@@ -91,5 +114,7 @@ namespace Data.Repositories.Implementations
                 .Where(e => e.Status == Enums.Status.Active)
                 .FirstOrDefaultAsync(user => user.Username == username);
         }
+
+
     }
 }

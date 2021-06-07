@@ -29,23 +29,9 @@ namespace STS.Controllers
             [FromQuery] UserParams @params)
         {
             PagedList<UserOverview> result;
+            result = await _service.GetUsersAsync(@params);
 
-            switch (@params.Position)
-            {
-                case "brand-manager":
-                    result = await _service.GetBrandManagers(@params);
-                    break;
-                case "store-manager":
-                    result = await _service.GetStoreManagers(@params);
-                    break;
-                case "staff":
-                    result = await _service.GetStaff(@params);
-                    break;
-                default:
-                    return BadRequest();
-            }
-            Response.AddPaginationHeader(result.CurrentPage,
-                result.PageSize, result.TotalCount, result.TotalPages);
+            Response.AddPaginationHeader(result);
 
             return Ok(result);
         }

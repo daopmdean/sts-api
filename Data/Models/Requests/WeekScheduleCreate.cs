@@ -3,8 +3,8 @@ namespace Data.Models.Requests
 {
     public class WeekScheduleCreate
     {
-        public WeekScheduleCreate()
-        {
-        }
+        public int StoreId { get; set; }
+
+        public DateTime DateStart { get; set; }
     }
 }

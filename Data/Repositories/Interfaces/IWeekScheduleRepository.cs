@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Data.Entities;
+
 namespace Data.Repositories.Interfaces
 {
-    public interface IWeekScheduleRepository
+    public interface IWeekScheduleRepository : IBaseRepository<WeekSchedule>
     {
     }
 }

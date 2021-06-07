@@ -62,6 +62,17 @@ namespace Service.Implementations
             return await _repository.GetByUsernameAsync(username);
         }
 
+        public async Task<PagedList<UserOverview>> GetUsersAsync(UserParams @params)
+        {
+            return await _repository.GetUsersAsync(@params);
+        }
+
+        public async Task<PagedList<UserOverview>> GetUsersAsync(int brandId,
+            UserParams @params)
+        {
+            return await _repository.GetUsersAsync(brandId, @params);
+        }
+
         public async Task UpdateUserAsync(string username,
             UserUpdate updateInfo)
         {

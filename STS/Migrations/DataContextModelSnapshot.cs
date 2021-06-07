@@ -58,6 +58,109 @@ namespace STS.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("Data.Entities.ShiftAssignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("MealEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("MealStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReferenceId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShiftReferenceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TimeStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShiftReferenceId");
+
+                    b.HasIndex("SkillId");
+
+                    b.HasIndex("StoreId");
+
+                    b.HasIndex("Username");
+
+                    b.ToTable("ShiftAssignments");
+                });
+
+            modelBuilder.Entity("Data.Entities.ShiftAttendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ShiftAssignmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeCheckIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TimeCheckOut")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShiftAssignmentId")
+                        .IsUnique();
+
+                    b.ToTable("ShiftAttendances");
+                });
+
+            modelBuilder.Entity("Data.Entities.ShiftLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShiftAssignmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShiftAssignmentId");
+
+                    b.ToTable("ShiftLogs");
+                });
+
             modelBuilder.Entity("Data.Entities.ShiftRegister", b =>
                 {
                     b.Property<int>("Id")
@@ -77,10 +180,7 @@ namespace STS.Migrations
                     b.Property<DateTime>("TimeStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Username")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username1")
+                    b.Property<string>("Username")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("WeekScheduleId")
@@ -88,11 +188,11 @@ namespace STS.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Username1");
+                    b.HasIndex("Username");
 
                     b.HasIndex("WeekScheduleId");
 
-                    b.ToTable("ShiftRegister");
+                    b.ToTable("ShiftRegisters");
                 });
 
             modelBuilder.Entity("Data.Entities.Skill", b =>
@@ -157,8 +257,8 @@ namespace STS.Migrations
 
             modelBuilder.Entity("Data.Entities.StaffSkill", b =>
                 {
-                    b.Property<int>("Username")
-                        .HasColumnType("int");
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SkillId")
                         .HasColumnType("int");
@@ -169,16 +269,11 @@ namespace STS.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("Username1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Username", "SkillId");
 
                     b.HasIndex("SkillId");
 
-                    b.HasIndex("Username1");
-
-                    b.ToTable("StaffSkill");
+                    b.ToTable("StaffSkills");
                 });
 
             modelBuilder.Entity("Data.Entities.Store", b =>
@@ -215,8 +310,8 @@ namespace STS.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("StoreId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("datetime2");
@@ -227,19 +322,11 @@ namespace STS.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StoreId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Username", "StoreId");
 
-                    b.HasIndex("StoreId1");
+                    b.HasIndex("StoreId");
 
-                    b.HasIndex("Username1");
-
-                    b.ToTable("StoreStaff");
+                    b.ToTable("StoreStaffs");
                 });
 
             modelBuilder.Entity("Data.Entities.User", b =>
@@ -352,16 +439,71 @@ namespace STS.Migrations
                     b.ToTable("WeekScheduleDetails");
                 });
 
+            modelBuilder.Entity("Data.Entities.ShiftAssignment", b =>
+                {
+                    b.HasOne("Data.Entities.ShiftAssignment", "ShiftReference")
+                        .WithMany()
+                        .HasForeignKey("ShiftReferenceId");
+
+                    b.HasOne("Data.Entities.Skill", "Skill")
+                        .WithMany()
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Entities.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Entities.User", "User")
+                        .WithMany("ShiftAssignments")
+                        .HasForeignKey("Username")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("ShiftReference");
+
+                    b.Navigation("Skill");
+
+                    b.Navigation("Store");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Data.Entities.ShiftAttendance", b =>
+                {
+                    b.HasOne("Data.Entities.ShiftAssignment", "ShiftAssignment")
+                        .WithOne("ShiftAttendance")
+                        .HasForeignKey("Data.Entities.ShiftAttendance", "ShiftAssignmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShiftAssignment");
+                });
+
+            modelBuilder.Entity("Data.Entities.ShiftLog", b =>
+                {
+                    b.HasOne("Data.Entities.ShiftAssignment", "ShiftAssignment")
+                        .WithMany("ShiftLogs")
+                        .HasForeignKey("ShiftAssignmentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ShiftAssignment");
+                });
+
             modelBuilder.Entity("Data.Entities.ShiftRegister", b =>
                 {
                     b.HasOne("Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("Username1");
+                        .WithMany("ShiftRegisters")
+                        .HasForeignKey("Username")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Data.Entities.WeekSchedule", "WeekSchedule")
                         .WithMany("ShiftRegisters")
                         .HasForeignKey("WeekScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -383,7 +525,7 @@ namespace STS.Migrations
             modelBuilder.Entity("Data.Entities.StaffScheduleDetail", b =>
                 {
                     b.HasOne("Data.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("StaffScheduleDetails")
                         .HasForeignKey("Username1");
 
                     b.HasOne("Data.Entities.WeekSchedule", "WeekSchedule")
@@ -400,14 +542,16 @@ namespace STS.Migrations
             modelBuilder.Entity("Data.Entities.StaffSkill", b =>
                 {
                     b.HasOne("Data.Entities.Skill", "Skill")
-                        .WithMany("UserSkills")
+                        .WithMany("StaffSkills")
                         .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("Username1");
+                        .WithMany("StaffSkills")
+                        .HasForeignKey("Username")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Skill");
 
@@ -429,11 +573,15 @@ namespace STS.Migrations
                 {
                     b.HasOne("Data.Entities.Store", "Store")
                         .WithMany("StoreStaffs")
-                        .HasForeignKey("StoreId1");
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("Username1");
+                        .WithMany("StoreStaffs")
+                        .HasForeignKey("Username")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Store");
 
@@ -442,7 +590,7 @@ namespace STS.Migrations
 
             modelBuilder.Entity("Data.Entities.User", b =>
                 {
-                    b.HasOne("Data.Entities.Brand", null)
+                    b.HasOne("Data.Entities.Brand", "Brand")
                         .WithMany("Users")
                         .HasForeignKey("BrandId");
 
@@ -451,6 +599,8 @@ namespace STS.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Brand");
 
                     b.Navigation("Role");
                 });
@@ -499,9 +649,16 @@ namespace STS.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("Data.Entities.ShiftAssignment", b =>
+                {
+                    b.Navigation("ShiftAttendance");
+
+                    b.Navigation("ShiftLogs");
+                });
+
             modelBuilder.Entity("Data.Entities.Skill", b =>
                 {
-                    b.Navigation("UserSkills");
+                    b.Navigation("StaffSkills");
                 });
 
             modelBuilder.Entity("Data.Entities.Store", b =>
@@ -509,6 +666,19 @@ namespace STS.Migrations
                     b.Navigation("StoreStaffs");
 
                     b.Navigation("WeekSchedules");
+                });
+
+            modelBuilder.Entity("Data.Entities.User", b =>
+                {
+                    b.Navigation("ShiftAssignments");
+
+                    b.Navigation("ShiftRegisters");
+
+                    b.Navigation("StaffScheduleDetails");
+
+                    b.Navigation("StaffSkills");
+
+                    b.Navigation("StoreStaffs");
                 });
 
             modelBuilder.Entity("Data.Entities.WeekSchedule", b =>
