@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
@@ -31,5 +32,19 @@ namespace Data.Entities
         public int RoleId { get; set; }
 
         public Role Role { get; set; }
+
+        public int? BrandId { get; set; }
+
+        public Brand Brand { get; set; }
+
+        public ICollection<StaffSkill> StaffSkills { get; set; }
+
+        public ICollection<StoreStaff> StoreStaffs { get; set; }
+
+        public ICollection<ShiftRegister> ShiftRegisters { get; set; }
+
+        public ICollection<ShiftAssignment> ShiftAssignments { get; set; }
+
+        public ICollection<StaffScheduleDetail> StaffScheduleDetails { get; set; }
     }
 }

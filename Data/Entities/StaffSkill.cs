@@ -2,7 +2,7 @@
 {
     public class StaffSkill : BaseEntity
     {
-        public int Username { get; set; }
+        public string Username { get; set; }
 
         public User User { get; set; }
 

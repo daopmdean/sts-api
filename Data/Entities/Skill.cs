@@ -14,6 +14,6 @@ namespace Data.Entities
 
         public string Description { get; set; }
 
-        public ICollection<StaffSkill> UserSkills { get; set; }
+        public ICollection<StaffSkill> StaffSkills { get; set; }
     }
 }

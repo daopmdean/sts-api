@@ -10,6 +10,8 @@ namespace Data.Entities
 
         public string LogoImg { get; set; }
 
+        public string Address { get; set; }
+
         public string Hotline { get; set; }
 
         public ICollection<User> Users { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Data.Enums;
 
 namespace Data.Entities
@@ -7,7 +8,7 @@ namespace Data.Entities
     {
         public int Id { get; set; }
 
-        public int Username { get; set; }
+        public string Username { get; set; }
 
         public User User { get; set; }
 
@@ -30,5 +31,9 @@ namespace Data.Entities
         public int ReferenceId { get; set; }
 
         public ShiftAssignment ShiftReference { get; set; }
+
+        public ShiftAttendance ShiftAttendance { get; set; }
+
+        public ICollection<ShiftLog> ShiftLogs { get; set; }
     }
 }
