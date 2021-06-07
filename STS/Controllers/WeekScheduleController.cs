@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -20,12 +17,15 @@ namespace STS.Controllers
     {
         private readonly IWeekScheduleService _weekScheduleService;
         private readonly IWeekScheduleDetailService _weekScheduleDetailService;
+        private readonly IStaffScheduleDetailService _staffScheduleDetailService;
 
         public WeekScheduleController(IWeekScheduleService weekScheduleService,
-            IWeekScheduleDetailService weekScheduleDetailService)
+            IWeekScheduleDetailService weekScheduleDetailService,
+            IStaffScheduleDetailService staffScheduleDetailService)
         {
             _weekScheduleService = weekScheduleService;
             _weekScheduleDetailService = weekScheduleDetailService;
+            _staffScheduleDetailService = staffScheduleDetailService;
         }
 
         [HttpGet("{id}")]
@@ -47,16 +47,38 @@ namespace STS.Controllers
         }
 
         [HttpGet("{weekScheduleId}/week-schedule-details")]
-        public async Task<ActionResult<BrandOverview>> GetWeekScheduleDetails(
+        public async Task<ActionResult> GetWeekScheduleDetails(
             int weekScheduleId, [FromQuery] WeekScheduleDetailParams @params)
         {
             try
             {
                 var weekScheduleDetails = await _weekScheduleDetailService
-                    .GetWeekScheduleDetails(weekScheduleId, @params);
+                    .GetWeekScheduleDetailsAsync(weekScheduleId, @params);
                 Response.AddPaginationHeader(weekScheduleDetails);
 
                 return Ok(weekScheduleDetails);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{weekScheduleId}/staff-schedule-details")]
+        public async Task<ActionResult> GetStaffScheduleDetails(
+            int weekScheduleId, [FromQuery] StaffScheduleDetailParams @params)
+        {
+            try
+            {
+                var staffScheduleDetails = await _staffScheduleDetailService
+                    .GetStaffScheduleDetails(weekScheduleId, @params);
+                Response.AddPaginationHeader(staffScheduleDetails);
+
+                return Ok(staffScheduleDetails);
             }
             catch (AppException ex)
             {
