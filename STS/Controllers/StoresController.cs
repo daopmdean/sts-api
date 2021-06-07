@@ -17,18 +17,21 @@ namespace STS.Controllers
     [Route("api/stores")]
     public class StoresController : ApiBaseController
     {
-        private readonly IStoreService _service;
+        private readonly IStoreService _storeService;
+        private readonly IWeekScheduleService _weekService;
 
-        public StoresController(IStoreService service)
+        public StoresController(IStoreService storeService,
+            IWeekScheduleService weekService)
         {
-            _service = service;
+            _storeService = storeService;
+            _weekService = weekService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StoreOverview>>> GetStores(
             [FromQuery] StoreParams @params)
         {
-            var result = await _service.GetStores(@params);
+            var result = await _storeService.GetStores(@params);
 
             Response.AddPaginationHeader(result.CurrentPage,
                 result.PageSize, result.TotalCount, result.TotalPages);
@@ -42,7 +45,29 @@ namespace STS.Controllers
         {
             try
             {
-                return Ok(await _service.GetStore(id));
+                return Ok(await _storeService.GetStore(id));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{storeId}/week-schedules")]
+        public async Task<ActionResult<BrandOverview>> GetStoresOfBrand(
+            int storeId, [FromQuery] WeekScheduleParams @params)
+        {
+            try
+            {
+                var weekSchedules = await _weekService
+                    .GetWeekSchedulesAsync(storeId, @params);
+                Response.AddPaginationHeader(weekSchedules);
+
+                return Ok(weekSchedules);
             }
             catch (AppException ex)
             {
@@ -60,7 +85,7 @@ namespace STS.Controllers
         {
             try
             {
-                return Ok(await _service.CreateStore(store));
+                return Ok(await _storeService.CreateStore(store));
             }
             catch (AppException ex)
             {
@@ -78,7 +103,7 @@ namespace STS.Controllers
         {
             try
             {
-                await _service.UpdateStore(id, storeUpdate);
+                await _storeService.UpdateStore(id, storeUpdate);
             }
             catch (AppException ex)
             {
@@ -98,7 +123,7 @@ namespace STS.Controllers
         {
             try
             {
-                await _service.DeleteStore(id);
+                await _storeService.DeleteStore(id);
             }
             catch (AppException ex)
             {

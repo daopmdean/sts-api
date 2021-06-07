@@ -20,6 +20,9 @@ namespace STS.Extensions
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<ISkillRepository, SkillRepository>();
+            services.AddScoped<IWeekScheduleRepository, WeekScheduleRepository>();
+            services.AddScoped<IWeekScheduleDetailRepository, WeekScheduleDetailRepository>();
+            services.AddScoped<IStaffScheduleDetailRepository, StaffScheduleDetailRepository>();
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
@@ -27,6 +30,9 @@ namespace STS.Extensions
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IStoreService, StoreService>();
             services.AddScoped<ISkillService, SkillService>();
+            services.AddScoped<IWeekScheduleService, WeekScheduleService>();
+            services.AddScoped<IWeekScheduleDetailService, WeekScheduleDetailService>();
+            services.AddScoped<IStaffScheduleDetailService, StaffScheduleDetailService>();
 
             return services;
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
 using Data.Models.Requests;
@@ -11,7 +10,7 @@ using Service.Interfaces;
 
 namespace Service.Implementations
 {
-    public class WeekScheduleService : IWeekScheduleSerivce
+    public class WeekScheduleService : IWeekScheduleService
     {
         private readonly IStoreRepository _storeRepo;
         private readonly IWeekScheduleRepository _weekRepo;
@@ -43,15 +42,20 @@ namespace Service.Implementations
             throw new AppException(400, "Can not create week schedule");
         }
 
-        public Task<WeekSchedule> GetWeekScheduleAsync(int id)
+        public async Task<WeekSchedule> GetWeekScheduleAsync(int id)
         {
-            throw new NotImplementedException();
+            var weekSchedule = await _weekRepo.GetByIdAsync(id);
+
+            if (weekSchedule == null)
+                throw new AppException(400, "WeekSchedule not found or has been deleted");
+
+            return weekSchedule;
         }
 
-        public Task<PagedList<WeekScheduleOverview>> GetWeekSchedulesAsync(
+        public async Task<PagedList<WeekScheduleOverview>> GetWeekSchedulesAsync(
             int storeId, WeekScheduleParams @params)
         {
-            throw new NotImplementedException();
+            return await _weekRepo.GetWeekSchedulesAsync(storeId, @params);
         }
     }
 }
