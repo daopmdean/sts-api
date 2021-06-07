@@ -1,10 +1,7 @@
-﻿using System;
-namespace Data.Pagings
+﻿namespace Data.Pagings
 {
-    public class WeekScheduleParams
+    public class WeekScheduleParams : PaginationParams
     {
-        public WeekScheduleParams()
-        {
-        }
+
     }
 }
