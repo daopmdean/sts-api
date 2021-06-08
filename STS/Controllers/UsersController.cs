@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
@@ -17,11 +15,14 @@ namespace STS.Controllers
     [Route("api/users")]
     public class UsersController : ApiBaseController
     {
-        private readonly IUserService _service;
+        private readonly IUserService _userService;
+        private readonly IStaffSkillService _staffSkillService;
 
-        public UsersController(IUserService service)
+        public UsersController(IUserService userService,
+            IStaffSkillService staffSkillService)
         {
-            _service = service;
+            _userService = userService;
+            _staffSkillService = staffSkillService;
         }
 
         [HttpGet]
@@ -29,7 +30,7 @@ namespace STS.Controllers
             [FromQuery] UserParams @params)
         {
             PagedList<UserOverview> result;
-            result = await _service.GetUsersAsync(@params);
+            result = await _userService.GetUsersAsync(@params);
 
             Response.AddPaginationHeader(result);
 
@@ -39,7 +40,7 @@ namespace STS.Controllers
         [HttpGet("{username}")]
         public async Task<ActionResult> GetUser(string username)
         {
-            var user = await _service.GetUserAsync(username);
+            var user = await _userService.GetUserAsync(username);
 
             if (user != null)
                 return Ok(user);
@@ -51,12 +52,34 @@ namespace STS.Controllers
             });
         }
 
+        [HttpGet("{username}/skills")]
+        public async Task<ActionResult> GetSkillsOfUser(string username,
+            StaffSkillParams @params)
+        {
+            try
+            {
+                var skills = await _staffSkillService
+                    .GetSkillsFromStaffAsync(username, @params);
+                Response.AddPaginationHeader(skills);
+
+                return Ok(skills);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
 
         [HttpPut("{username}")]
         public async Task<ActionResult> UpdateUser(string username,
             UserUpdate updateInfo)
         {
-            var loggedInUser = await _service.GetUserAsync(User.GetUsername());
+            var loggedInUser = await _userService.GetUserAsync(User.GetUsername());
 
             if (loggedInUser.Username != username)
             {
@@ -69,7 +92,7 @@ namespace STS.Controllers
 
             try
             {
-                await _service.UpdateUserAsync(username, updateInfo);
+                await _userService.UpdateUserAsync(username, updateInfo);
             }
             catch (AppException ex)
             {
@@ -88,7 +111,7 @@ namespace STS.Controllers
         {
             try
             {
-                await _service.DeleteUserAsync(username);
+                await _userService.DeleteUserAsync(username);
             }
             catch (AppException ex)
             {

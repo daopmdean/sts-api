@@ -25,6 +25,14 @@ namespace Service.Helpers
             CreateMap<StoreCreate, Store>();
             CreateMap<StoreUpdate, Store>();
 
+            CreateMap<StoreStaff, StoreStaffOverview>();
+            CreateMap<StoreStaffCreate, StoreStaff>();
+            CreateMap<StoreStaffUpdate, StoreStaff>();
+
+            CreateMap<StaffSkill, StaffSkillOverview>();
+            CreateMap<StaffSkillCreate, StaffSkill>();
+            CreateMap<StaffSkillUpdate, StaffSkill>();
+
             CreateMap<Skill, SkillOverview>();
             CreateMap<SkillCreate, Skill>();
             CreateMap<SkillUpdate, Skill>();

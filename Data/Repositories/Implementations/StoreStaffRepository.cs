@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -53,7 +52,8 @@ namespace Data.Repositories.Implementations
         {
             return await _entities.FirstOrDefaultAsync(ss
                 => ss.StoreId == storeId
-                && ss.Username == username);
+                && ss.Username == username
+                && ss.Status == Enums.Status.Active);
         }
     }
 }

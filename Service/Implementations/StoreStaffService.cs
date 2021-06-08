@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
 using Data.Models.Requests;
@@ -47,7 +46,7 @@ namespace Service.Implementations
             var storeStaff = _mapper.Map<StoreStaff>(create);
             await _storeStaffRepo.CreateAsync(storeStaff);
 
-            if (await _storeRepo.SaveChangesAsync())
+            if (await _storeStaffRepo.SaveChangesAsync())
                 return storeStaff;
 
             throw new AppException(400, "Can not create StoreStaff");
