@@ -28,6 +28,17 @@ namespace Service.Helpers
             CreateMap<Skill, SkillOverview>();
             CreateMap<SkillCreate, Skill>();
             CreateMap<SkillUpdate, Skill>();
+
+            CreateMap<WeekSchedule, WeekScheduleOverview>();
+            CreateMap<WeekScheduleCreate, WeekSchedule>();
+
+            CreateMap<WeekScheduleDetail, WeekScheduleDetailOverview>();
+            CreateMap<WeekScheduleDetailCreate, WeekScheduleDetail>();
+            CreateMap<WeekScheduleDetailUpdate, WeekScheduleDetail>();
+
+            CreateMap<StaffScheduleDetail, StaffScheduleDetailOverview>();
+            CreateMap<StaffScheduleDetailCreate, StaffScheduleDetail>();
+            CreateMap<StaffScheduleDetailUpdate, StaffScheduleDetail>();
         }
     }
 }

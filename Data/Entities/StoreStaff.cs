@@ -14,6 +14,8 @@ namespace Data.Entities
 
         public bool IsPrimaryStaff { get; set; }
 
-        public DateTime DateStart { get; set; }
+        public bool IsManager { get; set; }
+
+        public DateTime DateStart { get; set; } = DateTime.Now;
     }
 }

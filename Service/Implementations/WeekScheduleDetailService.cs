@@ -14,15 +14,18 @@ namespace Service.Implementations
     {
         private readonly IWeekScheduleRepository _weekScheduleRepo;
         private readonly IWeekScheduleDetailRepository _weekScheduleDetailRepo;
+        private readonly ISkillRepository _skillRepo;
         private readonly IMapper _mapper;
 
         public WeekScheduleDetailService(
             IWeekScheduleRepository weekScheduleRepo,
             IWeekScheduleDetailRepository weekScheduleDetailRepo,
+            ISkillRepository skillRepo,
             IMapper mapper)
         {
             _weekScheduleRepo = weekScheduleRepo;
             _weekScheduleDetailRepo = weekScheduleDetailRepo;
+            _skillRepo = skillRepo;
             _mapper = mapper;
         }
 
@@ -35,6 +38,13 @@ namespace Service.Implementations
             if (weekSchedule == null)
                 throw new AppException(400,
                     "Conflicted with the FOREIGN KEY constraint, WeekScheduleId does not exist");
+
+            var skill = await _skillRepo
+                .GetByIdAsync(create.SkillId);
+
+            if (skill == null)
+                throw new AppException(400,
+                    "Conflicted with the FOREIGN KEY constraint, SkillId does not exist");
 
             var weekScheduleDetail = _mapper.Map<WeekScheduleDetail>(create);
             await _weekScheduleDetailRepo.CreateAsync(weekScheduleDetail);

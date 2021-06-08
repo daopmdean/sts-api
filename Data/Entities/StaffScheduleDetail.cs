@@ -8,7 +8,7 @@
 
         public WeekSchedule WeekSchedule { get; set; }
 
-        public int Username { get; set; }
+        public string Username { get; set; }
 
         public User User { get; set; }
 

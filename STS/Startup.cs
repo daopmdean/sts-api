@@ -23,8 +23,8 @@ namespace STS
         {
             services.AddDbContext<DataContext>(options =>
             {
-                //string connectionString = Configuration.GetConnectionString("ProductionConnection");
-                string connectionString = Configuration.GetConnectionString("DevelopmentConnection");
+                string connectionString = Configuration.GetConnectionString("ProductionConnection");
+                //string connectionString = Configuration.GetConnectionString("DevelopmentConnection");
                 options.UseSqlServer(connectionString, b => b.MigrationsAssembly("STS"));
             });
 

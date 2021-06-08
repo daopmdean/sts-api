@@ -18,6 +18,8 @@ namespace Data.Models.Responses
 
         public string Gender { get; set; }
 
+        public int BrandId { get; set; }
+
         public string Address { get; set; }
 
         public string PhotoUrl { get; set; }
