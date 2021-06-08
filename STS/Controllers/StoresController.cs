@@ -19,12 +19,15 @@ namespace STS.Controllers
     {
         private readonly IStoreService _storeService;
         private readonly IWeekScheduleService _weekService;
+        private readonly IStoreStaffService _storeStaffService;
 
         public StoresController(IStoreService storeService,
-            IWeekScheduleService weekService)
+            IWeekScheduleService weekService,
+            IStoreStaffService storeStaffService)
         {
             _storeService = storeService;
             _weekService = weekService;
+            _storeStaffService = storeStaffService;
         }
 
         [HttpGet]
@@ -68,6 +71,28 @@ namespace STS.Controllers
                 Response.AddPaginationHeader(weekSchedules);
 
                 return Ok(weekSchedules);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{storeId}/staff")]
+        public async Task<ActionResult<BrandOverview>> GetStaffOfStore(
+            int storeId, [FromQuery] StoreStaffParams @params)
+        {
+            try
+            {
+                var staff = await _storeStaffService
+                    .GetStaffFromStoreAsync(storeId, @params);
+                Response.AddPaginationHeader(staff);
+
+                return Ok(staff);
             }
             catch (AppException ex)
             {
