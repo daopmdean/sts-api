@@ -1,6 +1,4 @@
-﻿using Data.Entities;
-
-namespace Data.Models.Responses
+﻿namespace Data.Models.Responses
 {
     public class UserOverview
     {
@@ -9,6 +7,8 @@ namespace Data.Models.Responses
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public string Address { get; set; }
 
         public RoleResponse Role { get; set; }
     }

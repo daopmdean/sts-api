@@ -11,5 +11,6 @@ namespace Data.Repositories.Interfaces
             StoreStaffParams @params);
         Task<PagedList<StoreStaffOverview>> GetStoresFromStaffAsync(string username,
             StoreStaffParams @params);
+        Task<StoreStaff> GetStoreStaffAsync(int storeId, string username);
     }
 }
