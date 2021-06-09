@@ -15,23 +15,23 @@ using Service.Interfaces;
 namespace STS.Controllers
 {
     [Authorize]
-    [Route("api/shift-registers")]
-    public class ShiftRegisterController : ApiBaseController
+    [Route("api/shift-assignments")]
+    public class ShiftAssignmentController : ApiBaseController
     {
-        private readonly IShiftRegisterService _service;
+        private readonly IShiftAssignmentService _service;
 
-        public ShiftRegisterController(IShiftRegisterService service)
+        public ShiftAssignmentController(IShiftAssignmentService service)
         {
             _service = service;
         }
 
         [HttpPost]
-        public async Task<ActionResult<ShiftRegister>> CreateShiftRegister(
-            ShiftRegisterCreate create)
+        public async Task<ActionResult<ShiftRegister>> CreateShiftAssignment(
+            ShiftAssignmentCreate create)
         {
             try
             {
-                return Ok(await _service.CreateShiftRegister(create));
+                return Ok(await _service.CreateShiftAssignment(create));
             }
             catch (AppException ex)
             {
@@ -44,12 +44,12 @@ namespace STS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetShiftRegister(
+        public async Task<ActionResult> GetShiftAssignment(
             int id)
         {
             try
             {
-                return Ok(await _service.GetShiftRegister(id));
+                return Ok(await _service.GetShiftAssignment(id));
             }
             catch (AppException ex)
             {
@@ -62,12 +62,12 @@ namespace STS.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateShiftRegister(
-            int id, ShiftRegisterUpdate update)
+        public async Task<ActionResult> UpdateShiftAssignment(
+            int id, ShiftAssignmentUpdate update)
         {
             try
             {
-                await _service.UpdateShiftRegister(id, update);
+                await _service.UpdateShiftAssignment(id, update);
             }
             catch (AppException ex)
             {
@@ -87,7 +87,7 @@ namespace STS.Controllers
         {
             try
             {
-                await _service.DeleteShiftRegister(id);
+                await _service.DeleteShiftAssignment(id);
             }
             catch (AppException ex)
             {

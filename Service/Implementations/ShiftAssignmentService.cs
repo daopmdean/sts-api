@@ -68,22 +68,56 @@ namespace Service.Implementations
 
         public async Task DeleteShiftAssignment(int id)
         {
-            throw new NotImplementedException();
+            var shiftAssignment = await _shiftAssignmentRepo
+                .GetByIdAsync(id);
+
+            if (shiftAssignment == null)
+                throw new AppException(400, "ShiftAssignment not found");
+
+            _shiftAssignmentRepo.Delete(shiftAssignment);
+
+            if (await _shiftAssignmentRepo.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not delete ShiftAssignment");
         }
 
         public async Task<ShiftAssignment> GetShiftAssignment(int id)
         {
-            throw new NotImplementedException();
+            var shiftAssignment = await _shiftAssignmentRepo
+                .GetByIdAsync(id);
+
+            if (shiftAssignment == null)
+                throw new AppException(400,
+                    "ShiftAssignment not found or has been deleted");
+
+            return shiftAssignment;
         }
 
-        public async Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(string username, ShiftAssignmentParams @params)
+        public async Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(
+            string username, ShiftAssignmentParams @params)
         {
-            throw new NotImplementedException();
+            return await _shiftAssignmentRepo
+                .GetShiftAssignmentsAsync(username, @params);
         }
 
-        public async Task UpdateShiftAssignment(int id, ShiftAssignmentUpdate update)
+        public async Task UpdateShiftAssignment(int id,
+            ShiftAssignmentUpdate update)
         {
-            throw new NotImplementedException();
+            var shiftAssignment = await _shiftAssignmentRepo
+                .GetByIdAsync(id);
+
+            if (shiftAssignment == null)
+                throw new AppException(400, "ShiftAssignment not found");
+
+            _mapper.Map(update, shiftAssignment);
+
+            _shiftAssignmentRepo.Update(shiftAssignment);
+
+            if (await _shiftAssignmentRepo.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not update ShiftAssignment");
         }
     }
 }
