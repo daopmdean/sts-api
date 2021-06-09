@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-
-namespace Data.Entities
+namespace Data.Models.Responses
 {
-    public class ShiftAssignment : BaseEntity
+    public class ShiftAssignmentOverview
     {
         public int Id { get; set; }
 
         public string Username { get; set; }
 
-        public User User { get; set; }
-
         public int StoreId { get; set; }
 
-        public Store Store { get; set; }
-
         public int SkillId { get; set; }
-
-        public Skill Skill { get; set; }
 
         public DateTime TimeStart { get; set; }
 
@@ -28,11 +20,5 @@ namespace Data.Entities
         public DateTime MealEnd { get; set; }
 
         public int ReferenceId { get; set; }
-
-        public ShiftAssignment ShiftReference { get; set; }
-
-        public ShiftAttendance ShiftAttendance { get; set; }
-
-        public ICollection<ShiftLog> ShiftLogs { get; set; }
     }
 }

@@ -51,6 +51,10 @@ namespace Service.Helpers
             CreateMap<ShiftRegister, ShiftRegisterOverview>();
             CreateMap<ShiftRegisterCreate, ShiftRegister>();
             CreateMap<ShiftRegisterUpdate, ShiftRegister>();
+
+            CreateMap<ShiftAssignment, ShiftAssignmentOverview>();
+            CreateMap<ShiftAssignmentCreate, ShiftAssignment>();
+            CreateMap<ShiftAssignmentUpdate, ShiftAssignment>();
         }
     }
 }
