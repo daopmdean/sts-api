@@ -1,5 +1,4 @@
-﻿using System;
-using Data.Repositories.Implementations;
+﻿using Data.Repositories.Implementations;
 using Data.Repositories.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Service.Helpers;
@@ -23,6 +22,7 @@ namespace STS.Extensions
             services.AddScoped<IWeekScheduleRepository, WeekScheduleRepository>();
             services.AddScoped<IWeekScheduleDetailRepository, WeekScheduleDetailRepository>();
             services.AddScoped<IStaffScheduleDetailRepository, StaffScheduleDetailRepository>();
+            services.AddScoped<IShiftRegisterRepository, ShiftRegisterRepository>();
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
@@ -33,6 +33,7 @@ namespace STS.Extensions
             services.AddScoped<IWeekScheduleService, WeekScheduleService>();
             services.AddScoped<IWeekScheduleDetailService, WeekScheduleDetailService>();
             services.AddScoped<IStaffScheduleDetailService, StaffScheduleDetailService>();
+            services.AddScoped<IShiftRegisterService, ShiftRegisterService>();
 
             return services;
         }

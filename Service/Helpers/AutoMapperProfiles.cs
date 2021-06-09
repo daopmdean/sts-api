@@ -47,6 +47,10 @@ namespace Service.Helpers
             CreateMap<StaffScheduleDetail, StaffScheduleDetailOverview>();
             CreateMap<StaffScheduleDetailCreate, StaffScheduleDetail>();
             CreateMap<StaffScheduleDetailUpdate, StaffScheduleDetail>();
+
+            CreateMap<ShiftRegister, ShiftRegisterOverview>();
+            CreateMap<ShiftRegisterCreate, ShiftRegister>();
+            CreateMap<ShiftRegisterUpdate, ShiftRegister>();
         }
     }
 }
