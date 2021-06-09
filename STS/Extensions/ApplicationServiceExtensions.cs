@@ -14,25 +14,38 @@ namespace STS.Extensions
         {
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
+            // repositories
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<ISkillRepository, SkillRepository>();
+
+            services.AddScoped<IStoreStaffRepository, StoreStaffRepository>();
+            services.AddScoped<IStaffSkillRepository, StaffSkillRepository>();
+
             services.AddScoped<IWeekScheduleRepository, WeekScheduleRepository>();
             services.AddScoped<IWeekScheduleDetailRepository, WeekScheduleDetailRepository>();
             services.AddScoped<IStaffScheduleDetailRepository, StaffScheduleDetailRepository>();
+
             services.AddScoped<IShiftRegisterRepository, ShiftRegisterRepository>();
 
+            // Services
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IStoreService, StoreService>();
             services.AddScoped<ISkillService, SkillService>();
+
+            services.AddScoped<IStoreStaffService, StoreStaffService>();
+            services.AddScoped<IStaffSkillService, StaffSkillService>();
+
             services.AddScoped<IWeekScheduleService, WeekScheduleService>();
-            services.AddScoped<IWeekScheduleDetailService, WeekScheduleDetailService>();
-            services.AddScoped<IStaffScheduleDetailService, StaffScheduleDetailService>();
+            services.AddScoped<IWeekScheduleDetailService,
+                WeekScheduleDetailService>();
+            services.AddScoped<IStaffScheduleDetailService,
+                StaffScheduleDetailService>();
             services.AddScoped<IShiftRegisterService, ShiftRegisterService>();
 
             return services;
