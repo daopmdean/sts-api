@@ -29,6 +29,7 @@ namespace STS.Extensions
             services.AddScoped<IStaffScheduleDetailRepository, StaffScheduleDetailRepository>();
 
             services.AddScoped<IShiftRegisterRepository, ShiftRegisterRepository>();
+            services.AddScoped<IShiftAssignmentRepository, ShiftAssignmentRepository>();
 
             // Services
             services.AddScoped<IAuthService, AuthService>();
@@ -47,6 +48,7 @@ namespace STS.Extensions
             services.AddScoped<IStaffScheduleDetailService,
                 StaffScheduleDetailService>();
             services.AddScoped<IShiftRegisterService, ShiftRegisterService>();
+            services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
 
             return services;
         }

@@ -17,12 +17,18 @@ namespace STS.Controllers
     {
         private readonly IUserService _userService;
         private readonly IStaffSkillService _staffSkillService;
+        private readonly IShiftRegisterService _shiftRegisterService;
+        private readonly IShiftAssignmentService _shiftAssignmentService;
 
         public UsersController(IUserService userService,
-            IStaffSkillService staffSkillService)
+            IStaffSkillService staffSkillService,
+            IShiftRegisterService shiftRegisterService,
+            IShiftAssignmentService shiftAssignmentService)
         {
             _userService = userService;
             _staffSkillService = staffSkillService;
+            _shiftRegisterService = shiftRegisterService;
+            _shiftAssignmentService = shiftAssignmentService;
         }
 
         [HttpGet]
@@ -54,7 +60,7 @@ namespace STS.Controllers
 
         [HttpGet("{username}/skills")]
         public async Task<ActionResult> GetSkillsOfUser(string username,
-            StaffSkillParams @params)
+            [FromQuery] StaffSkillParams @params)
         {
             try
             {
@@ -63,6 +69,50 @@ namespace STS.Controllers
                 Response.AddPaginationHeader(skills);
 
                 return Ok(skills);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{username}/shift-registers")]
+        public async Task<ActionResult> GetShiftRegistersOfUser(
+            string username, [FromQuery] ShiftRegisterParams @params)
+        {
+            try
+            {
+                var shiftRegisters = await _shiftRegisterService
+                    .GetShiftRegisters(username, @params);
+                Response.AddPaginationHeader(shiftRegisters);
+
+                return Ok(shiftRegisters);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{username}/shift-assignments")]
+        public async Task<ActionResult> GetShiftAssignmentsOfUser(
+            string username, [FromQuery] ShiftAssignmentParams @params)
+        {
+            try
+            {
+                var shiftAssignments = await _shiftAssignmentService
+                    .GetShiftAssignments(username, @params);
+                Response.AddPaginationHeader(shiftAssignments);
+
+                return Ok(shiftAssignments);
             }
             catch (AppException ex)
             {
