@@ -55,6 +55,11 @@ namespace Service.Helpers
             CreateMap<ShiftAssignment, ShiftAssignmentOverview>();
             CreateMap<ShiftAssignmentCreate, ShiftAssignment>();
             CreateMap<ShiftAssignmentUpdate, ShiftAssignment>();
+
+            CreateMap<ShiftAttendance, ShiftAttendanceOverview>();
+            CreateMap<ShiftAttendanceCreate, ShiftAttendance>();
+            CreateMap<ShiftAttendanceUpdate, ShiftAttendance>();
+
         }
     }
 }

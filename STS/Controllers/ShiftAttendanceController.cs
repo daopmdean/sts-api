@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -7,26 +10,29 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
 using Service.Interfaces;
 
+// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 namespace STS.Controllers
 {
     [Authorize]
-    [Route("api/shift-assignments")]
-    public class ShiftAssignmentController : ApiBaseController
+    [Route("api/shift-attendances")]
+    public class ShiftAttendanceController : ApiBaseController
     {
-        private readonly IShiftAssignmentService _service;
+        private readonly IShiftAttendanceService _service;
 
-        public ShiftAssignmentController(IShiftAssignmentService service)
+        public ShiftAttendanceController(
+            IShiftAttendanceService service)
         {
             _service = service;
         }
 
         [HttpPost]
-        public async Task<ActionResult<ShiftAssignment>> CreateShiftAssignment(
-            ShiftAssignmentCreate create)
+        public async Task<ActionResult<ShiftAttendance>> CreateShiftAttendance(
+            ShiftAttendanceCreate create)
         {
             try
             {
-                return Ok(await _service.CreateShiftAssignment(create));
+                return Ok(await _service.CreateShiftAttendance(create));
             }
             catch (AppException ex)
             {
@@ -39,12 +45,12 @@ namespace STS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetShiftAssignment(
+        public async Task<ActionResult> GetShiftAttendance(
             int id)
         {
             try
             {
-                return Ok(await _service.GetShiftAssignment(id));
+                return Ok(await _service.GetShiftAttendance(id));
             }
             catch (AppException ex)
             {
@@ -57,12 +63,12 @@ namespace STS.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateShiftAssignment(
-            int id, ShiftAssignmentUpdate update)
+        public async Task<ActionResult> UpdateShiftAttendance(
+            int id, ShiftAttendanceUpdate update)
         {
             try
             {
-                await _service.UpdateShiftAssignment(id, update);
+                await _service.UpdateShiftAttendance(id, update);
             }
             catch (AppException ex)
             {
@@ -77,12 +83,12 @@ namespace STS.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteShiftAssignment(
+        public async Task<ActionResult> DeleteShiftAttendance(
             int id)
         {
             try
             {
-                await _service.DeleteShiftAssignment(id);
+                await _service.DeleteShiftAttendance(id);
             }
             catch (AppException ex)
             {

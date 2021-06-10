@@ -19,16 +19,19 @@ namespace STS.Controllers
         private readonly IStaffSkillService _staffSkillService;
         private readonly IShiftRegisterService _shiftRegisterService;
         private readonly IShiftAssignmentService _shiftAssignmentService;
+        private readonly IShiftAttendanceService _shiftAttendanceService;
 
         public UsersController(IUserService userService,
             IStaffSkillService staffSkillService,
             IShiftRegisterService shiftRegisterService,
-            IShiftAssignmentService shiftAssignmentService)
+            IShiftAssignmentService shiftAssignmentService,
+            IShiftAttendanceService shiftAttendanceService)
         {
             _userService = userService;
             _staffSkillService = staffSkillService;
             _shiftRegisterService = shiftRegisterService;
             _shiftAssignmentService = shiftAssignmentService;
+            _shiftAttendanceService = shiftAttendanceService;
         }
 
         [HttpGet]
@@ -113,6 +116,28 @@ namespace STS.Controllers
                 Response.AddPaginationHeader(shiftAssignments);
 
                 return Ok(shiftAssignments);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{username}/shift-attendances")]
+        public async Task<ActionResult> GetShiftAttendancesOfUser(
+            string username, [FromQuery] ShiftAttendanceParams @params)
+        {
+            try
+            {
+                var shiftAttendances = await _shiftAttendanceService
+                    .GetShiftAttendences(username, @params);
+                Response.AddPaginationHeader(shiftAttendances);
+
+                return Ok(shiftAttendances);
             }
             catch (AppException ex)
             {
