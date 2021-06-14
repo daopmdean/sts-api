@@ -19,15 +19,17 @@ namespace STS.Controllers
         private readonly IStoreService _storeService;
         private readonly IUserService _userService;
         private readonly ISkillService _skillService;
+        private readonly IPostService _postService;
 
         public BrandsController(IBrandService brandService,
             IStoreService storeService, IUserService userService,
-            ISkillService skillService)
+            ISkillService skillService, IPostService postService)
         {
             _brandService = brandService;
             _storeService = storeService;
             _userService = userService;
             _skillService = skillService;
+            _postService = postService;
         }
 
         [HttpGet]
@@ -109,6 +111,26 @@ namespace STS.Controllers
                 var skills = await _skillService.GetSkills(brandId, @params);
                 Response.AddPaginationHeader(skills);
                 return Ok(skills);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{brandId}/posts")]
+        public async Task<ActionResult> GetPostsOfBrand(
+            int brandId, [FromQuery] PostParams @params)
+        {
+            try
+            {
+                var posts = await _postService.GetPosts(brandId, @params);
+                Response.AddPaginationHeader(posts);
+                return Ok(posts);
             }
             catch (AppException ex)
             {

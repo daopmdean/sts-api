@@ -19,5 +19,7 @@ namespace Data.Entities
         public ICollection<Store> Stores { get; set; }
 
         public ICollection<Skill> Skills { get; set; }
+
+        public ICollection<Post> Posts { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace STS.Extensions
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<ISkillRepository, SkillRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
 
             services.AddScoped<IStoreStaffRepository, StoreStaffRepository>();
             services.AddScoped<IStaffSkillRepository, StaffSkillRepository>();
@@ -39,6 +40,7 @@ namespace STS.Extensions
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IStoreService, StoreService>();
             services.AddScoped<ISkillService, SkillService>();
+            services.AddScoped<IPostService, PostService>();
 
             services.AddScoped<IStoreStaffService, StoreStaffService>();
             services.AddScoped<IStaffSkillService, StaffSkillService>();

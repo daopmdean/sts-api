@@ -13,6 +13,7 @@ namespace Data
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<Skill> Skills { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<StoreStaff> StoreStaffs { get; set; }
         public DbSet<StaffSkill> StaffSkills { get; set; }
 
