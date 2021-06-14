@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Service.Interfaces;
 
 namespace STS.Controllers
 {
+    [Authorize]
+    [Route("api/admin")]
     public class AdminController : ApiBaseController
     {
-        public AdminController()
+        private readonly IUserService _userService;
+        public AdminController(IUserService userService)
         {
+            _userService = userService;
         }
     }
 }
