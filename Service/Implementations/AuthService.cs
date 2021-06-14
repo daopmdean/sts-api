@@ -28,12 +28,12 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
-        public async Task<UserTokenResponse> Login(LoginRequest info)
+        public async Task<UserTokenResponse> Login(LoginRequest login)
         {
             User user = await _context.Users
                 .Include(user => user.Role)
                 .SingleOrDefaultAsync(x =>
-                    x.Username == info.Username.ToLower()
+                    x.Username == login.Username.ToLower()
                     && x.Status == Status.Active);
 
             if (user == null)
@@ -44,7 +44,7 @@ namespace Service.Implementations
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac
-                .ComputeHash(Encoding.UTF8.GetBytes(info.Password));
+                .ComputeHash(Encoding.UTF8.GetBytes(login.Password));
 
             for (int i = 0; i < computedHash.Length; i++)
             {
@@ -91,18 +91,6 @@ namespace Service.Implementations
         {
             return await _context.Users.AnyAsync(
                 user => user.Username == username.ToLower());
-        }
-
-        public class HashResult
-        {
-            public string Hashed;
-
-            public string Salt;
-        }
-
-        public static HashResult HashPassword(string password)
-        {
-            return new HashResult();
         }
     }
 }

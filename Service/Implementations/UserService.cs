@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
+using Service.Enums;
 using Service.Exceptions;
 using Service.Interfaces;
 
@@ -71,6 +74,34 @@ namespace Service.Implementations
             UserParams @params)
         {
             return await _repository.GetUsersAsync(brandId, @params);
+        }
+
+        public async Task UpdatePasswordAsync(
+            string username, PasswordUpdate update)
+        {
+            var user = await _repository.GetUserByUsernameAsync(username);
+
+            using var hmac = new HMACSHA512(user.PasswordSalt);
+            var computedHash = hmac
+                .ComputeHash(Encoding.UTF8.GetBytes(update.CurrentPassword));
+
+            for (int i = 0; i < computedHash.Length; i++)
+            {
+                if (computedHash[i] != user.Password[i])
+                    throw new AppException(
+                        (int)StatusCode.UnAuthorized, "Current Password Incorrect");
+            }
+
+            computedHash = hmac
+                .ComputeHash(Encoding.UTF8.GetBytes(update.NewPassword));
+
+            user.Password = computedHash;
+            _repository.Update(user);
+
+            if (await _repository.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not update password");
         }
 
         public async Task UpdateUserAsync(string username,

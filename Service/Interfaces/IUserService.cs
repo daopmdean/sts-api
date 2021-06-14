@@ -17,6 +17,7 @@ namespace Service.Interfaces
         Task CreateStoreManager(RegisterRequest user);
         Task CreateStaff(RegisterRequest user);
         Task UpdateUserAsync(string username, UserUpdate updateInfo);
+        Task UpdatePasswordAsync(string username, PasswordUpdate update);
         Task DeleteUserAsync(string username);
     }
 }

@@ -150,24 +150,40 @@ namespace STS.Controllers
         }
 
 
-        [HttpPut("{username}")]
-        public async Task<ActionResult> UpdateUser(string username,
-            UserUpdate updateInfo)
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(UserUpdate updateInfo)
         {
-            var loggedInUser = await _userService.GetUserAsync(User.GetUsername());
-
-            if (loggedInUser.Username != username)
-            {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = 400,
-                    Message = "You can not edit other user"
-                });
-            }
+            var loggedInUser = await _userService
+                .GetUserAsync(User.GetUsername());
 
             try
             {
-                await _userService.UpdateUserAsync(username, updateInfo);
+                await _userService
+                    .UpdateUserAsync(loggedInUser.Username, updateInfo);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("password")]
+        public async Task<ActionResult> UpdatePassword(
+            PasswordUpdate update)
+        {
+            var loggedInUser = await _userService
+                .GetUserAsync(User.GetUsername());
+
+            try
+            {
+                await _userService
+                    .UpdatePasswordAsync(loggedInUser.Username, update);
             }
             catch (AppException ex)
             {

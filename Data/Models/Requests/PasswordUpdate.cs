@@ -3,8 +3,8 @@ namespace Data.Models.Requests
 {
     public class PasswordUpdate
     {
-        public PasswordUpdate()
-        {
-        }
+        public string CurrentPassword { get; set; }
+
+        public string NewPassword { get; set; }
     }
 }

@@ -46,6 +46,41 @@ namespace STS.Migrations
                     b.ToTable("Brands");
                 });
 
+            modelBuilder.Entity("Data.Entities.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.ToTable("Posts");
+                });
+
             modelBuilder.Entity("Data.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -319,6 +354,9 @@ namespace STS.Migrations
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsManager")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsPrimaryStaff")
                         .HasColumnType("bit");
 
@@ -440,6 +478,17 @@ namespace STS.Migrations
                     b.HasIndex("WeekScheduleId");
 
                     b.ToTable("WeekScheduleDetails");
+                });
+
+            modelBuilder.Entity("Data.Entities.Post", b =>
+                {
+                    b.HasOne("Data.Entities.Brand", "Brand")
+                        .WithMany("Posts")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
                 });
 
             modelBuilder.Entity("Data.Entities.ShiftAssignment", b =>
@@ -640,6 +689,8 @@ namespace STS.Migrations
 
             modelBuilder.Entity("Data.Entities.Brand", b =>
                 {
+                    b.Navigation("Posts");
+
                     b.Navigation("Skills");
 
                     b.Navigation("Stores");
