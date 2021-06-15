@@ -26,6 +26,10 @@ namespace STS.Extensions
 
             services.AddAuthorization(opt =>
             {
+                opt.AddPolicy("RequiredManagers", policy
+                    => policy
+                    .RequireRole("admin", "brand manager", "store manager"));
+
                 opt.AddPolicy("RequiredAdmin", policy
                     => policy.RequireRole("admin"));
 

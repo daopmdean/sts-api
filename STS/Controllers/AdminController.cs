@@ -9,7 +9,7 @@ using STS.Extensions;
 
 namespace STS.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "RequiredManagers")]
     [Route("api/admin")]
     public class AdminController : ApiBaseController
     {

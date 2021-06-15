@@ -61,12 +61,14 @@ namespace STS.Controllers
             });
         }
 
-        [HttpGet("{username}/skills")]
-        public async Task<ActionResult> GetSkillsOfUser(string username,
+        [HttpGet("skills")]
+        public async Task<ActionResult> GetSkillsOfUser(
             [FromQuery] StaffSkillParams @params)
         {
             try
             {
+                var username = User.GetUsername();
+
                 var skills = await _staffSkillService
                     .GetSkillsFromStaffAsync(username, @params);
                 Response.AddPaginationHeader(skills);
@@ -83,12 +85,13 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("{username}/shift-registers")]
+        [HttpGet("shift-registers")]
         public async Task<ActionResult> GetShiftRegistersOfUser(
-            string username, [FromQuery] ShiftRegisterParams @params)
+            [FromQuery] ShiftRegisterParams @params)
         {
             try
             {
+                var username = User.GetUsername();
                 var shiftRegisters = await _shiftRegisterService
                     .GetShiftRegisters(username, @params);
                 Response.AddPaginationHeader(shiftRegisters);
@@ -105,12 +108,13 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("{username}/shift-assignments")]
+        [HttpGet("shift-assignments")]
         public async Task<ActionResult> GetShiftAssignmentsOfUser(
-            string username, [FromQuery] ShiftAssignmentParams @params)
+            [FromQuery] ShiftAssignmentParams @params)
         {
             try
             {
+                var username = User.GetUsername();
                 var shiftAssignments = await _shiftAssignmentService
                     .GetShiftAssignments(username, @params);
                 Response.AddPaginationHeader(shiftAssignments);
@@ -127,12 +131,13 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("{username}/shift-attendances")]
+        [HttpGet("shift-attendances")]
         public async Task<ActionResult> GetShiftAttendancesOfUser(
-            string username, [FromQuery] ShiftAttendanceParams @params)
+            [FromQuery] ShiftAttendanceParams @params)
         {
             try
             {
+                var username = User.GetUsername();
                 var shiftAttendances = await _shiftAttendanceService
                     .GetShiftAttendences(username, @params);
                 Response.AddPaginationHeader(shiftAttendances);
@@ -153,11 +158,11 @@ namespace STS.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateUser(UserUpdate updateInfo)
         {
-            var loggedInUser = await _userService
-                .GetUserAsync(User.GetUsername());
-
             try
             {
+                var loggedInUser = await _userService
+                    .GetUserAsync(User.GetUsername());
+
                 await _userService
                     .UpdateUserAsync(loggedInUser.Username, updateInfo);
             }
@@ -177,11 +182,11 @@ namespace STS.Controllers
         public async Task<ActionResult> UpdatePassword(
             PasswordUpdate update)
         {
-            var loggedInUser = await _userService
-                .GetUserAsync(User.GetUsername());
-
             try
             {
+                var loggedInUser = await _userService
+                    .GetUserAsync(User.GetUsername());
+
                 await _userService
                     .UpdatePasswordAsync(loggedInUser.Username, update);
             }
