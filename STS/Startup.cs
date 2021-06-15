@@ -21,23 +21,22 @@ namespace STS
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options =>
-            {
-                string connectionString = Configuration.GetConnectionString("ProductionConnection");
-                //string connectionString = Configuration.GetConnectionString("DevelopmentConnection");
-                options.UseSqlServer(connectionString, b => b.MigrationsAssembly("STS"));
-            });
+            //services.AddDbContext<DataContext>(options =>
+            //{
+            //    string connectionString = Configuration.GetConnectionString("DevelopmentConnection");
+            //    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("STS"));
+            //});
 
             ConfigureServices(services);
         }
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options =>
-            {
-                string connectionString = Configuration.GetConnectionString("ProductionConnection");
-                options.UseSqlServer(connectionString, b => b.MigrationsAssembly("STS"));
-            });
+            //services.AddDbContext<DataContext>(options =>
+            //{
+            //    string connectionString = Configuration.GetConnectionString("ProductionConnection");
+            //    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("STS"));
+            //});
 
             ConfigureServices(services);
         }
@@ -45,6 +44,7 @@ namespace STS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbConnectionServices(Configuration);
             services.AddApplicationServices();
             services.AddIdentityServices(Configuration);
             services.AddControllers().AddNewtonsoftJson(
