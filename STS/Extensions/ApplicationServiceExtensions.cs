@@ -34,6 +34,8 @@ namespace STS.Extensions
             services.AddScoped<IShiftAttendanceRepository, ShiftAttendanceRepository>();
 
             // Services
+            services.AddScoped<IAdminService, AdminService>();
+
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();

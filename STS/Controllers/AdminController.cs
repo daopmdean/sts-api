@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
 using Microsoft.AspNetCore.Authorization;
@@ -13,18 +14,22 @@ namespace STS.Controllers
     [Route("api/admin")]
     public class AdminController : ApiBaseController
     {
+        private readonly IAdminService _adminService;
         private readonly IUserService _userService;
         private readonly IStaffSkillService _staffSkillService;
         private readonly IShiftRegisterService _shiftRegisterService;
         private readonly IShiftAssignmentService _shiftAssignmentService;
         private readonly IShiftAttendanceService _shiftAttendanceService;
 
-        public AdminController(IUserService userService,
+        public AdminController(
+            IAdminService adminService,
+            IUserService userService,
             IStaffSkillService staffSkillService,
             IShiftRegisterService shiftRegisterService,
             IShiftAssignmentService shiftAssignmentService,
             IShiftAttendanceService shiftAttendanceService)
         {
+            _adminService = adminService;
             _userService = userService;
             _staffSkillService = staffSkillService;
             _shiftRegisterService = shiftRegisterService;
@@ -133,6 +138,25 @@ namespace STS.Controllers
                     Message = ex.Message
                 });
             }
+        }
+
+        [HttpPost("assign/brand")]
+        public async Task<ActionResult> AssignBrand(BrandAssign brandAssign)
+        {
+            try
+            {
+                await _adminService.AssignBrand(brandAssign);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+
+            return NoContent();
         }
     }
 }
