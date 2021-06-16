@@ -71,8 +71,33 @@ namespace Service.Implementations
             var user = _mapper.Map<User>(info);
             user.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password));
             user.PasswordSalt = hmac.Key;
-            user.RoleId = 2;
-            user.Role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == 2);
+            user.RoleId = (int)UserRole.BrandManager;
+
+            _context.Users.Add(user);
+
+            if (await _context.SaveChangesAsync() <= 0)
+                throw new AppException(400, "Can not register user");
+
+            return new UserTokenResponse
+            {
+                Status = (int)StatusCode.Ok,
+                Username = user.Username,
+                Token = _tokenService.GenerateToken(user)
+            };
+        }
+
+        public async Task<UserTokenResponse> RegisterWithRole(int roleId,
+            RegisterRequest info)
+        {
+            if (await UserExist(info.Username))
+                throw new AppException(400, "Username already exist");
+
+            using var hmac = new HMACSHA512();
+
+            var user = _mapper.Map<User>(info);
+            user.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password));
+            user.PasswordSalt = hmac.Key;
+            user.RoleId = roleId;
 
             _context.Users.Add(user);
 
