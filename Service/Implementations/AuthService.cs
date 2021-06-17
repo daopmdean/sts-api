@@ -72,6 +72,8 @@ namespace Service.Implementations
             user.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password));
             user.PasswordSalt = hmac.Key;
             user.RoleId = (int)UserRole.BrandManager;
+            user.Role = await _context.Roles
+                .FirstOrDefaultAsync(r => r.Id == (int)UserRole.BrandManager);
 
             _context.Users.Add(user);
 
@@ -98,6 +100,8 @@ namespace Service.Implementations
             user.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password));
             user.PasswordSalt = hmac.Key;
             user.RoleId = roleId;
+            user.Role = await _context.Roles
+                .FirstOrDefaultAsync(r => r.Id == roleId);
 
             _context.Users.Add(user);
 
