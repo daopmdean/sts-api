@@ -35,6 +35,11 @@ namespace Data.Repositories.Implementations
             var query = _entities
                 .OrderBy(u => u.Username)
                 .Where(e => e.Status == Enums.Status.Active)
+                .Where(u => u.Username.Contains(@params.Keyword)
+                    || u.FirstName.Contains(@params.Keyword)
+                    || u.LastName.Contains(@params.Keyword)
+                    || u.Address.Contains(@params.Keyword)
+                    || u.Email.Contains(@params.Keyword))
                 .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
 
             return await PagedList<UserOverview>
