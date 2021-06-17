@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
@@ -46,6 +47,11 @@ namespace Service.Implementations
                 return;
 
             throw new AppException(400, "Can not delete brand");
+        }
+
+        public async Task<IEnumerable<Brand>> GetAllBrands()
+        {
+            return await _repository.GetAllAsync();
         }
 
         public async Task<Brand> GetBrand(int id)

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -8,6 +9,7 @@ namespace Service.Interfaces
 {
     public interface IBrandService
     {
+        Task<IEnumerable<Brand>> GetAllBrands();
         Task<PagedList<BrandOverview>> GetBrands(BrandParams @params);
         Task<Brand> GetBrand(int id);
         Task<Brand> CreateBrand(BrandCreate brandCreate);

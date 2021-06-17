@@ -43,6 +43,14 @@ namespace STS.Controllers
             return Ok(result);
         }
 
+        [HttpGet("all")]
+        public async Task<ActionResult> GetAllBrands()
+        {
+            var result = await _brandService.GetAllBrands();
+
+            return Ok(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<BrandOverview>> GetBrand(
             int id)
