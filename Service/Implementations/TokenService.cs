@@ -26,7 +26,7 @@ namespace Service.Implementations
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Username),
                 new Claim(ClaimTypes.Role, user.Role.Name),
-                new Claim("BrandId", user.BrandId.ToString())
+                new Claim("brandId", user.BrandId.ToString())
             };
 
             var creds = new SigningCredentials(

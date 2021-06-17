@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Enums;
 using Service.Exceptions;
 using Service.Interfaces;
+using STS.Extensions;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,8 +33,10 @@ namespace STS.Controllers
         {
             try
             {
+                var brandId = int.Parse(User.GetBrandId());
+
                 return Ok(await _authService
-                    .RegisterWithRole((int)UserRole.StoreManager, info));
+                    .RegisterWithRole(brandId, (int)UserRole.StoreManager, info));
             }
             catch (AppException appEx)
             {
@@ -59,8 +62,10 @@ namespace STS.Controllers
         {
             try
             {
+                var brandId = int.Parse(User.GetBrandId());
+
                 return Ok(await _authService
-                    .RegisterWithRole((int)UserRole.Staff, info));
+                    .RegisterWithRole(brandId, (int)UserRole.Staff, info));
             }
             catch (AppException appEx)
             {

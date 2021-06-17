@@ -14,5 +14,10 @@ namespace STS.Extensions
         {
             return user.FindFirst(ClaimTypes.Role)?.Value;
         }
+
+        public static string GetBrandId(this ClaimsPrincipal user)
+        {
+            return user.FindFirst("brandId")?.Value;
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace Service.Interfaces
     public interface IAuthService
     {
         Task<UserTokenResponse> Register(RegisterRequest info);
-        Task<UserTokenResponse> RegisterWithRole(int roleId,
+        Task<UserTokenResponse> RegisterWithRole(int brandId, int roleId,
             RegisterRequest info);
         Task<UserTokenResponse> Login(LoginRequest info);
     }

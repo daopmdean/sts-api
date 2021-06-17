@@ -88,8 +88,8 @@ namespace Service.Implementations
             };
         }
 
-        public async Task<UserTokenResponse> RegisterWithRole(int roleId,
-            RegisterRequest info)
+        public async Task<UserTokenResponse> RegisterWithRole(
+            int brandId, int roleId, RegisterRequest info)
         {
             if (await UserExist(info.Username))
                 throw new AppException(400, "Username already exist");
@@ -99,6 +99,7 @@ namespace Service.Implementations
             var user = _mapper.Map<User>(info);
             user.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password));
             user.PasswordSalt = hmac.Key;
+            user.BrandId = brandId;
             user.RoleId = roleId;
             user.Role = await _context.Roles
                 .FirstOrDefaultAsync(r => r.Id == roleId);
