@@ -97,9 +97,11 @@ namespace Service.Implementations
             using var hmac = new HMACSHA512();
 
             var user = _mapper.Map<User>(info);
+
             user.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password));
             user.PasswordSalt = hmac.Key;
-            user.BrandId = brandId;
+            if (brandId != 0)
+                user.BrandId = brandId;
             user.RoleId = roleId;
             user.Role = await _context.Roles
                 .FirstOrDefaultAsync(r => r.Id == roleId);

@@ -4,6 +4,7 @@ using Data.Models.Responses;
 using Data.Pagings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Service.Enums;
 using Service.Exceptions;
 using Service.Interfaces;
 using STS.Extensions;
@@ -15,6 +16,7 @@ namespace STS.Controllers
     public class AdminController : ApiBaseController
     {
         private readonly IAdminService _adminService;
+        private readonly IAuthService _authService;
         private readonly IUserService _userService;
         private readonly IStaffSkillService _staffSkillService;
         private readonly IShiftRegisterService _shiftRegisterService;
@@ -23,6 +25,7 @@ namespace STS.Controllers
 
         public AdminController(
             IAdminService adminService,
+            IAuthService authService,
             IUserService userService,
             IStaffSkillService staffSkillService,
             IShiftRegisterService shiftRegisterService,
@@ -30,6 +33,7 @@ namespace STS.Controllers
             IShiftAttendanceService shiftAttendanceService)
         {
             _adminService = adminService;
+            _authService = authService;
             _userService = userService;
             _staffSkillService = staffSkillService;
             _shiftRegisterService = shiftRegisterService;
@@ -157,6 +161,26 @@ namespace STS.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPost("users/admin")]
+        public async Task<ActionResult> NewAdmin(RegisterRequest info)
+        {
+            try
+            {
+                var result = await _authService
+                    .RegisterWithRole(0, (int)UserRole.Admin, info);
+
+                return Ok(result);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
         }
     }
 }
