@@ -26,7 +26,7 @@ namespace STS
                 var authService = services.GetRequiredService<IAuthService>();
 
                 await context.Database.MigrateAsync();
-                Seeding.SeedData.SeedRolesIfNeeded(context);
+                Seeding.SeedData.SeedDataIfNeeded(context);
                 await Seeding.SeedData.SeedUsersIfNeeded(context,
                     authService, userRepo);
             }
