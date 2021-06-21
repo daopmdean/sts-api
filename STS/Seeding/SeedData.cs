@@ -131,6 +131,12 @@ namespace STS.Seeding
                     Name = "Passio",
                     Address = "Some where",
                     Hotline = "0989898989"
+                },
+                new Brand
+                {
+                    Name = "The Coffee House",
+                    Address = "Some where",
+                    Hotline = "0989898978"
                 }
             };
 
@@ -160,6 +166,20 @@ namespace STS.Seeding
                 {
                     BrandId = 1,
                     Name = "Passio S2",
+                    Address = "Some where",
+                    Phone = "0123412346"
+                },
+                new Store
+                {
+                    BrandId = 2,
+                    Name = "CoffeeHouse S1",
+                    Address = "Some where",
+                    Phone = "0123412345"
+                },
+                new Store
+                {
+                    BrandId = 2,
+                    Name = "CoffeeHouse S2",
                     Address = "Some where",
                     Phone = "0123412346"
                 }
