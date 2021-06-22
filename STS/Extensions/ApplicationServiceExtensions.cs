@@ -56,6 +56,9 @@ namespace STS.Extensions
             services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
             services.AddScoped<IShiftAttendanceService, ShiftAttendanceService>();
 
+            services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IScheduleService, ScheduleService>();
+
             return services;
         }
     }

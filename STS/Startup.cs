@@ -1,7 +1,5 @@
-using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -48,7 +46,8 @@ namespace STS
             services.AddApplicationServices();
             services.AddIdentityServices(Configuration);
             services.AddControllers().AddNewtonsoftJson(
-                opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                opt => opt.SerializerSettings.ReferenceLoopHandling
+                    = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddCors();
             services.AddSwaggerGen(c =>
             {
