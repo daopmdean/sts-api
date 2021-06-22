@@ -46,10 +46,10 @@ namespace STS.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{username}")]
-        public async Task<ActionResult> GetUser(string username)
+        [HttpGet("profile")]
+        public async Task<ActionResult> GetUser()
         {
-            var user = await _userService.GetUserAsync(username);
+            var user = await _userService.GetUserAsync(User.GetUsername());
 
             if (user != null)
                 return Ok(user);
