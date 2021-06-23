@@ -57,7 +57,7 @@ namespace Service.Implementations
             {
                 Status = (int)StatusCode.Ok,
                 Username = user.Username,
-                Token = _tokenService.GenerateToken(user)
+                Token = await _tokenService.GenerateToken(user)
             };
         }
 
@@ -84,7 +84,7 @@ namespace Service.Implementations
             {
                 Status = (int)StatusCode.Ok,
                 Username = user.Username,
-                Token = _tokenService.GenerateToken(user)
+                Token = await _tokenService.GenerateToken(user)
             };
         }
 
@@ -115,7 +115,7 @@ namespace Service.Implementations
             {
                 Status = (int)StatusCode.Ok,
                 Username = user.Username,
-                Token = _tokenService.GenerateToken(user)
+                Token = await _tokenService.GenerateToken(user)
             };
         }
 

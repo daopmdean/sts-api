@@ -11,7 +11,7 @@ namespace STS.Controllers
 {
     [Authorize]
     [Route("api/posts")]
-    public class PostController : Controller
+    public class PostController : ApiBaseController
     {
         private readonly IPostService _postService;
 

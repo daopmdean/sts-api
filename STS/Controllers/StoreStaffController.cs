@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
+using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
@@ -14,13 +15,17 @@ namespace STS.Controllers
 {
     [Authorize]
     [Route("api/store-staff")]
-    public class StoreStaffController : Controller
+    public class StoreStaffController : ApiBaseController
     {
         private readonly IStoreStaffService _service;
+        private readonly IStoreStaffRepository _repo;
 
-        public StoreStaffController(IStoreStaffService service)
+        public StoreStaffController(
+            IStoreStaffService service,
+            IStoreStaffRepository repo)
         {
             _service = service;
+            _repo = repo;
         }
 
         [HttpPost]

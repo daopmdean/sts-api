@@ -34,6 +34,17 @@ namespace Data.Repositories.Implementations
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
         }
 
+        public async Task<int> GetStoreId(string username)
+        {
+            var storeStaff = await _entities
+                .FirstOrDefaultAsync(ss => ss.Username == username);
+
+            if (storeStaff == null)
+                return -1;
+
+            return storeStaff.StoreId;
+        }
+
         public async Task<PagedList<StoreStaffOverview>> GetStoresFromStaffAsync(
             string username, StoreStaffParams @params)
         {
