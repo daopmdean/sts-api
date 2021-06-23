@@ -13,6 +13,8 @@ namespace Data.Models.Requests
 
         public string Gender { get; set; }
 
+        public string PhotoUrl { get; set; }
+
         [EmailAddress]
         public string Email { get; set; }
 
