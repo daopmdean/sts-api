@@ -10,11 +10,11 @@ namespace STS.Controllers
     [Route("api/reports")]
     public class ReportsController : ApiBaseController
     {
-        private readonly IReportService _reportService;
+        private readonly IManagerService _managerService;
 
-        public ReportsController(IReportService reportService)
+        public ReportsController(IManagerService managerService)
         {
-            _reportService = reportService;
+            _managerService = managerService;
         }
     }
 }

@@ -35,6 +35,9 @@ namespace STS.Extensions
 
             // Services
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IManagerService, ManagerService>();
+            services.AddScoped<IScheduleService, ScheduleService>();
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
@@ -55,9 +58,6 @@ namespace STS.Extensions
             services.AddScoped<IShiftRegisterService, ShiftRegisterService>();
             services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
             services.AddScoped<IShiftAttendanceService, ShiftAttendanceService>();
-
-            services.AddScoped<IReportService, ReportService>();
-            services.AddScoped<IScheduleService, ScheduleService>();
 
             return services;
         }
