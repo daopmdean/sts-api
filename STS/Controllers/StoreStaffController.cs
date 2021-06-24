@@ -44,6 +44,15 @@ namespace STS.Controllers
                     Message = ex.Message
                 });
             }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
         }
 
         [HttpGet("{storeId}/{username}")]

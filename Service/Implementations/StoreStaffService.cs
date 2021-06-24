@@ -29,6 +29,37 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
+        public async Task<StoreStaff> AssignStaff(StoreAssign assign)
+        {
+            var create = _mapper.Map<StoreStaffCreate>(assign);
+            create.IsManager = false;
+            create.IsPrimaryStore = false;
+
+            return await CreateStoreStaff(create);
+        }
+
+        public async Task<StoreStaff> AssignStoreManager(StoreAssign assign)
+        {
+            var create = _mapper.Map<StoreStaffCreate>(assign);
+            create.IsManager = true;
+            create.IsPrimaryStore = true;
+
+            var user = await _userRepo
+                .GetUserByUsernameAsync(assign.Username);
+
+            if (user.RoleId == (int)Enums.UserRole.Staff)
+            {
+                user.RoleId = (int)Enums.UserRole.StoreManager;
+            }
+            else if (user.RoleId != (int)Enums.UserRole.StoreManager)
+            {
+                throw new AppException((int)Enums.StatusCode.BadRequest,
+                    "Can not assign due to user role");
+            }
+
+            return await CreateStoreStaff(create);
+        }
+
         public async Task<StoreStaff> CreateStoreStaff(StoreStaffCreate create)
         {
             var store = await _storeRepo.GetByIdAsync(create.StoreId);
@@ -42,6 +73,10 @@ namespace Service.Implementations
             if (user == null)
                 throw new AppException(400,
                     "Conflicted with the FOREIGN KEY constraint, Username does not exist");
+
+            if (store.BrandId != user.BrandId)
+                throw new AppException(400,
+                    "Can not assign Staff to Store outside Brand");
 
             var storeStaff = _mapper.Map<StoreStaff>(create);
             await _storeStaffRepo.CreateAsync(storeStaff);

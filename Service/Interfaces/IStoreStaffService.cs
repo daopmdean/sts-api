@@ -14,6 +14,8 @@ namespace Service.Interfaces
             int storeId, StoreStaffParams @params);
         Task<StoreStaff> GetStoreStaffAsync(int storeId, string username);
         Task<StoreStaff> CreateStoreStaff(StoreStaffCreate create);
+        Task<StoreStaff> AssignStaff(StoreAssign assign);
+        Task<StoreStaff> AssignStoreManager(StoreAssign assign);
         Task UpdateStoreStaff(int storeId, string username,
             StoreStaffUpdate update);
         Task DeleteStoreStaff(int storeId, string username);

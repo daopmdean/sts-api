@@ -37,7 +37,8 @@ namespace Data.Repositories.Implementations
         public async Task<int> GetStoreId(string username)
         {
             var storeStaff = await _entities
-                .FirstOrDefaultAsync(ss => ss.Username == username);
+                .FirstOrDefaultAsync(ss => ss.Username == username
+                    && ss.Status == Enums.Status.Active);
 
             if (storeStaff == null)
                 return -1;

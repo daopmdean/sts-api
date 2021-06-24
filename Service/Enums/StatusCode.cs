@@ -5,6 +5,7 @@ namespace Service.Enums
     {
         Ok = 200,
         BadRequest = 400,
-        UnAuthorized = 401
+        UnAuthorized = 401,
+        InternalError = 500
     }
 }

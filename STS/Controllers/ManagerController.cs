@@ -16,15 +16,18 @@ namespace STS.Controllers
     public class ManagerController : ApiBaseController
     {
         private readonly IManagerService _managerService;
+        private readonly IStoreStaffService _storeStaffService;
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
 
         public ManagerController(
             IManagerService managerService,
+            IStoreStaffService storeStaffService,
             IUserService userService,
             IAuthService authService)
         {
             _managerService = managerService;
+            _storeStaffService = storeStaffService;
             _userService = userService;
             _authService = authService;
         }
@@ -87,12 +90,12 @@ namespace STS.Controllers
             }
         }
 
-        [HttpPost("assign/store")]
+        [HttpPost("assign/store-manager")]
         public async Task<IActionResult> AssignStoreManager(StoreAssign info)
         {
             try
             {
-                await _managerService.AssignStoreManager(info);
+                await _storeStaffService.AssignStoreManager(info);
             }
             catch (AppException appEx)
             {

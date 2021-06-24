@@ -43,7 +43,7 @@ namespace STS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetStore(
+        public async Task<ActionResult<Store>> GetStore(
             int id)
         {
             try
@@ -111,6 +111,23 @@ namespace STS.Controllers
             try
             {
                 return Ok(await _storeService.CreateStore(store));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("assign/staff")]
+        public async Task<ActionResult> AssignStaff(StoreAssign storeAssign)
+        {
+            try
+            {
+                return Ok(await _storeStaffService.AssignStaff(storeAssign));
             }
             catch (AppException ex)
             {
