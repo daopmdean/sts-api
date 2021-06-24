@@ -60,14 +60,16 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("{storeId}/week-schedules")]
+        [HttpGet("week-schedules")]
         public async Task<ActionResult<BrandOverview>> GetStoresOfBrand(
-            int storeId, [FromQuery] WeekScheduleParams @params)
+            [FromQuery] WeekScheduleParams @params)
         {
             try
             {
+                int storeId = int.Parse(User.GetStoreId());
                 var weekSchedules = await _weekService
                     .GetWeekSchedulesAsync(storeId, @params);
+
                 Response.AddPaginationHeader(weekSchedules);
 
                 return Ok(weekSchedules);
@@ -82,12 +84,13 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("{storeId}/staff")]
+        [HttpGet("staff")]
         public async Task<ActionResult<BrandOverview>> GetStaffOfStore(
-            int storeId, [FromQuery] StoreStaffParams @params)
+            [FromQuery] StoreStaffParams @params)
         {
             try
             {
+                int storeId = int.Parse(User.GetStoreId());
                 var staff = await _storeStaffService
                     .GetStaffFromStoreAsync(storeId, @params);
                 Response.AddPaginationHeader(staff);
@@ -139,13 +142,14 @@ namespace STS.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult> UpdateStore(
-            int id, StoreUpdate storeUpdate)
+            StoreUpdate storeUpdate)
         {
             try
             {
-                await _storeService.UpdateStore(id, storeUpdate);
+                int storeId = int.Parse(User.GetStoreId());
+                await _storeService.UpdateStore(storeId, storeUpdate);
             }
             catch (AppException ex)
             {
