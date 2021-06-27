@@ -101,6 +101,13 @@ namespace Service.Implementations
                 .GetShiftAssignmentsAsync(username, @params);
         }
 
+        public async Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(
+            int storeId, ShiftAssignmentParams @params)
+        {
+            return await _shiftAssignmentRepo
+                .GetShiftAssignmentsAsync(storeId, @params);
+        }
+
         public async Task UpdateShiftAssignment(int id,
             ShiftAssignmentUpdate update)
         {

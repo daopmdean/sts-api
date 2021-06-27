@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
 using Data.Models.Requests;
@@ -30,7 +31,7 @@ namespace Service.Implementations
         }
 
         public async Task<ShiftRegister> CreateShiftRegister(
-            ShiftRegisterCreate create)
+            ShiftRegistersCreate create)
         {
             var weekSchedule = await _weekScheduleRepo
                 .GetByIdAsync(create.WeekScheduleId);
@@ -46,11 +47,26 @@ namespace Service.Implementations
                 throw new AppException(400,
                     "Conflicted with the FOREIGN KEY constraint, Username does not exist");
 
-            var shiftRegister = _mapper.Map<ShiftRegister>(create);
-            await _shiftRegisterRepo.CreateAsync(shiftRegister);
+            List<ShiftRegister> registers = new();
+
+            foreach (var item in create.TimeWorks)
+            {
+                registers.Add(new ShiftRegister
+                {
+                    Username = create.Username,
+                    WeekScheduleId = create.WeekScheduleId,
+                    TimeStart = item.TimeStart,
+                    TimeEnd = item.TimeEnd
+                });
+            }
+
+            foreach (var item in registers)
+            {
+                await _shiftRegisterRepo.CreateAsync(item);
+            }
 
             if (await _shiftRegisterRepo.SaveChangesAsync())
-                return shiftRegister;
+                return null;
 
             throw new AppException(400, "Can not create ShiftRegister");
         }

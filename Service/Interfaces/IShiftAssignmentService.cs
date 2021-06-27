@@ -10,6 +10,8 @@ namespace Service.Interfaces
     {
         Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(string username,
             ShiftAssignmentParams @params);
+        Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(int storeId,
+            ShiftAssignmentParams @params);
         Task<ShiftAssignment> GetShiftAssignment(int id);
         Task<ShiftAssignment> CreateShiftAssignment(ShiftAssignmentCreate create);
         Task UpdateShiftAssignment(int id, ShiftAssignmentUpdate update);

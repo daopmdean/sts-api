@@ -33,5 +33,18 @@ namespace Data.Repositories.Implementations
             return await PagedList<ShiftAssignmentOverview>
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
         }
+
+        public async Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
+            int storeId, ShiftAssignmentParams @params)
+        {
+            var source = _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.StoreId == storeId)
+                .OrderByDescending(s => s.TimeStart)
+                .ProjectTo<ShiftAssignmentOverview>(_mapper.ConfigurationProvider);
+
+            return await PagedList<ShiftAssignmentOverview>
+                .CreateAsync(source, @params.PageNumber, @params.PageSize);
+        }
     }
 }

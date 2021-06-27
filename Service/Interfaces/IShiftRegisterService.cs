@@ -11,7 +11,7 @@ namespace Service.Interfaces
         Task<PagedList<ShiftRegisterOverview>> GetShiftRegisters(string username,
             ShiftRegisterParams @params);
         Task<ShiftRegister> GetShiftRegister(int id);
-        Task<ShiftRegister> CreateShiftRegister(ShiftRegisterCreate create);
+        Task<ShiftRegister> CreateShiftRegister(ShiftRegistersCreate create);
         Task UpdateShiftRegister(int id, ShiftRegisterUpdate update);
         Task DeleteShiftRegister(int id);
     }
