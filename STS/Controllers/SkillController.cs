@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
 using Service.Interfaces;
+using STS.Extensions;
 
 namespace STS.Controllers
 {
@@ -20,20 +22,37 @@ namespace STS.Controllers
             _service = service;
         }
 
+        [Authorize(Policy = "RequiredBrandManager")]
         [HttpPost]
         public async Task<ActionResult<Skill>> CreateSkill(
             SkillCreate skill)
         {
             try
             {
-                return Ok(await _service.CreateSkill(skill));
+                var brandId = User.GetBrandId();
+
+                if (brandId == null || brandId == "")
+                    throw new Exception();
+
+                return Ok(await _service
+                    .CreateSkill(int.Parse(brandId), skill));
             }
             catch (AppException ex)
             {
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -51,7 +70,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -69,7 +98,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
 
@@ -89,7 +128,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
 

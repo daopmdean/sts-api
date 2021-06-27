@@ -25,15 +25,11 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
-        public async Task<Skill> CreateSkill(SkillCreate skillCreate)
+        public async Task<Skill> CreateSkill(
+            int brandId, SkillCreate skillCreate)
         {
-            var brand = await _brandRepo.GetByIdAsync(skillCreate.BrandId);
-
-            if (brand == null)
-                throw new AppException(400,
-                    "Conflicted with the FOREIGN KEY constraint, brandId does not exist");
-
             var skill = _mapper.Map<Skill>(skillCreate);
+            skill.BrandId = brandId;
             await _skillRepo.CreateAsync(skill);
 
             if (await _skillRepo.SaveChangesAsync())

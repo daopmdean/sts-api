@@ -12,7 +12,7 @@ namespace Service.Interfaces
         Task<PagedList<SkillOverview>> GetSkills(int brandId,
             SkillParams @params);
         Task<Skill> GetSkill(int id);
-        Task<Skill> CreateSkill(SkillCreate skillCreate);
+        Task<Skill> CreateSkill(int brandId, SkillCreate skillCreate);
         Task UpdateSkill(int id, SkillUpdate skillUpdate);
         Task DeleteSkill(int id);
     }
