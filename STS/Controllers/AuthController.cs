@@ -51,19 +51,22 @@ namespace STS.Controllers
             {
                 return Ok(await _service.Login(info));
             }
-            catch (AppException appEx)
+            catch (AppException ex)
             {
                 return Unauthorized(new ErrorResponse
                 {
-                    StatusCode = appEx.StatusCode,
-                    Message = appEx.Message
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
             catch (Exception ex)
             {
                 return Unauthorized(new ErrorResponse
                 {
-                    Message = ex.Message
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -36,19 +37,60 @@ namespace STS.Controllers
         public async Task<ActionResult<IEnumerable<BrandOverview>>> GetBrands(
             [FromQuery] BrandParams @params)
         {
-            var result = await _brandService.GetBrands(@params);
+            try
+            {
+                var result = await _brandService.GetBrands(@params);
+                Response.AddPaginationHeader(result);
 
-            Response.AddPaginationHeader(result);
-
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
         }
 
         [HttpGet("all")]
         public async Task<ActionResult> GetAllBrands()
         {
-            var result = await _brandService.GetAllBrands();
+            try
+            {
+                var result = await _brandService.GetAllBrands();
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
         }
 
         [HttpGet("{id}")]
@@ -64,7 +106,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -84,7 +136,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -105,7 +167,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -125,7 +197,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -145,7 +227,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -163,7 +255,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -181,7 +283,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
 
@@ -201,7 +313,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -37,16 +37,31 @@ namespace STS.Controllers
         [HttpGet("profile")]
         public async Task<ActionResult> GetUser()
         {
-            var user = await _userService.GetUserAsync(User.GetUsername());
-
-            if (user != null)
-                return Ok(user);
-
-            return BadRequest(new ErrorResponse
+            try
             {
-                StatusCode = 400,
-                Message = "Username not found"
-            });
+                var username = User.GetUsername();
+                var user = await _userService.GetUserAsync(username);
+
+                return Ok(user);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
         }
 
         [HttpGet("skills")]
@@ -68,7 +83,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -91,7 +116,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -114,7 +149,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -137,7 +182,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -159,7 +214,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
 
@@ -183,7 +248,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
 
@@ -202,7 +277,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
 

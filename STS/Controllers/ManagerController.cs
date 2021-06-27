@@ -56,7 +56,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -78,7 +88,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
         }
@@ -93,19 +113,20 @@ namespace STS.Controllers
                 return Ok(await _authService
                     .RegisterWithRole(brandId, (int)UserRole.StoreManager, info));
             }
-            catch (AppException appEx)
+            catch (AppException ex)
             {
                 return BadRequest(new ErrorResponse
                 {
-                    StatusCode = appEx.StatusCode,
-                    Message = appEx.Message
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
             catch (Exception ex)
             {
                 return BadRequest(new ErrorResponse
                 {
-                    StatusCode = 500,
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
                     Message = ex.Message,
                     StackTrace = ex.StackTrace
                 });
@@ -122,19 +143,20 @@ namespace STS.Controllers
                 return Ok(await _authService
                     .RegisterWithRole(brandId, (int)UserRole.Staff, info));
             }
-            catch (AppException appEx)
+            catch (AppException ex)
             {
                 return BadRequest(new ErrorResponse
                 {
-                    StatusCode = appEx.StatusCode,
-                    Message = appEx.Message
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
             catch (Exception ex)
             {
                 return BadRequest(new ErrorResponse
                 {
-                    StatusCode = 500,
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
                     Message = ex.Message,
                     StackTrace = ex.StackTrace
                 });
@@ -148,19 +170,20 @@ namespace STS.Controllers
             {
                 await _storeStaffService.AssignStoreManager(info);
             }
-            catch (AppException appEx)
+            catch (AppException ex)
             {
                 return BadRequest(new ErrorResponse
                 {
-                    StatusCode = appEx.StatusCode,
-                    Message = appEx.Message
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
             catch (Exception ex)
             {
                 return BadRequest(new ErrorResponse
                 {
-                    StatusCode = 500,
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
                     Message = ex.Message,
                     StackTrace = ex.StackTrace
                 });
@@ -182,7 +205,17 @@ namespace STS.Controllers
                 return BadRequest(new ErrorResponse
                 {
                     StatusCode = ex.StatusCode,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
                 });
             }
 
