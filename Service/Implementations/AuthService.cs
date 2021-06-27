@@ -33,7 +33,7 @@ namespace Service.Implementations
             User user = await _context.Users
                 .Include(user => user.Role)
                 .SingleOrDefaultAsync(x =>
-                    x.Username == login.Username.ToLower()
+                    x.Username.ToLower() == login.Username.ToLower()
                     && x.Status == Status.Active);
 
             if (user == null)
@@ -69,6 +69,7 @@ namespace Service.Implementations
             using var hmac = new HMACSHA512();
 
             var user = _mapper.Map<User>(info);
+            user.Username = user.Username.ToLower();
             user.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password));
             user.PasswordSalt = hmac.Key;
             user.RoleId = (int)UserRole.BrandManager;
@@ -98,6 +99,7 @@ namespace Service.Implementations
 
             var user = _mapper.Map<User>(info);
 
+            user.Username = user.Username.ToLower();
             user.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(info.Password));
             user.PasswordSalt = hmac.Key;
             if (brandId != 0)

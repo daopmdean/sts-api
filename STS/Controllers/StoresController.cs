@@ -20,14 +20,17 @@ namespace STS.Controllers
         private readonly IStoreService _storeService;
         private readonly IWeekScheduleService _weekService;
         private readonly IStoreStaffService _storeStaffService;
+        private readonly IShiftAssignmentService _shiftAssignmentService;
 
         public StoresController(IStoreService storeService,
             IWeekScheduleService weekService,
-            IStoreStaffService storeStaffService)
+            IStoreStaffService storeStaffService,
+            IShiftAssignmentService shiftAssignmentService)
         {
             _storeService = storeService;
             _weekService = weekService;
             _storeStaffService = storeStaffService;
+            _shiftAssignmentService = shiftAssignmentService;
         }
 
         [HttpGet]
@@ -96,6 +99,29 @@ namespace STS.Controllers
                 Response.AddPaginationHeader(staff);
 
                 return Ok(staff);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("shift-assignments")]
+        public async Task<ActionResult<BrandOverview>> GetShiftAssignmentsOfStore(
+            [FromQuery] ShiftAssignmentParams @params)
+        {
+            try
+            {
+                int storeId = int.Parse(User.GetStoreId());
+                var shiftAssignments = await _shiftAssignmentService
+                    .GetShiftAssignments(storeId, @params);
+                Response.AddPaginationHeader(shiftAssignments);
+
+                return Ok(shiftAssignments);
             }
             catch (AppException ex)
             {

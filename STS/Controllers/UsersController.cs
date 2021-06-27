@@ -34,18 +34,6 @@ namespace STS.Controllers
             _shiftAttendanceService = shiftAttendanceService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserOverview>>> GetUsers(
-            [FromQuery] UserParams @params)
-        {
-            PagedList<UserOverview> result;
-            result = await _userService.GetUsersAsync(@params);
-
-            Response.AddPaginationHeader(result);
-
-            return Ok(result);
-        }
-
         [HttpGet("profile")]
         public async Task<ActionResult> GetUser()
         {

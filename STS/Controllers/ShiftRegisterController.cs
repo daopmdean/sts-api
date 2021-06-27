@@ -22,11 +22,12 @@ namespace STS.Controllers
 
         [HttpPost]
         public async Task<ActionResult<ShiftRegister>> CreateShiftRegister(
-            ShiftRegisterCreate create)
+            ShiftRegistersCreate create)
         {
             try
             {
-                return Ok(await _service.CreateShiftRegister(create));
+                return CreatedAtRoute("", await _service
+                    .CreateShiftRegister(create));
             }
             catch (AppException ex)
             {
@@ -36,6 +37,7 @@ namespace STS.Controllers
                     Message = ex.Message
                 });
             }
+
         }
 
         [HttpGet("{id}")]

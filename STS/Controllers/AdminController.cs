@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
@@ -39,6 +40,27 @@ namespace STS.Controllers
             _shiftRegisterService = shiftRegisterService;
             _shiftAssignmentService = shiftAssignmentService;
             _shiftAttendanceService = shiftAttendanceService;
+        }
+
+        [HttpGet("users")]
+        public async Task<ActionResult<IEnumerable<UserOverview>>> GetUsers(
+            [FromQuery] UserParams @params)
+        {
+            try
+            {
+                var result = await _userService.GetUsersAsync(@params);
+                Response.AddPaginationHeader(result);
+
+                return Ok(result);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message
+                });
+            }
         }
 
         [HttpGet("users/{username}")]
