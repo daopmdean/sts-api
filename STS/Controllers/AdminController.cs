@@ -24,6 +24,9 @@ namespace STS.Controllers
         private readonly IShiftRegisterService _shiftRegisterService;
         private readonly IShiftAssignmentService _shiftAssignmentService;
         private readonly IShiftAttendanceService _shiftAttendanceService;
+        private readonly IStoreService _storeService;
+        private readonly ISkillService _skillService;
+        private readonly IPostService _postService;
 
         public AdminController(
             IAdminService adminService,
@@ -32,7 +35,10 @@ namespace STS.Controllers
             IStaffSkillService staffSkillService,
             IShiftRegisterService shiftRegisterService,
             IShiftAssignmentService shiftAssignmentService,
-            IShiftAttendanceService shiftAttendanceService)
+            IShiftAttendanceService shiftAttendanceService,
+            IStoreService storeService,
+            ISkillService skillService,
+            IPostService postService)
         {
             _adminService = adminService;
             _authService = authService;
@@ -41,6 +47,9 @@ namespace STS.Controllers
             _shiftRegisterService = shiftRegisterService;
             _shiftAssignmentService = shiftAssignmentService;
             _shiftAttendanceService = shiftAttendanceService;
+            _storeService = storeService;
+            _skillService = skillService;
+            _postService = postService;
         }
 
         [HttpGet("users")]
@@ -196,6 +205,127 @@ namespace STS.Controllers
                 Response.AddPaginationHeader(shiftAttendances);
 
                 return Ok(shiftAttendances);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpGet("{brandId}/stores")]
+        public async Task<ActionResult<BrandOverview>> GetStoresOfBrand(
+            int brandId, [FromQuery] StoreParams @params)
+        {
+            try
+            {
+                var stores = await _storeService.GetStores(brandId, @params);
+                Response.AddPaginationHeader(stores);
+                return Ok(stores);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpGet("{brandId}/users")]
+        public async Task<ActionResult<BrandOverview>> GetUsersOfBrand(
+            int brandId, [FromQuery] UserParams @params)
+        {
+            try
+            {
+                var users = await _userService.GetUsersAsync(brandId, @params);
+
+                Response.AddPaginationHeader(users);
+                return Ok(users);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpGet("{brandId}/skills")]
+        public async Task<ActionResult> GetSkillsOfBrand(
+            int brandId, [FromQuery] SkillParams @params)
+        {
+            try
+            {
+                var skills = await _skillService.GetSkills(brandId, @params);
+                Response.AddPaginationHeader(skills);
+                return Ok(skills);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpGet("{brandId}/posts")]
+        public async Task<ActionResult> GetPostsOfBrand(
+            int brandId, [FromQuery] PostParams @params)
+        {
+            try
+            {
+                var posts = await _postService.GetPosts(brandId, @params);
+                Response.AddPaginationHeader(posts);
+                return Ok(posts);
             }
             catch (AppException ex)
             {

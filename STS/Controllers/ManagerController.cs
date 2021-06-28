@@ -139,7 +139,6 @@ namespace STS.Controllers
             try
             {
                 var brandId = int.Parse(User.GetBrandId());
-                var username = int.Parse(info.GeneralInfo.Username);
 
                 return Ok(await _managerService
                     .CreateStaff(brandId, info));

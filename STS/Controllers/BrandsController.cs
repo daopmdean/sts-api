@@ -121,12 +121,13 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("{brandId}/stores")]
+        [HttpGet("stores")]
         public async Task<ActionResult<BrandOverview>> GetStoresOfBrand(
-            int brandId, [FromQuery] StoreParams @params)
+            [FromQuery] StoreParams @params)
         {
             try
             {
+                var brandId = int.Parse(User.GetBrandId());
                 var stores = await _storeService.GetStores(brandId, @params);
                 Response.AddPaginationHeader(stores);
                 return Ok(stores);
@@ -151,12 +152,13 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("{brandId}/users")]
+        [HttpGet("users")]
         public async Task<ActionResult<BrandOverview>> GetUsersOfBrand(
-            int brandId, [FromQuery] UserParams @params)
+            [FromQuery] UserParams @params)
         {
             try
             {
+                var brandId = int.Parse(User.GetBrandId());
                 var users = await _userService.GetUsersAsync(brandId, @params);
 
                 Response.AddPaginationHeader(users);
@@ -182,12 +184,13 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("{brandId}/skills")]
+        [HttpGet("skills")]
         public async Task<ActionResult> GetSkillsOfBrand(
-            int brandId, [FromQuery] SkillParams @params)
+            [FromQuery] SkillParams @params)
         {
             try
             {
+                var brandId = int.Parse(User.GetBrandId());
                 var skills = await _skillService.GetSkills(brandId, @params);
                 Response.AddPaginationHeader(skills);
                 return Ok(skills);
@@ -212,12 +215,13 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("{brandId}/posts")]
+        [HttpGet("posts")]
         public async Task<ActionResult> GetPostsOfBrand(
-            int brandId, [FromQuery] PostParams @params)
+            [FromQuery] PostParams @params)
         {
             try
             {
+                var brandId = int.Parse(User.GetBrandId());
                 var posts = await _postService.GetPosts(brandId, @params);
                 Response.AddPaginationHeader(posts);
                 return Ok(posts);
