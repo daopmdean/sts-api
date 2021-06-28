@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
@@ -72,6 +73,11 @@ namespace Service.Implementations
             SkillParams @params)
         {
             return await _skillRepo.GetSkillsAsync(brandId, @params);
+        }
+
+        public async Task<IEnumerable<SkillOverview>> GetSkills(int brandId)
+        {
+            return await _skillRepo.GetSkillsAsync(brandId);
         }
 
         public async Task UpdateSkill(int id, SkillUpdate skillUpdate)

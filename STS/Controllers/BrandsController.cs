@@ -215,6 +215,35 @@ namespace STS.Controllers
             }
         }
 
+        [HttpGet("skills/all")]
+        public async Task<ActionResult> GetAllSkillsOfBrand()
+        {
+            try
+            {
+                var brandId = int.Parse(User.GetBrandId());
+                var skills = await _skillService.GetSkills(brandId);
+                return Ok(skills);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
         [HttpGet("posts")]
         public async Task<ActionResult> GetPostsOfBrand(
             [FromQuery] PostParams @params)

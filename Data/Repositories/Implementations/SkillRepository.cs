@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,6 +8,7 @@ using Data.Entities;
 using Data.Models.Responses;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories.Implementations
 {
@@ -31,6 +33,16 @@ namespace Data.Repositories.Implementations
 
             return await PagedList<SkillOverview>
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
+        }
+
+        public async Task<IEnumerable<SkillOverview>> GetSkillsAsync(int brandId)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.BrandId == brandId)
+                .OrderBy(b => b.Name)
+                .ProjectTo<SkillOverview>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
     }
 }
