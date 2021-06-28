@@ -152,6 +152,35 @@ namespace STS.Controllers
             }
         }
 
+        [HttpGet("stores/all")]
+        public async Task<ActionResult<BrandOverview>> GetStoresOfBrand()
+        {
+            try
+            {
+                var brandId = int.Parse(User.GetBrandId());
+                var stores = await _storeService.GetStores(brandId);
+                return Ok(stores);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
         [HttpGet("users")]
         public async Task<ActionResult<BrandOverview>> GetUsersOfBrand(
             [FromQuery] UserParams @params)
@@ -276,7 +305,7 @@ namespace STS.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<BrandOverview>>> CreateBrand(
+        public async Task<ActionResult<System.Collections.Generic.IEnumerable<BrandOverview>>> CreateBrand(
             BrandCreate brand)
         {
             try
@@ -304,7 +333,7 @@ namespace STS.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<IEnumerable<BrandOverview>>> UpdateBrand(
+        public async Task<ActionResult<System.Collections.Generic.IEnumerable<BrandOverview>>> UpdateBrand(
             int id, BrandUpdate brandUpdate)
         {
             try
@@ -334,7 +363,7 @@ namespace STS.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<IEnumerable<BrandOverview>>> DeleteBrand(
+        public async Task<ActionResult<System.Collections.Generic.IEnumerable<BrandOverview>>> DeleteBrand(
             int id)
         {
             try

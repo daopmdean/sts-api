@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
@@ -76,6 +77,11 @@ namespace Service.Implementations
             StoreParams @params)
         {
             return await _storeRepo.GetStoresAsync(brandId, @params);
+        }
+
+        public async Task<IEnumerable<StoreOverview>> GetStores(int brandId)
+        {
+            return await _storeRepo.GetStoresAsync(brandId);
         }
 
         public async Task UpdateStore(int id, StoreUpdate storeUpdate)

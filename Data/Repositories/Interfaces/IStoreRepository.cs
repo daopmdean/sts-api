@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Responses;
@@ -11,5 +12,6 @@ namespace Data.Repositories.Interfaces
         Task<PagedList<StoreOverview>> GetStoresAsync(StoreParams @params);
         Task<PagedList<StoreOverview>> GetStoresAsync(int brandId,
             StoreParams @params);
+        Task<IEnumerable<StoreOverview>> GetStoresAsync(int brandId);
     }
 }
