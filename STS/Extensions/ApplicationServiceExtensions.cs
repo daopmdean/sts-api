@@ -1,5 +1,6 @@
 ﻿using Data.Repositories.Implementations;
 using Data.Repositories.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Service.Helpers;
 using Service.Implementations;
@@ -10,7 +11,7 @@ namespace STS.Extensions
     public static class ApplicationServiceExtensions
     {
         public static IServiceCollection AddApplicationServices(
-            this IServiceCollection services)
+            this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
@@ -58,6 +59,12 @@ namespace STS.Extensions
             services.AddScoped<IShiftRegisterService, ShiftRegisterService>();
             services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
             services.AddScoped<IShiftAttendanceService, ShiftAttendanceService>();
+            services.AddScoped<IEmailSender, EmailSender>();
+
+            var emailConfig = configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
 
             return services;
         }

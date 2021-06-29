@@ -43,7 +43,7 @@ namespace STS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbConnectionServices(Configuration);
-            services.AddApplicationServices();
+            services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
             services.AddControllers().AddNewtonsoftJson(
                 opt => opt.SerializerSettings.ReferenceLoopHandling
