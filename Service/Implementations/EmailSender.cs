@@ -29,7 +29,7 @@ namespace Service.Implementations
             emailMessage.From.Add(new MailboxAddress(_config.From));
             emailMessage.To.AddRange(message.To);
             emailMessage.Subject = message.Subject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text)
+            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
                 Text = message.Content
             };
