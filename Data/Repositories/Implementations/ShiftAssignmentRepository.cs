@@ -27,6 +27,8 @@ namespace Data.Repositories.Implementations
             var source = _entities
                 .Where(s => s.Status == Enums.Status.Active)
                 .Where(s => s.Username == username)
+                .Where(s => s.TimeStart >= @params.FromDate &&
+                    s.TimeStart <= @params.ToDate)
                 .OrderByDescending(s => s.TimeStart)
                 .ProjectTo<ShiftAssignmentOverview>(_mapper.ConfigurationProvider);
 
