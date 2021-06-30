@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Data.Enums;
 
 namespace Data.Entities
 {
@@ -25,7 +26,7 @@ namespace Data.Entities
 
         public string Gender { get; set; }
 
-        public string Type { get; set; }
+        //public StaffType? Type { get; set; }
 
         public string Address { get; set; }
 

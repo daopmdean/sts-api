@@ -19,6 +19,7 @@ namespace Data
 
         public DbSet<WeekSchedule> WeekSchedules { get; set; }
         public DbSet<StaffScheduleDetail> StaffScheduleDetails { get; set; }
+        public DbSet<StoreScheduleDetail> StoreScheduleDetails { get; set; }
         public DbSet<WeekScheduleDetail> WeekScheduleDetails { get; set; }
 
         public DbSet<ShiftRegister> ShiftRegisters { get; set; }
