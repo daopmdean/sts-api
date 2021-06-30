@@ -27,6 +27,11 @@ namespace Data.Repositories.Implementations
             var source = _entities
                 .Where(s => s.Status == Enums.Status.Active)
                 .Where(s => s.StoreId == storeId)
+                .Where(s => s.Username.Contains(@params.Keyword)
+                    || s.User.Email.Contains(@params.Keyword)
+                    || s.User.FirstName.Contains(@params.Keyword)
+                    || s.User.LastName.Contains(@params.Keyword)
+                    || s.User.Address.Contains(@params.Keyword))
                 .OrderBy(s => s.Username)
                 .ProjectTo<StoreStaffOverview>(_mapper.ConfigurationProvider);
 

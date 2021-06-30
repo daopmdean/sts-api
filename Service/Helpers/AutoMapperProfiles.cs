@@ -29,7 +29,15 @@ namespace Service.Helpers
             CreateMap<PostCreate, Post>();
             CreateMap<PostUpdate, Post>();
 
-            CreateMap<StoreStaff, StoreStaffOverview>();
+            CreateMap<StoreStaff, StoreStaffOverview>()
+                .ForMember(dest => dest.Email,
+                    obj => obj.MapFrom(src => src.User.Email))
+                .ForMember(dest => dest.FirstName,
+                    obj => obj.MapFrom(src => src.User.FirstName))
+                .ForMember(dest => dest.LastName,
+                    obj => obj.MapFrom(src => src.User.LastName))
+                .ForMember(dest => dest.Address,
+                    obj => obj.MapFrom(src => src.User.Address));
             CreateMap<StoreStaffCreate, StoreStaff>();
             CreateMap<StoreStaffUpdate, StoreStaff>();
 
