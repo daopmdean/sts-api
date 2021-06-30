@@ -127,7 +127,7 @@ namespace STS.Controllers
         }
 
         [HttpGet("staff")]
-        public async Task<ActionResult<BrandOverview>> GetStaffOfStore(
+        public async Task<ActionResult<IEnumerable<StoreStaffOverview>>> GetStaffOfStore(
             [FromQuery] StoreStaffParams @params)
         {
             try
