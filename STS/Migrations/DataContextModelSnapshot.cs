@@ -380,13 +380,15 @@ namespace STS.Migrations
                     b.Property<int>("StaffType")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<int>("WeekScheduleId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WeekScheduleId")
-                        .IsUnique();
+                    b.HasIndex("WeekScheduleId");
 
                     b.ToTable("StoreScheduleDetails");
                 });
@@ -675,8 +677,8 @@ namespace STS.Migrations
             modelBuilder.Entity("Data.Entities.StoreScheduleDetail", b =>
                 {
                     b.HasOne("Data.Entities.WeekSchedule", "WeekSchedule")
-                        .WithOne("StoreScheduleDetail")
-                        .HasForeignKey("Data.Entities.StoreScheduleDetail", "WeekScheduleId")
+                        .WithMany("StoreScheduleDetails")
+                        .HasForeignKey("WeekScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -803,7 +805,7 @@ namespace STS.Migrations
 
                     b.Navigation("StaffScheduleDetails");
 
-                    b.Navigation("StoreScheduleDetail");
+                    b.Navigation("StoreScheduleDetails");
 
                     b.Navigation("WeekScheduleDetails");
                 });

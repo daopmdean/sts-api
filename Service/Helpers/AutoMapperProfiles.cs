@@ -60,6 +60,9 @@ namespace Service.Helpers
             CreateMap<StaffScheduleDetailCreate, StaffScheduleDetail>();
             CreateMap<StaffScheduleDetailUpdate, StaffScheduleDetail>();
 
+            CreateMap<StoreScheduleDetailCreate, StoreScheduleDetail>();
+            CreateMap<StoreScheduleDetailUpdate, StoreScheduleDetail>();
+
             CreateMap<ShiftRegister, ShiftRegisterOverview>();
             CreateMap<ShiftRegistersCreate, ShiftRegister>();
             CreateMap<ShiftRegisterUpdate, ShiftRegister>();

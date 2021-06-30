@@ -2,7 +2,7 @@
 
 namespace Data.Entities
 {
-    public class StoreScheduleDetail
+    public class StoreScheduleDetail : BaseEntity
     {
         public int Id { get; set; }
 

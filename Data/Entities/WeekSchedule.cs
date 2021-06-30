@@ -13,7 +13,7 @@ namespace Data.Entities
 
         public DateTime DateStart { get; set; }
 
-        public StoreScheduleDetail StoreScheduleDetail { get; set; }
+        public ICollection<StoreScheduleDetail> StoreScheduleDetails { get; set; }
 
         public ICollection<WeekScheduleDetail> WeekScheduleDetails { get; set; }
 
