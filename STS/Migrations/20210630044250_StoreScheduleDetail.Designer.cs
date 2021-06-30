@@ -3,15 +3,17 @@ using System;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace STS.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210630044250_StoreScheduleDetail")]
+    partial class StoreScheduleDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -377,9 +379,6 @@ namespace STS.Migrations
                     b.Property<float>("MinShiftDuration")
                         .HasColumnType("real");
 
-                    b.Property<int>("StaffType")
-                        .HasColumnType("integer");
-
                     b.Property<int>("WeekScheduleId")
                         .HasColumnType("integer");
 
@@ -460,9 +459,6 @@ namespace STS.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("Type")
                         .HasColumnType("integer");
 
                     b.HasKey("Username");

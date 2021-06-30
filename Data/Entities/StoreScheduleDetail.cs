@@ -1,4 +1,6 @@
-﻿namespace Data.Entities
+﻿using Data.Enums;
+
+namespace Data.Entities
 {
     public class StoreScheduleDetail
     {
@@ -7,6 +9,8 @@
         public int WeekScheduleId { get; set; }
 
         public WeekSchedule WeekSchedule { get; set; }
+
+        public StaffType StaffType { get; set; }
 
         public int MinDayOff { get; set; }
 

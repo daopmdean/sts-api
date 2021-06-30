@@ -26,7 +26,7 @@ namespace Data.Entities
 
         public string Gender { get; set; }
 
-        //public StaffType? Type { get; set; }
+        public StaffType? Type { get; set; }
 
         public string Address { get; set; }
 
