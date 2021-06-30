@@ -18,14 +18,17 @@ namespace STS.Controllers
     {
         private readonly IWeekScheduleService _weekScheduleService;
         private readonly IWeekScheduleDetailService _weekScheduleDetailService;
+        private readonly IStoreScheduleDetailService _storeScheduleDetailService;
         private readonly IStaffScheduleDetailService _staffScheduleDetailService;
 
         public WeekScheduleController(IWeekScheduleService weekScheduleService,
             IWeekScheduleDetailService weekScheduleDetailService,
+            IStoreScheduleDetailService storeScheduleDetailService,
             IStaffScheduleDetailService staffScheduleDetailService)
         {
             _weekScheduleService = weekScheduleService;
             _weekScheduleDetailService = weekScheduleDetailService;
+            _storeScheduleDetailService = storeScheduleDetailService;
             _staffScheduleDetailService = staffScheduleDetailService;
         }
 
@@ -68,6 +71,37 @@ namespace STS.Controllers
                 Response.AddPaginationHeader(weekScheduleDetails);
 
                 return Ok(weekScheduleDetails);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpGet("{weekScheduleId}/store-schedule-details")]
+        public async Task<ActionResult> GetStoreScheduleDetails(
+            int weekScheduleId)
+        {
+            try
+            {
+                var storeScheduleDetails = await _storeScheduleDetailService
+                    .GetStoreScheduleDetails(weekScheduleId);
+
+                return Ok(storeScheduleDetails);
             }
             catch (AppException ex)
             {

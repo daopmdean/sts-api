@@ -28,6 +28,7 @@ namespace STS.Extensions
 
             services.AddScoped<IWeekScheduleRepository, WeekScheduleRepository>();
             services.AddScoped<IWeekScheduleDetailRepository, WeekScheduleDetailRepository>();
+            services.AddScoped<IStoreScheduleDetailRepository, StoreScheduleDetailRepository>();
             services.AddScoped<IStaffScheduleDetailRepository, StaffScheduleDetailRepository>();
 
             services.AddScoped<IShiftRegisterRepository, ShiftRegisterRepository>();
@@ -54,6 +55,8 @@ namespace STS.Extensions
             services.AddScoped<IWeekScheduleService, WeekScheduleService>();
             services.AddScoped<IWeekScheduleDetailService,
                 WeekScheduleDetailService>();
+            services.AddScoped<IStoreScheduleDetailService,
+                StoreScheduleDetailService>();
             services.AddScoped<IStaffScheduleDetailService,
                 StaffScheduleDetailService>();
             services.AddScoped<IShiftRegisterService, ShiftRegisterService>();
