@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Data.Entities;
+﻿using System.Threading.Tasks;
 using Data.Models.Requests;
+using Data.Models.Responses;
 
 namespace Service.Interfaces
 {
     public interface IScheduleService
     {
-        Task<IEnumerable<ShiftAssignment>> ComputeSchedule(
+        Task<ScheduleResponse> ComputeSchedule(
             ScheduleRequest request);
     }
 }

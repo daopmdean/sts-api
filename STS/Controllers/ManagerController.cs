@@ -17,6 +17,7 @@ namespace STS.Controllers
     public class ManagerController : ApiBaseController
     {
         private readonly IManagerService _managerService;
+        private readonly IScheduleService _scheduleService;
         private readonly IStoreStaffService _storeStaffService;
         private readonly IWeekScheduleService _weekService;
         private readonly IStoreService _storeService;
@@ -25,6 +26,7 @@ namespace STS.Controllers
 
         public ManagerController(
             IManagerService managerService,
+            IScheduleService scheduleService,
             IStoreStaffService storeStaffService,
             IWeekScheduleService weekService,
             IStoreService storeService,
@@ -32,6 +34,7 @@ namespace STS.Controllers
             IAuthService authService)
         {
             _managerService = managerService;
+            _scheduleService = scheduleService;
             _storeStaffService = storeStaffService;
             _weekService = weekService;
             _storeService = storeService;
@@ -142,6 +145,35 @@ namespace STS.Controllers
 
                 return Ok(await _managerService
                     .CreateStaff(brandId, info));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpPost("schedule")]
+        public async Task<IActionResult> ComputeSchedule(
+            ScheduleRequest request)
+        {
+            try
+            {
+                return Ok(await _scheduleService
+                    .ComputeSchedule(request));
             }
             catch (AppException ex)
             {

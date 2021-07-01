@@ -40,6 +40,7 @@ namespace STS.Extensions
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IManagerService, ManagerService>();
             services.AddScoped<IScheduleService, ScheduleService>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
@@ -62,7 +63,6 @@ namespace STS.Extensions
             services.AddScoped<IShiftRegisterService, ShiftRegisterService>();
             services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
             services.AddScoped<IShiftAttendanceService, ShiftAttendanceService>();
-            services.AddScoped<IEmailSender, EmailSender>();
 
             var emailConfig = configuration
                 .GetSection("EmailConfiguration")
