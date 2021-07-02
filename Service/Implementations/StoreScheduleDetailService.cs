@@ -25,21 +25,24 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
-        public async Task<StoreScheduleDetail> CreateStoreScheduleDetailAsync(
-            StoreScheduleDetailCreate create)
+        public async Task<IEnumerable<StoreScheduleDetailCreate>> CreateStoreScheduleDetailAsync(
+            IEnumerable<StoreScheduleDetailCreate> creates)
         {
-            var weekSchedule = await _weekScheduleRepo
+            foreach (var create in creates)
+            {
+                var weekSchedule = await _weekScheduleRepo
                 .GetByIdAsync(create.WeekScheduleId);
 
-            if (weekSchedule == null)
-                throw new AppException(400,
-                    "Conflicted with the FOREIGN KEY constraint, WeekScheduleId does not exist");
+                if (weekSchedule == null)
+                    throw new AppException(400,
+                        "Conflicted with the FOREIGN KEY constraint, WeekScheduleId does not exist");
 
-            var storeScheduleDetail = _mapper.Map<StoreScheduleDetail>(create);
-            await _storeScheduleDetailRepo.CreateAsync(storeScheduleDetail);
+                var storeScheduleDetail = _mapper.Map<StoreScheduleDetail>(create);
+                await _storeScheduleDetailRepo.CreateAsync(storeScheduleDetail);
+            }
 
             if (await _storeScheduleDetailRepo.SaveChangesAsync())
-                return storeScheduleDetail;
+                return creates;
 
             throw new AppException(400, "Can not create store schedule detail");
         }

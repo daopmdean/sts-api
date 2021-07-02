@@ -25,7 +25,7 @@ namespace STS.Controllers
 
         [HttpPost]
         public async Task<ActionResult<StoreScheduleDetail>> CreateStoreScheduleDetail(
-            StoreScheduleDetailCreate create)
+            IEnumerable<StoreScheduleDetailCreate> create)
         {
             try
             {

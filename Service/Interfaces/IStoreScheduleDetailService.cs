@@ -11,8 +11,8 @@ namespace Service.Interfaces
         Task<IEnumerable<StoreScheduleDetail>> GetStoreScheduleDetails(
             int weekScheduleId);
         Task<StoreScheduleDetail> GetStoreScheduleDetail(int id);
-        Task<StoreScheduleDetail> CreateStoreScheduleDetailAsync(
-            StoreScheduleDetailCreate create);
+        Task<IEnumerable<StoreScheduleDetailCreate>> CreateStoreScheduleDetailAsync(
+            IEnumerable<StoreScheduleDetailCreate> create);
         Task UpdateStoreScheduleDetailAsync(int id,
             StoreScheduleDetailUpdate update);
         Task DeleteStoreScheduleDetailAsync(int id);
