@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
 using Data.Models.Requests;
@@ -29,28 +30,31 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
-        public async Task<WeekScheduleDetail> CreateWeekScheduleDetailAsync(
-            WeekScheduleDetailCreate create)
+        public async Task<IEnumerable<WeekScheduleDetailCreate>> CreateWeekScheduleDetailAsync(
+            IEnumerable<WeekScheduleDetailCreate> creates)
         {
-            var weekSchedule = await _weekScheduleRepo
-                .GetByIdAsync(create.WeekScheduleId);
+            foreach (var create in creates)
+            {
+                var weekSchedule = await _weekScheduleRepo
+                    .GetByIdAsync(create.WeekScheduleId);
 
-            if (weekSchedule == null)
-                throw new AppException(400,
-                    "Conflicted with the FOREIGN KEY constraint, WeekScheduleId does not exist");
+                if (weekSchedule == null)
+                    throw new AppException(400,
+                        "Conflicted with the FOREIGN KEY constraint, WeekScheduleId does not exist");
 
-            var skill = await _skillRepo
-                .GetByIdAsync(create.SkillId);
+                var skill = await _skillRepo
+                    .GetByIdAsync(create.SkillId);
 
-            if (skill == null)
-                throw new AppException(400,
-                    "Conflicted with the FOREIGN KEY constraint, SkillId does not exist");
+                if (skill == null)
+                    throw new AppException(400,
+                        "Conflicted with the FOREIGN KEY constraint, SkillId does not exist");
 
-            var weekScheduleDetail = _mapper.Map<WeekScheduleDetail>(create);
-            await _weekScheduleDetailRepo.CreateAsync(weekScheduleDetail);
+                var weekScheduleDetail = _mapper.Map<WeekScheduleDetail>(create);
+                await _weekScheduleDetailRepo.CreateAsync(weekScheduleDetail);
+            }
 
             if (await _weekScheduleDetailRepo.SaveChangesAsync())
-                return weekScheduleDetail;
+                return creates;
 
             throw new AppException(400, "Can not create week schedule detail");
         }
