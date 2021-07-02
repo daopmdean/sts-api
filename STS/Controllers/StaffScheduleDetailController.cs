@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
@@ -23,12 +24,12 @@ namespace STS.Controllers
 
         [HttpPost]
         public async Task<ActionResult<StaffScheduleDetail>> CreateStaffScheduleDetail(
-            StaffScheduleDetailCreate staffScheduleDetail)
+            IEnumerable<StaffScheduleDetailCreate> staffScheduleDetails)
         {
             try
             {
                 return Ok(await _service
-                    .CreateStaffScheduleDetailAsync(staffScheduleDetail));
+                    .CreateStaffScheduleDetailAsync(staffScheduleDetails));
             }
             catch (AppException ex)
             {

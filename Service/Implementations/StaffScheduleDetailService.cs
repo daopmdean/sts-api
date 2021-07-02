@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
@@ -30,28 +31,31 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
-        public async Task<StaffScheduleDetail> CreateStaffScheduleDetailAsync(
-            StaffScheduleDetailCreate create)
+        public async Task<IEnumerable<StaffScheduleDetailCreate>> CreateStaffScheduleDetailAsync(
+            IEnumerable<StaffScheduleDetailCreate> creates)
         {
-            var weekSchedule = await _weekScheduleRepo
+            foreach (var create in creates)
+            {
+                var weekSchedule = await _weekScheduleRepo
                 .GetByIdAsync(create.WeekScheduleId);
 
-            if (weekSchedule == null)
-                throw new AppException(400,
-                    "Conflicted with the FOREIGN KEY constraint, WeekScheduleId does not exist");
+                if (weekSchedule == null)
+                    throw new AppException(400,
+                        "Conflicted with the FOREIGN KEY constraint, WeekScheduleId does not exist");
 
-            var user = await _userRepo
-                .GetUserByUsernameAsync(create.Username);
+                var user = await _userRepo
+                    .GetUserByUsernameAsync(create.Username);
 
-            if (user == null)
-                throw new AppException(400,
-                    "Conflicted with the FOREIGN KEY constraint, Username does not exist");
+                if (user == null)
+                    throw new AppException(400,
+                        "Conflicted with the FOREIGN KEY constraint, Username does not exist");
 
-            var staffScheduleDetail = _mapper.Map<StaffScheduleDetail>(create);
-            await _staffScheduleDetailRepo.CreateAsync(staffScheduleDetail);
+                var staffScheduleDetail = _mapper.Map<StaffScheduleDetail>(create);
+                await _staffScheduleDetailRepo.CreateAsync(staffScheduleDetail);
+            }
 
             if (await _staffScheduleDetailRepo.SaveChangesAsync())
-                return staffScheduleDetail;
+                return creates;
 
             throw new AppException(400, "Can not create staff schedule detail");
         }
