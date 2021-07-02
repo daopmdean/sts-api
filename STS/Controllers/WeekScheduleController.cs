@@ -62,13 +62,12 @@ namespace STS.Controllers
 
         [HttpGet("{weekScheduleId}/week-schedule-details")]
         public async Task<ActionResult> GetWeekScheduleDetails(
-            int weekScheduleId, [FromQuery] WeekScheduleDetailParams @params)
+            int weekScheduleId)
         {
             try
             {
                 var weekScheduleDetails = await _weekScheduleDetailService
-                    .GetWeekScheduleDetailsAsync(weekScheduleId, @params);
-                Response.AddPaginationHeader(weekScheduleDetails);
+                    .GetWeekScheduleDetailsAsync(weekScheduleId); ;
 
                 return Ok(weekScheduleDetails);
             }

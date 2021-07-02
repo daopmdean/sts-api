@@ -87,11 +87,11 @@ namespace Service.Implementations
             return weekScheduleDetail;
         }
 
-        public async Task<PagedList<WeekScheduleDetailOverview>> GetWeekScheduleDetailsAsync(
-            int weekScheduleId, WeekScheduleDetailParams @params)
+        public async Task<IEnumerable<WeekScheduleDetail>> GetWeekScheduleDetailsAsync(
+            int weekScheduleId)
         {
             return await _weekScheduleDetailRepo
-                .GetWeekScheduleDetailsAsync(weekScheduleId, @params);
+                .GetWeekScheduleDetailsAsync(weekScheduleId);
         }
 
         public async Task UpdateWeekScheduleDetailAsync(int id,
