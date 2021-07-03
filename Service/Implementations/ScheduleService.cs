@@ -15,8 +15,18 @@ namespace Service.Implementations
 {
     public class ScheduleService : IScheduleService
     {
-        public ScheduleService()
+        private readonly IShiftRegisterService _shiftRegisterService;
+        private readonly IWeekScheduleDetailService _weekScheduleDetailService;
+        private readonly IStoreScheduleDetailService _storeScheduleDetailService;
+
+        public ScheduleService(
+            IShiftRegisterService shiftRegisterService,
+            IWeekScheduleDetailService weekScheduleDetailService,
+            IStoreScheduleDetailService storeScheduleDetailService)
         {
+            _shiftRegisterService = shiftRegisterService;
+            _weekScheduleDetailService = weekScheduleDetailService;
+            _storeScheduleDetailService = storeScheduleDetailService;
         }
 
         public async Task<ScheduleResponse> ComputeSchedule(
