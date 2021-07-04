@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -10,6 +11,8 @@ namespace Service.Interfaces
     {
         Task<PagedList<ShiftRegisterOverview>> GetShiftRegisters(string username,
             ShiftRegisterParams @params);
+        Task<IEnumerable<ShiftRegister>> GetShiftRegisters(
+            int weekScheduleId);
         Task<ShiftRegister> GetShiftRegister(int id);
         Task<ShiftRegister> CreateShiftRegister(ShiftRegistersCreate create);
         Task UpdateShiftRegister(int id, ShiftRegisterUpdate update);

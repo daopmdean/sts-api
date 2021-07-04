@@ -30,13 +30,24 @@ namespace Service.Implementations
         }
 
         public async Task<ScheduleResponse> ComputeSchedule(
-            ScheduleRequest request)
+            int weekScheduleId)
         {
             HttpClient client = new();
             client.BaseAddress = new Uri("https://localhost:5001/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
+
+            ScheduleRequest request = new();
+
+            var shiftRegisters = await _shiftRegisterService
+                .GetShiftRegisters(weekScheduleId);
+
+            var weekScheduleDetails = await _weekScheduleDetailService
+                .GetWeekScheduleDetailsAsync(weekScheduleId);
+
+            var storeScheduleDetails = await _storeScheduleDetailService
+                .GetStoreScheduleDetails(weekScheduleId);
 
             HttpResponseMessage response = await client.PostAsJsonAsync(
                 "api/schedule", request);
@@ -51,5 +62,6 @@ namespace Service.Implementations
             throw new AppException((int)StatusCode.BadRequest,
                 "Can not compute schedule");
         }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Responses;
@@ -10,5 +11,7 @@ namespace Data.Repositories.Interfaces
     {
         Task<PagedList<ShiftRegisterOverview>> GetShiftRegistersAsync(
             string username, ShiftRegisterParams @params);
+        Task<IEnumerable<ShiftRegister>> GetShiftRegistersAsync(
+            int weekScheduleId);
     }
 }

@@ -106,6 +106,13 @@ namespace Service.Implementations
                 .GetShiftRegistersAsync(username, @params);
         }
 
+        public async Task<IEnumerable<ShiftRegister>> GetShiftRegisters(
+            int weekScheduleId)
+        {
+            return await _shiftRegisterRepo
+                .GetShiftRegistersAsync(weekScheduleId);
+        }
+
         public async Task UpdateShiftRegister(int id, ShiftRegisterUpdate update)
         {
             var shiftRegister = await _shiftRegisterRepo
