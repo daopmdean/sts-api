@@ -1,94 +1,94 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Data.Models.Requests
 {
     public class ScheduleRequest
     {
-        public IEnumerable<Skill> Skills { get; set; }
-        public IEnumerable<Staff> StaffList { get; set; }
-        public IEnumerable<Demand> Demands { get; set; }
-        public Contraint Contraint { get; set; }
+        public List<StaffRequestData> Staffs { get; set; }
+
+        public List<SkillRequest> Skills { get; set; }
+
+        public List<DemandDayRequest> Demands { get; set; }
+
+        public ConstraintData Constraints { get; set; }
     }
 
-    public class Skill
+    public class SkillRequest
     {
-        public int SkillId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 
-    public class Staff
+    public class DemandDayRequest
+    {
+        public int Day { set; get; }
+        public DemandSkillRequest[] DemandBySkills { get; set; }
+    }
+
+    public class DemandSkillRequest
+    {
+        public int SkillId { set; get; }
+        public DemandRequest[] Demands { get; set; }
+    }
+
+    public class DemandRequest
+    {
+        public int Quantity { set; get; }
+        public int Level { set; get; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+    }
+
+    public class StaffRequestData
     {
         public string Username { get; set; }
-        public List<Skill> Skills { get; set; }
+        public List<SkillStaff> Skills { get; set; }
         public int TypeStaff { get; set; }
-        public List<AvailableByDay> AvailableByDays { get; set; }
+        public List<AvalailableDayRequest> AvalailableDays { get; set; }
     }
 
-    public class AvailableByDay
-    {
-        public int Day { get; set; }
-        public List<AvailableTime> AvailableTimes { get; set; }
-    }
-
-    public class AvailableTime
-    {
-        public int Start { get; set; }
-        public int End { get; set; }
-    }
-
-    public class Demand
-    {
-        public int Day { get; set; }
-        public OperatingTime OperatingTime { get; set; }
-        public IEnumerable<DemandBySkill> DemandBySkills { get; set; }
-    }
-
-    public class OperatingTime
-    {
-        public int Start { get; set; }
-        public int End { get; set; }
-    }
-
-    public class DemandBySkill
-    {
-        public int SkillId { get; set; }
-
-        public IEnumerable<DemandData> DemandDatas { get; set; }
-    }
-
-    public class DemandData
-    {
-        public int Start { get; set; }
-        public int End { get; set; }
+    public class SkillStaff
+    {   
+        public int Id { get; set; }
         public int Level { get; set; }
-        public int Quantity { get; set; }
     }
 
-    public class Contraint
+    public class AvalailableDayRequest
+    {
+        public int Day { get; set; }
+        public List<AvailableTimeRequest> AvailableTimes { get; set; }
+    }
+
+    public class AvailableTimeRequest
+    {
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+    }
+
+    public class ConstraintData
+    {
+        public ConstraintGeneral GeneralConstraints { get; set; }
+        public ConstraintSpecific FulltimeConstraints { get; set; }
+        public ConstraintSpecific ParttimeConstraints { get; set; }
+    }
+
+    public class ConstraintGeneral
     {
         public int MinDistanceBetweenSession { get; set; }
-        public ContraintDetail FullTime { get; set; }
-        public ContraintDetail PartTime { get; set; }
     }
 
-    public class ContraintDetail
+    public class ConstraintSpecific
     {
         public int MinDayOff { get; set; }
-
         public int MaxDayOff { get; set; }
-
-        public float MinHoursPerWeek { get; set; }
-
-        public float MaxHoursPerWeek { get; set; }
-
-        public float MinHoursPerDay { get; set; }
-
-        public float MaxHoursPerDay { get; set; }
-
-        public float MinShiftDuration { get; set; }
-
-        public float MaxShiftDuration { get; set; }
-
-        public int MaxShiftPerDay { get; set; }
+        public int MiWorkingTimeOnWeek { get; set; }
+        public int MaxWorkingTimeOnWeek { get; set; }
+        public int MinSessionDuration { get; set; }
+        public int MaxSessionDuration { get; set; }
+        public int MinWorkingTimeInDay { get; set; }
+        public int MaxWorkingTimeInDay { get; set; }
+        public int MaxNormalHour { get; set; }
+        public int MaxShiftInDay { get; set; }
     }
 }
