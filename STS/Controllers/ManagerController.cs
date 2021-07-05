@@ -168,12 +168,12 @@ namespace STS.Controllers
 
         [HttpPost("schedule")]
         public async Task<IActionResult> ComputeSchedule(
-            int weekScheduleId)
+            ComputeScheduleRequest request)
         {
             try
             {
                 return Ok(await _scheduleService
-                    .ComputeSchedule(weekScheduleId));
+                    .ComputeSchedule(request.WeekScheduleId));
             }
             catch (AppException ex)
             {

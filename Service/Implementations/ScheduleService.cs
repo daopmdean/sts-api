@@ -33,7 +33,8 @@ namespace Service.Implementations
             int weekScheduleId)
         {
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://localhost:5001/");
+            client.BaseAddress = new Uri("https://sts-schedule.herokuapp.com/");
+            //client.BaseAddress = new Uri("https://localhost:5001/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
@@ -50,7 +51,7 @@ namespace Service.Implementations
                 .GetStoreScheduleDetails(weekScheduleId);
 
             HttpResponseMessage response = await client.PostAsJsonAsync(
-                "api/schedule", request);
+                "api/scheduling/testing", request);
 
             if (response.IsSuccessStatusCode)
             {
