@@ -75,6 +75,9 @@ namespace Service.Helpers
             CreateMap<ShiftAttendanceCreate, ShiftAttendance>();
             CreateMap<ShiftAttendanceUpdate, ShiftAttendance>();
 
+            CreateMap<SkillOverview, SkillRequest>();
+            CreateMap<StoreScheduleDetail, ConstraintSpecific>();
+            CreateMap<StaffSkillOverview, SkillStaff>();
         }
     }
 }
