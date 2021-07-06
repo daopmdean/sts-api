@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
@@ -74,6 +75,13 @@ namespace Service.Implementations
         {
             return await _staffSkillRepo
                 .GetSkillsFromStaffAsync(username, @params);
+        }
+
+        public async Task<IEnumerable<StaffSkillOverview>> GetSkillsFromStaffAsync(
+            string username)
+        {
+            return await _staffSkillRepo
+                .GetSkillsFromStaffAsync(username);
         }
 
         public async Task<PagedList<StaffSkillOverview>> GetStaffFromSkillAsync(

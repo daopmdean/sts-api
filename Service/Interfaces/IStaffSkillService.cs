@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -10,6 +11,8 @@ namespace Service.Interfaces
     {
         Task<PagedList<StaffSkillOverview>> GetSkillsFromStaffAsync(
             string username, StaffSkillParams @params);
+        Task<IEnumerable<StaffSkillOverview>> GetSkillsFromStaffAsync(
+            string username);
         Task<PagedList<StaffSkillOverview>> GetStaffFromSkillAsync(
             int skillId, StaffSkillParams @params);
         Task<StaffSkill> GetStaffSkillAsync(int skillId, string username);

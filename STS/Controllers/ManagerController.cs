@@ -172,8 +172,9 @@ namespace STS.Controllers
         {
             try
             {
+                var brandId = int.Parse(User.GetBrandId());
                 return Ok(await _scheduleService
-                    .ComputeSchedule(request.WeekScheduleId));
+                    .Testing(request.WeekScheduleId, brandId));
             }
             catch (AppException ex)
             {

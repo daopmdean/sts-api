@@ -23,19 +23,19 @@ namespace Data.Models.Requests
     public class DemandDayRequest
     {
         public int Day { set; get; }
-        public DemandSkillRequest[] DemandBySkills { get; set; }
+        public List<DemandSkillRequest> DemandBySkills { get; set; }
     }
 
     public class DemandSkillRequest
     {
         public int SkillId { set; get; }
-        public DemandRequest[] Demands { get; set; }
+        public List<DemandRequest> Demands { get; set; }
     }
 
     public class DemandRequest
     {
         public int Quantity { set; get; }
-        public int Level { set; get; }
+        public int Level { set; get; } = 1;
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
     }
@@ -49,7 +49,7 @@ namespace Data.Models.Requests
     }
 
     public class SkillStaff
-    {   
+    {
         public int Id { get; set; }
         public int Level { get; set; }
     }
@@ -68,27 +68,22 @@ namespace Data.Models.Requests
 
     public class ConstraintData
     {
-        public ConstraintGeneral GeneralConstraints { get; set; }
+        public int MinDistanceBetweenSession { get; set; }
         public ConstraintSpecific FulltimeConstraints { get; set; }
         public ConstraintSpecific ParttimeConstraints { get; set; }
-    }
-
-    public class ConstraintGeneral
-    {
-        public int MinDistanceBetweenSession { get; set; }
     }
 
     public class ConstraintSpecific
     {
         public int MinDayOff { get; set; }
         public int MaxDayOff { get; set; }
-        public int MiWorkingTimeOnWeek { get; set; }
-        public int MaxWorkingTimeOnWeek { get; set; }
-        public int MinSessionDuration { get; set; }
-        public int MaxSessionDuration { get; set; }
-        public int MinWorkingTimeInDay { get; set; }
-        public int MaxWorkingTimeInDay { get; set; }
+        public float MinHoursPerWeek { get; set; }
+        public float MaxHoursPerWeek { get; set; }
+        public float MinShiftDuration { get; set; }
+        public float MaxShiftDuration { get; set; }
+        public float MinHoursPerDay { get; set; }
+        public float MaxHoursPerDay { get; set; }
         public int MaxNormalHour { get; set; }
-        public int MaxShiftInDay { get; set; }
+        public int MaxShiftPerDay { get; set; }
     }
 }

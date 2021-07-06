@@ -7,6 +7,8 @@ namespace Service.Interfaces
     public interface IScheduleService
     {
         Task<ScheduleResponse> ComputeSchedule(
-            int weekScheduleId);
+            int weekScheduleId, int brandId);
+        Task<ScheduleRequest> Testing(
+            int weekScheduleId, int brandId);
     }
 }
