@@ -21,7 +21,7 @@ namespace Data.Repositories.Implementations
             return await _entities
                 .Where(s => s.Status == Enums.Status.Active)
                 .Where(s => s.WeekScheduleId == weekScheduleId)
-                .OrderBy(s => s.Id)
+                .OrderBy(s => s.WorkStart)
                 .ToListAsync();
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -33,6 +34,17 @@ namespace Data.Repositories.Implementations
 
             return await PagedList<StaffSkillOverview>
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
+        }
+
+        public async Task<IEnumerable<StaffSkillOverview>> GetSkillsFromStaffAsync(
+            string username)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.Username == username)
+                .OrderBy(s => s.SkillId)
+                .ProjectTo<StaffSkillOverview>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         public async Task<PagedList<StaffSkillOverview>> GetStaffFromSkillAsync(

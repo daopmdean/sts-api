@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Data.Entities;
+using Data.Enums;
 using Data.Models.Responses;
 using Data.Pagings;
 
@@ -16,6 +15,7 @@ namespace Data.Repositories.Interfaces
         Task<PagedList<UserOverview>> GetStoreManagersAsync(UserParams @params);
         Task<PagedList<UserOverview>> GetStaffAsync(UserParams @params);
         Task<User> GetUserByUsernameAsync(string username);
+        Task<StaffType> GetStaffTypeAsync(string username);
         Task<UserInfoResponse> GetByUsernameAsync(string username);
     }
 }

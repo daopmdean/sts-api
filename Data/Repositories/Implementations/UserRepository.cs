@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Data.Entities;
+using Data.Enums;
 using Data.Models.Responses;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
@@ -120,6 +121,9 @@ namespace Data.Repositories.Implementations
                 .FirstOrDefaultAsync(user => user.Username == username);
         }
 
-
+        public Task<StaffType> GetStaffTypeAsync(string username)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
