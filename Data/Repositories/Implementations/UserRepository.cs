@@ -117,13 +117,18 @@ namespace Data.Repositories.Implementations
         public async Task<User> GetUserByUsernameAsync(string username)
         {
             return await _entities
-                .Where(e => e.Status == Enums.Status.Active)
+                .Where(e => e.Status == Status.Active)
                 .FirstOrDefaultAsync(user => user.Username == username);
         }
 
-        public Task<StaffType> GetStaffTypeAsync(string username)
+        public async Task<StaffType> GetStaffTypeAsync(string username)
         {
-            throw new System.NotImplementedException();
+            var user = await _entities
+                .Where(e => e.Status == Status.Active)
+                .FirstOrDefaultAsync(user => user.Username == username);
+
+            return (StaffType)user.Type;
+
         }
     }
 }

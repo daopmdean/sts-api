@@ -19,6 +19,19 @@ namespace Service.Helpers
             }
         }
 
+        public static void InitializedAvalailableDays(
+            List<AvalailableDayRequest> avalailables)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                avalailables.Add(new AvalailableDayRequest
+                {
+                    Day = i,
+                    AvailableTimes = new()
+                });
+            }
+        }
+
         private static void AddWeekScheduleDetailToDemands(
             List<DemandDayRequest> demands,
             WeekScheduleDetail weekScheduleDetail,

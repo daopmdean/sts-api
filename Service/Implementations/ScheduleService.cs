@@ -114,12 +114,13 @@ namespace Service.Implementations
                     if (staff.Username == shiftRegister.Username)
                     {
                         staffNotFound = false;
+                        break;
                     }
                 }
                 if (staffNotFound)
                 {
-                    var staffType = (int)(await _userRepository
-                    .GetUserByUsernameAsync(shiftRegister.Username)).Type;
+                    var staffType = (int)await _userRepository
+                        .GetStaffTypeAsync(shiftRegister.Username);
 
                     var staffSkills = await _staffSkillService
                         .GetSkillsFromStaffAsync(shiftRegister.Username);
@@ -129,15 +130,37 @@ namespace Service.Implementations
                     {
                         skillStaffs.Add(_mapper.Map<SkillStaff>(item));
                     }
+
+                    List<AvalailableDayRequest> avalailables = new();
+                    Scheduling.InitializedAvalailableDays(avalailables);
+
                     staffRequestDatas.Add(new StaffRequestData
                     {
                         Username = shiftRegister.Username,
                         TypeStaff = staffType,
-                        Skills = skillStaffs
+                        Skills = skillStaffs,
+                        AvalailableDays = avalailables
                     });
+
+                    switch (shiftRegister.TimeStart.DayOfWeek)
+                    {
+                        case DayOfWeek.Monday:
+
+                            break;
+                        case DayOfWeek.Tuesday:
+                            break;
+                        case DayOfWeek.Wednesday:
+                            break;
+                        case DayOfWeek.Thursday:
+                            break;
+                        case DayOfWeek.Friday:
+                            break;
+                        case DayOfWeek.Saturday:
+                            break;
+                        case DayOfWeek.Sunday:
+                            break;
+                    }
                 }
-
-
             }
 
             return staffRequestDatas;
