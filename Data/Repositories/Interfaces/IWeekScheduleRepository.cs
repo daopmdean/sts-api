@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Responses;
 using Data.Pagings;
@@ -9,5 +10,6 @@ namespace Data.Repositories.Interfaces
     {
         Task<PagedList<WeekScheduleOverview>> GetWeekSchedulesAsync(int storeId,
             WeekScheduleParams @params);
+        Task<WeekSchedule> GetWeekSchedulesAsync(DateTime dateStart);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -11,6 +12,7 @@ namespace Service.Interfaces
         Task<PagedList<WeekScheduleOverview>> GetWeekSchedulesAsync(int storeId,
             WeekScheduleParams @params);
         Task<WeekSchedule> GetWeekScheduleAsync(int id);
+        Task<WeekSchedule> GetWeekScheduleAsync(DateTime dateStart);
         Task<WeekSchedule> CreateWeekScheduleAsync(
             WeekScheduleCreate weekSchedule);
     }

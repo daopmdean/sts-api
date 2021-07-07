@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
 using Data.Models.Requests;
@@ -47,7 +48,20 @@ namespace Service.Implementations
             var weekSchedule = await _weekRepo.GetByIdAsync(id);
 
             if (weekSchedule == null)
-                throw new AppException(400, "WeekSchedule not found or has been deleted");
+                throw new AppException(400,
+                    "WeekSchedule not found or has been deleted");
+
+            return weekSchedule;
+        }
+
+        public async Task<WeekSchedule> GetWeekScheduleAsync(DateTime dateStart)
+        {
+            var weekSchedule = await _weekRepo
+                .GetWeekSchedulesAsync(dateStart);
+
+            if (weekSchedule == null)
+                throw new AppException(400,
+                    "WeekSchedule not found or has been deleted");
 
             return weekSchedule;
         }

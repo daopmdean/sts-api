@@ -32,6 +32,35 @@ namespace STS.Controllers
             _staffScheduleDetailService = staffScheduleDetailService;
         }
 
+        [HttpGet]
+        public async Task<ActionResult> GetWeekScheduleByDate(
+            [FromQuery] DateTime dateStart)
+        {
+            try
+            {
+                return Ok(await _weekScheduleService
+                    .GetWeekScheduleAsync(dateStart));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult> GetWeekSchedule(
             int id)
