@@ -24,7 +24,7 @@ namespace Data.Entities
 
         public string Phone { get; set; }
 
-        public string Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         public StaffType? Type { get; set; }
 
