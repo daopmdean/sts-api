@@ -29,7 +29,7 @@ namespace Data.Repositories.Implementations
                     .Join(_context.ShiftAttendances,
                         sas => sas.Id,
                         sat => sat.ShiftAssignmentId,
-                        (sas, sat) => new
+                        (sas, sat) => new ShiftAttendance
                         {
                             ShiftAssignmentId = sas.Id,
                             TimeCheckIn = sat.TimeCheckIn,
@@ -51,7 +51,7 @@ namespace Data.Repositories.Implementations
                     .Join(_context.ShiftAttendances,
                         sas => sas.Id,
                         sat => sat.ShiftAssignmentId,
-                        (sas, sat) => new
+                        (sas, sat) => new ShiftAttendance
                         {
                             ShiftAssignmentId = sas.Id,
                             TimeCheckIn = sat.TimeCheckIn,
