@@ -20,18 +20,21 @@ namespace STS.Controllers
         private readonly IShiftRegisterService _shiftRegisterService;
         private readonly IShiftAssignmentService _shiftAssignmentService;
         private readonly IShiftAttendanceService _shiftAttendanceService;
+        private readonly IReportService _reportService;
 
         public UsersController(IUserService userService,
             IStaffSkillService staffSkillService,
             IShiftRegisterService shiftRegisterService,
             IShiftAssignmentService shiftAssignmentService,
-            IShiftAttendanceService shiftAttendanceService)
+            IShiftAttendanceService shiftAttendanceService,
+            IReportService reportService)
         {
             _userService = userService;
             _staffSkillService = staffSkillService;
             _shiftRegisterService = shiftRegisterService;
             _shiftAssignmentService = shiftAssignmentService;
             _shiftAttendanceService = shiftAttendanceService;
+            _reportService = reportService;
         }
 
         [HttpGet("profile")]
@@ -197,6 +200,37 @@ namespace STS.Controllers
             }
         }
 
+        [HttpGet("work-report")]
+        public async Task<ActionResult> GetWorkReport(
+            [FromQuery] WorkHoursReportParams @params)
+        {
+            try
+            {
+                var username = User.GetUsername();
+                var workHours = await _reportService
+                    .GetWorkHoursResponse(username, @params);
+
+                return Ok(workHours);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
 
         [HttpPut]
         public async Task<ActionResult> UpdateUser(UserUpdate updateInfo)

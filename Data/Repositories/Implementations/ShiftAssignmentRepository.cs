@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -6,6 +7,7 @@ using Data.Entities;
 using Data.Models.Responses;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories.Implementations
 {
@@ -47,6 +49,19 @@ namespace Data.Repositories.Implementations
 
             return await PagedList<ShiftAssignmentOverview>
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
+        }
+
+        public async Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
+            string username, WorkHoursReportParams @params)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.Username == username)
+                .Where(s => s.TimeStart >= @params.FromDate &&
+                    s.TimeEnd <= @params.ToDate)
+                .OrderByDescending(s => s.TimeStart)
+                .ProjectTo<ShiftAssignmentOverview>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
     }
 }

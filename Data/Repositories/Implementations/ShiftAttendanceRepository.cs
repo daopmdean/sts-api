@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -31,7 +31,6 @@ namespace Data.Repositories.Implementations
                         sat => sat.ShiftAssignmentId,
                         (sas, sat) => new
                         {
-                            Id = sat.Id,
                             ShiftAssignmentId = sas.Id,
                             TimeCheckIn = sat.TimeCheckIn,
                             TimeCheckOut = sat.TimeCheckOut,
@@ -43,6 +42,28 @@ namespace Data.Repositories.Implementations
 
             return await PagedList<ShiftAttendanceOverview>
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
+        }
+
+        public async Task<IEnumerable<ShiftAttendanceOverview>> GetShiftAttendancesAsync(
+            string username, WorkHoursReportParams @params)
+        {
+            return await _context.ShiftAssignments
+                    .Join(_context.ShiftAttendances,
+                        sas => sas.Id,
+                        sat => sat.ShiftAssignmentId,
+                        (sas, sat) => new
+                        {
+                            ShiftAssignmentId = sas.Id,
+                            TimeCheckIn = sat.TimeCheckIn,
+                            TimeCheckOut = sat.TimeCheckOut,
+                            Status = sat.Status
+                        })
+                    .Where(x => x.Status == Enums.Status.Active)
+                    .Where(s => s.TimeCheckIn >= @params.FromDate &&
+                    s.TimeCheckOut <= @params.ToDate)
+                    .OrderByDescending(s => s.TimeCheckIn)
+                    .ProjectTo<ShiftAttendanceOverview>(_mapper.ConfigurationProvider)
+                    .ToListAsync();
         }
     }
 }

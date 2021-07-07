@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Responses;
@@ -13,5 +14,7 @@ namespace Data.Repositories.Interfaces
             string username, ShiftAssignmentParams @params);
         Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
             int storeId, ShiftAssignmentParams @params);
+        Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
+            string username, WorkHoursReportParams @params);
     }
 }
