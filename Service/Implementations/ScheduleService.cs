@@ -113,6 +113,7 @@ namespace Service.Implementations
                 {
                     if (staff.Username == shiftRegister.Username)
                     {
+                        Scheduling.SwitchDayOfWeek(staff, shiftRegister);
                         staffNotFound = false;
                         break;
                     }
@@ -142,24 +143,9 @@ namespace Service.Implementations
                         AvalailableDays = avalailables
                     });
 
-                    switch (shiftRegister.TimeStart.DayOfWeek)
-                    {
-                        case DayOfWeek.Monday:
-
-                            break;
-                        case DayOfWeek.Tuesday:
-                            break;
-                        case DayOfWeek.Wednesday:
-                            break;
-                        case DayOfWeek.Thursday:
-                            break;
-                        case DayOfWeek.Friday:
-                            break;
-                        case DayOfWeek.Saturday:
-                            break;
-                        case DayOfWeek.Sunday:
-                            break;
-                    }
+                    Scheduling
+                        .SwitchDayOfWeekFirstCreate(
+                        staffRequestDatas, shiftRegister);
                 }
             }
 

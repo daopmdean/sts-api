@@ -7,18 +7,6 @@ namespace Service.Helpers
 {
     public class Scheduling
     {
-        private static void InitializedDemands(List<DemandDayRequest> demands)
-        {
-            for (int i = 0; i < 7; i++)
-            {
-                demands.Add(new DemandDayRequest
-                {
-                    Day = i,
-                    DemandBySkills = new()
-                });
-            }
-        }
-
         public static void InitializedAvalailableDays(
             List<AvalailableDayRequest> avalailables)
         {
@@ -28,6 +16,138 @@ namespace Service.Helpers
                 {
                     Day = i,
                     AvailableTimes = new()
+                });
+            }
+        }
+
+        public static void SwitchDayOfWeek(StaffRequestData staff,
+            ShiftRegister shiftRegister)
+        {
+            switch (shiftRegister.TimeStart.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    AddShiftRegisterToStaff(staff, shiftRegister, 0);
+                    break;
+                case DayOfWeek.Tuesday:
+                    AddShiftRegisterToStaff(staff, shiftRegister, 1);
+                    break;
+                case DayOfWeek.Wednesday:
+                    AddShiftRegisterToStaff(staff, shiftRegister, 2);
+                    break;
+                case DayOfWeek.Thursday:
+                    AddShiftRegisterToStaff(staff, shiftRegister, 3);
+                    break;
+                case DayOfWeek.Friday:
+                    AddShiftRegisterToStaff(staff, shiftRegister, 4);
+                    break;
+                case DayOfWeek.Saturday:
+                    AddShiftRegisterToStaff(staff, shiftRegister, 5);
+                    break;
+                case DayOfWeek.Sunday:
+                    AddShiftRegisterToStaff(staff, shiftRegister, 6);
+                    break;
+            }
+        }
+
+        public static void SwitchDayOfWeekFirstCreate(
+            List<StaffRequestData> staffRequestDatas,
+            ShiftRegister shiftRegister)
+        {
+            switch (shiftRegister.TimeStart.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    foreach (var staff in staffRequestDatas)
+                    {
+                        if (staff.Username == shiftRegister.Username)
+                        {
+                            AddShiftRegisterToStaff(staff, shiftRegister, 0);
+                            break;
+                        }
+                    }
+                    break;
+                case DayOfWeek.Tuesday:
+                    foreach (var staff in staffRequestDatas)
+                    {
+                        if (staff.Username == shiftRegister.Username)
+                        {
+                            AddShiftRegisterToStaff(staff, shiftRegister, 1);
+                            break;
+                        }
+                    }
+                    break;
+                case DayOfWeek.Wednesday:
+                    foreach (var staff in staffRequestDatas)
+                    {
+                        if (staff.Username == shiftRegister.Username)
+                        {
+                            AddShiftRegisterToStaff(staff, shiftRegister, 2);
+                            break;
+                        }
+                    }
+                    break;
+                case DayOfWeek.Thursday:
+                    foreach (var staff in staffRequestDatas)
+                    {
+                        if (staff.Username == shiftRegister.Username)
+                        {
+                            AddShiftRegisterToStaff(staff, shiftRegister, 3);
+                            break;
+                        }
+                    }
+                    break;
+                case DayOfWeek.Friday:
+                    foreach (var staff in staffRequestDatas)
+                    {
+                        if (staff.Username == shiftRegister.Username)
+                        {
+                            AddShiftRegisterToStaff(staff, shiftRegister, 4);
+                            break;
+                        }
+                    }
+                    break;
+                case DayOfWeek.Saturday:
+                    foreach (var staff in staffRequestDatas)
+                    {
+                        if (staff.Username == shiftRegister.Username)
+                        {
+                            AddShiftRegisterToStaff(staff, shiftRegister, 5);
+                            break;
+                        }
+                    }
+                    break;
+                case DayOfWeek.Sunday:
+                    foreach (var staff in staffRequestDatas)
+                    {
+                        if (staff.Username == shiftRegister.Username)
+                        {
+                            AddShiftRegisterToStaff(staff, shiftRegister, 6);
+                            break;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        private static void AddShiftRegisterToStaff(StaffRequestData staff,
+            ShiftRegister shiftRegister, int dayOfWeek)
+        {
+            staff.AvalailableDays[dayOfWeek]
+                .AvailableTimes
+                .Add(new AvailableTimeRequest
+                {
+                    Start = shiftRegister.TimeStart,
+                    End = shiftRegister.TimeEnd
+                });
+        }
+
+        private static void InitializedDemands(List<DemandDayRequest> demands)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                demands.Add(new DemandDayRequest
+                {
+                    Day = i,
+                    DemandBySkills = new()
                 });
             }
         }

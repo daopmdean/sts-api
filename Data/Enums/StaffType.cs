@@ -4,6 +4,7 @@
     {
         FullTime = 0,
         PartTime = 1,
-        All = 2
+        All = 2,
+        Undefine = 3
     }
 }

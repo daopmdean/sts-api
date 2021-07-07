@@ -125,10 +125,12 @@ namespace Data.Repositories.Implementations
         {
             var user = await _entities
                 .Where(e => e.Status == Status.Active)
-                .FirstOrDefaultAsync(user => user.Username == username);
+                .FirstOrDefaultAsync(user => user.Username.ToLower() == username.ToLower());
 
-            return (StaffType)user.Type;
+            if (user.Type != null)
+                return (StaffType)user.Type;
 
+            return StaffType.Undefine;
         }
     }
 }

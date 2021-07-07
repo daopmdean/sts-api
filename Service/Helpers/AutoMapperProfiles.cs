@@ -77,7 +77,9 @@ namespace Service.Helpers
 
             CreateMap<SkillOverview, SkillRequest>();
             CreateMap<StoreScheduleDetail, ConstraintSpecific>();
-            CreateMap<StaffSkillOverview, SkillStaff>();
+            CreateMap<StaffSkillOverview, SkillStaff>()
+                .ForMember(dest => dest.Id,
+                    obj => obj.MapFrom(src => src.SkillId));
         }
     }
 }
