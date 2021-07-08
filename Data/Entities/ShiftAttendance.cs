@@ -5,7 +5,6 @@ namespace Data.Entities
 {
     public class ShiftAttendance : BaseEntity
     {
-        //public int Id { get; set; }
         [Key]
         public int ShiftAssignmentId { get; set; }
 

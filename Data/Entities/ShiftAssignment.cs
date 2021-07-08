@@ -29,8 +29,6 @@ namespace Data.Entities
 
         public int ReferenceId { get; set; }
 
-        public ShiftAssignment ShiftReference { get; set; }
-
         public ShiftAttendance ShiftAttendance { get; set; }
 
         public ICollection<ShiftLog> ShiftLogs { get; set; }

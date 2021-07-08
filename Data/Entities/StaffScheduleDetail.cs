@@ -12,8 +12,16 @@
 
         public User User { get; set; }
 
-        public int MinHours { get; set; }
+        public float MinHoursPerWeek { get; set; }
 
-        public int MaxHours { get; set; }
+        public float MaxHoursPerWeek { get; set; }
+
+        public float MinHoursPerDay { get; set; }
+
+        public float MaxHoursPerDay { get; set; }
+
+        public float MinShiftDuration { get; set; }
+
+        public float MaxShiftDuration { get; set; }
     }
 }

@@ -141,11 +141,12 @@ namespace Data
                 .OnDelete(DeleteBehavior.NoAction);
 
             // staff schedule detail - week schedule
-            modelBuilder.Entity<StaffScheduleDetail>()
-                .HasOne(ssd => ssd.WeekSchedule)
-                .WithMany(ws => ws.StaffScheduleDetails)
-                .HasForeignKey(ssd => ssd.WeekScheduleId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<StaffScheduleDetail>()
+            //    .HasOne(ssd => ssd.WeekSchedule)
+            //    .WithMany(ws => ws.StaffScheduleDetails)
+            //    .HasForeignKey(ssd => ssd.WeekScheduleId)
+            //    .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }
