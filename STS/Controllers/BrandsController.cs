@@ -213,6 +213,38 @@ namespace STS.Controllers
             }
         }
 
+        [HttpGet("staff")]
+        public async Task<ActionResult<BrandOverview>> GetStaffOfBrand(
+            [FromQuery] UserParams @params)
+        {
+            try
+            {
+                var brandId = int.Parse(User.GetBrandId());
+                var staff = await _userService.GetStaffAsync(brandId, @params);
+
+                Response.AddPaginationHeader(staff);
+                return Ok(staff);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
         [HttpGet("skills")]
         public async Task<ActionResult> GetSkillsOfBrand(
             [FromQuery] SkillParams @params)

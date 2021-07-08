@@ -55,6 +55,12 @@ namespace Service.Implementations
             return await _repository.GetStaffAsync(@params);
         }
 
+        public async Task<PagedList<UserOverview>> GetStaffAsync(
+            int brandId, UserParams @params)
+        {
+            return await _repository.GetStaffAsync(brandId, @params);
+        }
+
         public async Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params)
         {
             return await _repository.GetStoreManagersAsync(@params);

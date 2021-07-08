@@ -25,7 +25,7 @@ namespace Data.Repositories.Implementations
         public async Task<IEnumerable<UserOverview>> GetAllUsersAsync()
         {
             return await _entities
-                .Where(e => e.Status == Enums.Status.Active)
+                .Where(e => e.Status == Status.Active)
                 .ProjectTo<UserOverview>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -35,7 +35,7 @@ namespace Data.Repositories.Implementations
         {
             var query = _entities
                 .OrderBy(u => u.Username)
-                .Where(e => e.Status == Enums.Status.Active)
+                .Where(e => e.Status == Status.Active)
                 .Where(u => u.Username.Contains(@params.Keyword)
                     || u.FirstName.Contains(@params.Keyword)
                     || u.LastName.Contains(@params.Keyword)
@@ -52,7 +52,7 @@ namespace Data.Repositories.Implementations
         {
             var query = _entities
                 .OrderBy(u => u.Username)
-                .Where(u => u.Status == Enums.Status.Active)
+                .Where(u => u.Status == Status.Active)
                 .Where(u => u.BrandId == brandId)
                 .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
 
@@ -67,7 +67,7 @@ namespace Data.Repositories.Implementations
                 .AsQueryable()
                 .OrderBy(u => u.Username)
                 .Where(u => u.RoleId == 2)
-                .Where(e => e.Status == Enums.Status.Active)
+                .Where(e => e.Status == Status.Active)
                 .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
 
             return await PagedList<UserOverview>
@@ -77,7 +77,7 @@ namespace Data.Repositories.Implementations
         public async Task<UserInfoResponse> GetByUsernameAsync(string username)
         {
             var user = await _entities
-                .Where(e => e.Status == Enums.Status.Active)
+                .Where(e => e.Status == Status.Active)
                 .FirstOrDefaultAsync(user => user.Username == username);
 
             return _mapper.Map<UserInfoResponse>(user);
@@ -131,6 +131,20 @@ namespace Data.Repositories.Implementations
                 return (StaffType)user.Type;
 
             return StaffType.Undefine;
+        }
+
+        public async Task<PagedList<UserOverview>> GetStaffAsync(
+            int brandId, UserParams @params)
+        {
+            var query = _entities
+                .AsQueryable()
+                .Where(u => u.RoleId == 4)
+                .Where(u => u.BrandId == brandId)
+                .OrderBy(u => u.Username)
+                .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
+
+            return await PagedList<UserOverview>
+                .CreateAsync(query, @params.PageNumber, @params.PageSize);
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Data.Repositories.Interfaces
         Task<PagedList<UserOverview>> GetUsersAsync(UserParams @params);
         Task<PagedList<UserOverview>> GetUsersAsync(int brandId,
             UserParams @params);
+        Task<PagedList<UserOverview>> GetStaffAsync(int brandId,
+            UserParams @params);
         Task<PagedList<UserOverview>> GetBrandManagersAsync(UserParams @params);
         Task<PagedList<UserOverview>> GetStoreManagersAsync(UserParams @params);
         Task<PagedList<UserOverview>> GetStaffAsync(UserParams @params);
