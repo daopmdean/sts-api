@@ -13,6 +13,8 @@ namespace Data.Entities
 
         public Skill Skill { get; set; }
 
+        public int Level { get; set; }
+
         public int Quantity { get; set; }
 
         public DateTime WorkStart { get; set; }
