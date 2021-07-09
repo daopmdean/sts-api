@@ -30,7 +30,7 @@ namespace Data.Repositories.Implementations
                 .Where(s => s.Status == Enums.Status.Active)
                 .Where(s => s.Username == username)
                 .Where(s => s.TimeStart >= @params.FromDate &&
-                    s.TimeStart <= @params.ToDate)
+                    s.TimeStart <= @params.ToDate.AddDays(1))
                 .OrderByDescending(s => s.TimeStart)
                 .ProjectTo<ShiftAssignmentOverview>(_mapper.ConfigurationProvider);
 
@@ -58,7 +58,7 @@ namespace Data.Repositories.Implementations
                 .Where(s => s.Status == Enums.Status.Active)
                 .Where(s => s.Username == username)
                 .Where(s => s.TimeStart >= @params.FromDate &&
-                    s.TimeEnd <= @params.ToDate)
+                    s.TimeEnd <= @params.ToDate.AddDays(1))
                 .OrderByDescending(s => s.TimeStart)
                 .ProjectTo<ShiftAssignmentOverview>(_mapper.ConfigurationProvider)
                 .ToListAsync();
