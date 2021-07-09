@@ -10,6 +10,6 @@ namespace Data.Repositories.Interfaces
     {
         Task<PagedList<WeekScheduleOverview>> GetWeekSchedulesAsync(int storeId,
             WeekScheduleParams @params);
-        Task<WeekSchedule> GetWeekSchedulesAsync(DateTime dateStart);
+        Task<WeekSchedule> GetWeekSchedulesAsync(int storeId, DateTime dateStart);
     }
 }

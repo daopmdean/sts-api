@@ -54,10 +54,10 @@ namespace Service.Implementations
             return weekSchedule;
         }
 
-        public async Task<WeekSchedule> GetWeekScheduleAsync(DateTime dateStart)
+        public async Task<WeekSchedule> GetWeekScheduleAsync(int storeId, DateTime dateStart)
         {
             var weekSchedule = await _weekRepo
-                .GetWeekSchedulesAsync(dateStart);
+                .GetWeekSchedulesAsync(storeId, dateStart);
 
             if (weekSchedule == null)
                 throw new AppException(400,

@@ -13,6 +13,7 @@ namespace Service.Interfaces
         Task<PagedList<StoreStaffOverview>> GetStaffFromStoreAsync(
             int storeId, StoreStaffParams @params);
         Task<StoreStaff> GetStoreStaffAsync(int storeId, string username);
+        Task<int> GetStaffStoreIdAsync(string username);
         Task<StoreStaff> CreateStoreStaff(StoreStaffCreate create);
         Task<StoreStaff> AssignStaff(StoreAssign assign);
         Task<StoreStaff> AssignStoreManager(StoreAssign assign);

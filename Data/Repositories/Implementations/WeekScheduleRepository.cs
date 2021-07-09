@@ -48,7 +48,7 @@ namespace Data.Repositories.Implementations
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
         }
 
-        public Task<WeekSchedule> GetWeekSchedulesAsync(DateTime dateStart)
+        public Task<WeekSchedule> GetWeekSchedulesAsync(int storeId, DateTime dateStart)
         {
             DayOfWeek currentDayOfWeek = dateStart.DayOfWeek;
             switch (currentDayOfWeek)
@@ -80,6 +80,7 @@ namespace Data.Repositories.Implementations
                 .Where(s => s.DateStart.Year == dateStart.Year
                     && s.DateStart.Month == dateStart.Month
                     && s.DateStart.Day == dateStart.Day)
+                .Where(w => w.StoreId == storeId)
                 .FirstOrDefaultAsync();
         }
     }

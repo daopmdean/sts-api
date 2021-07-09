@@ -12,7 +12,7 @@ namespace Service.Interfaces
         Task<PagedList<WeekScheduleOverview>> GetWeekSchedulesAsync(int storeId,
             WeekScheduleParams @params);
         Task<WeekSchedule> GetWeekScheduleAsync(int id);
-        Task<WeekSchedule> GetWeekScheduleAsync(DateTime dateStart);
+        Task<WeekSchedule> GetWeekScheduleAsync(int storeId, DateTime dateStart);
         Task<WeekSchedule> CreateWeekScheduleAsync(
             WeekScheduleCreate weekSchedule);
     }

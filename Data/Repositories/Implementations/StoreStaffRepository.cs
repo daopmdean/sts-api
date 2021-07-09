@@ -51,6 +51,19 @@ namespace Data.Repositories.Implementations
             return storeStaff.StoreId;
         }
 
+        public async Task<int> GetStaffStoreId(string username)
+        {
+            var storeStaff = await _entities
+                .FirstOrDefaultAsync(ss => ss.Username == username
+                    && ss.Status == Enums.Status.Active
+                    && ss.IsPrimaryStore == true);
+
+            if (storeStaff == null)
+                return -1;
+
+            return storeStaff.StoreId;
+        }
+
         public async Task<PagedList<StoreStaffOverview>> GetStoresFromStaffAsync(
             string username, StoreStaffParams @params)
         {

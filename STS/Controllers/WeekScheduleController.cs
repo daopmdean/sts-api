@@ -20,16 +20,19 @@ namespace STS.Controllers
         private readonly IWeekScheduleDetailService _weekScheduleDetailService;
         private readonly IStoreScheduleDetailService _storeScheduleDetailService;
         private readonly IStaffScheduleDetailService _staffScheduleDetailService;
+        private readonly IStoreStaffService _storeStaffService;
 
         public WeekScheduleController(IWeekScheduleService weekScheduleService,
             IWeekScheduleDetailService weekScheduleDetailService,
             IStoreScheduleDetailService storeScheduleDetailService,
-            IStaffScheduleDetailService staffScheduleDetailService)
+            IStaffScheduleDetailService staffScheduleDetailService,
+            IStoreStaffService storeStaffService)
         {
             _weekScheduleService = weekScheduleService;
             _weekScheduleDetailService = weekScheduleDetailService;
             _storeScheduleDetailService = storeScheduleDetailService;
             _staffScheduleDetailService = staffScheduleDetailService;
+            _storeStaffService = storeStaffService;
         }
 
         [HttpGet]
@@ -38,8 +41,21 @@ namespace STS.Controllers
         {
             try
             {
-                return Ok(await _weekScheduleService
-                    .GetWeekScheduleAsync(dateStart));
+                var role = User.GetRoleName();
+                var storeId = 0;
+                if (role == "store manager")
+                {
+                    storeId = int.Parse(User.GetStoreId());
+                }
+                else if (role == "staff")
+                {
+                    storeId = await _storeStaffService
+                        .GetStaffStoreIdAsync(User.GetUsername());
+                }
+                
+                var weekSchedule = await _weekScheduleService
+                    .GetWeekScheduleAsync(storeId, dateStart);
+                return Ok(weekSchedule);
             }
             catch (AppException ex)
             {

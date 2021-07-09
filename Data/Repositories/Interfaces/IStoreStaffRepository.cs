@@ -13,5 +13,6 @@ namespace Data.Repositories.Interfaces
             StoreStaffParams @params);
         Task<StoreStaff> GetStoreStaffAsync(int storeId, string username);
         Task<int> GetStoreId(string username);
+        Task<int> GetStaffStoreId(string username);
     }
 }

@@ -110,6 +110,12 @@ namespace Service.Implementations
                 .GetStaffFromStoreAsync(storeId, @params);
         }
 
+        public async Task<int> GetStaffStoreIdAsync(string username)
+        {
+            return await _storeStaffRepo
+                .GetStaffStoreId(username);
+        }
+
         public async Task<PagedList<StoreStaffOverview>> GetStoresFromStaffAsync(
             string username, StoreStaffParams @params)
         {
