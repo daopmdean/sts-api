@@ -50,7 +50,7 @@ namespace Data.Models.Requests
 
     public class SkillStaff
     {
-        public int Id { get; set; }
+        public int SkillId { get; set; }
         public int Level { get; set; }
     }
 

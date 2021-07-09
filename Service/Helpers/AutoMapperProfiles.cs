@@ -80,7 +80,7 @@ namespace Service.Helpers
                     obj => obj.MapFrom(src => src.Id));
             CreateMap<StoreScheduleDetail, ConstraintSpecific>();
             CreateMap<StaffSkillOverview, SkillStaff>()
-                .ForMember(dest => dest.Id,
+                .ForMember(dest => dest.SkillId,
                     obj => obj.MapFrom(src => src.SkillId));
         }
     }
