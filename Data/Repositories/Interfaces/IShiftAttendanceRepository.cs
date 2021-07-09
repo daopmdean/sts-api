@@ -11,6 +11,10 @@ namespace Data.Repositories.Interfaces
     {
         Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendancesAsync(
                string username, ShiftAttendanceParams @params);
+
+        Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendancesAsync(
+               int storeId, ShiftAttendanceParams @params);
+
         Task<IEnumerable<ShiftAttendanceOverview>> GetShiftAttendancesAsync(
             string username, WorkHoursReportParams @params);
     }

@@ -175,7 +175,7 @@ namespace STS.Controllers
             {
                 var username = User.GetUsername();
                 var shiftAttendances = await _shiftAttendanceService
-                    .GetShiftAttendences(username, @params);
+                    .GetShiftAttendencesAsync(username, @params);
                 Response.AddPaginationHeader(shiftAttendances);
 
                 return Ok(shiftAttendances);

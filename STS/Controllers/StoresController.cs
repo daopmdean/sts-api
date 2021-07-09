@@ -21,16 +21,19 @@ namespace STS.Controllers
         private readonly IWeekScheduleService _weekService;
         private readonly IStoreStaffService _storeStaffService;
         private readonly IShiftAssignmentService _shiftAssignmentService;
+        private readonly IShiftAttendanceService _shiftAttendanceService;
 
         public StoresController(IStoreService storeService,
             IWeekScheduleService weekService,
             IStoreStaffService storeStaffService,
-            IShiftAssignmentService shiftAssignmentService)
+            IShiftAssignmentService shiftAssignmentService,
+            IShiftAttendanceService shiftAttendanceService)
         {
             _storeService = storeService;
             _weekService = weekService;
             _storeStaffService = storeStaffService;
             _shiftAssignmentService = shiftAssignmentService;
+            _shiftAttendanceService = shiftAttendanceService;
         }
 
         [HttpGet]
@@ -171,6 +174,39 @@ namespace STS.Controllers
                 Response.AddPaginationHeader(shiftAssignments);
 
                 return Ok(shiftAssignments);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpGet("shift-attendances")]
+        public async Task<ActionResult<BrandOverview>> GetShiftAttendancesOfStore(
+            [FromQuery] ShiftAttendanceParams @params)
+        {
+            try
+            {
+                int storeId = int.Parse(User.GetStoreId());
+                var shiftAttendances = await _shiftAttendanceService
+                    .GetShiftAttendencesAsync(storeId, @params);
+                Response.AddPaginationHeader(shiftAttendances);
+
+                return Ok(shiftAttendances);
             }
             catch (AppException ex)
             {

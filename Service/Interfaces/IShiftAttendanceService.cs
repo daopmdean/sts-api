@@ -9,8 +9,10 @@ namespace Service.Interfaces
 {
     public interface IShiftAttendanceService
     {
-        Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendences(
+        Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
             string username, ShiftAttendanceParams @params);
+        Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
+            int StoreId, ShiftAttendanceParams @params);
         Task<ShiftAttendance> GetShiftAttendance(int id);
         Task<ShiftAttendance> CreateShiftAttendance(ShiftAttendanceCreate create);
         Task UpdateShiftAttendance(int id, ShiftAttendanceUpdate update);

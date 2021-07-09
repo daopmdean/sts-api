@@ -74,11 +74,18 @@ namespace Service.Implementations
             return shiftAttendance;
         }
 
-        public async Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendences(
+        public async Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
             string username, ShiftAttendanceParams @params)
         {
             return await _shiftAttendanceRepo
                 .GetShiftAttendancesAsync(username, @params);
+        }
+
+        public async Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
+            int StoreId, ShiftAttendanceParams @params)
+        {
+            return await _shiftAttendanceRepo
+                .GetShiftAttendancesAsync(StoreId, @params);
         }
 
         public async Task UpdateShiftAttendance(int id,
