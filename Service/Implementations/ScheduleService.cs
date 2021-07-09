@@ -77,7 +77,7 @@ namespace Service.Implementations
             request.Skills = skillRequests;
 
             HttpResponseMessage response = await client.PostAsJsonAsync(
-                "api/scheduling/testing", request);
+                "api/scheduling", request);
 
             if (response.IsSuccessStatusCode)
             {

@@ -10,6 +10,6 @@
 
         public Skill Skill { get; set; }
 
-        public int Level { get; set; }
+        public int Level { get; set; } = 1;
     }
 }

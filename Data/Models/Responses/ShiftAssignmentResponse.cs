@@ -13,8 +13,8 @@ namespace Data.Models.Responses
 
         public DateTime TimeEnd { get; set; }
 
-        public DateTime MealStart { get; set; }
+        //public DateTime MealStart { get; set; }
 
-        public DateTime MealEnd { get; set; }
+        //public DateTime MealEnd { get; set; }
     }
 }
