@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -12,6 +13,8 @@ namespace Service.Interfaces
             string username, StoreStaffParams @params);
         Task<PagedList<StoreStaffOverview>> GetStaffFromStoreAsync(
             int storeId, StoreStaffParams @params);
+        Task<IEnumerable<StoreStaffOverview>> GetStaffFromStoreAsync(
+            int storeId);
         Task<StoreStaff> GetStoreStaffAsync(int storeId, string username);
         Task<int> GetStaffStoreIdAsync(string username);
         Task<StoreStaff> CreateStoreStaff(StoreStaffCreate create);

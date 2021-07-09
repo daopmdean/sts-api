@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
 using Data.Models.Requests;
@@ -108,6 +109,13 @@ namespace Service.Implementations
         {
             return await _storeStaffRepo
                 .GetStaffFromStoreAsync(storeId, @params);
+        }
+
+        public async Task<IEnumerable<StoreStaffOverview>> GetStaffFromStoreAsync(
+            int storeId)
+        {
+            return await _storeStaffRepo
+                .GetStaffFromStoreAsync(storeId);
         }
 
         public async Task<int> GetStaffStoreIdAsync(string username)

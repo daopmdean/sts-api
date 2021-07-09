@@ -162,6 +162,36 @@ namespace STS.Controllers
             }
         }
 
+        [HttpGet("staff/all")]
+        public async Task<ActionResult<IEnumerable<StoreStaffOverview>>> GetStaffOfStore()
+        {
+            try
+            {
+                int storeId = int.Parse(User.GetStoreId());
+                var staff = await _storeStaffService
+                    .GetStaffFromStoreAsync(storeId);
+                return Ok(staff);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
         [HttpGet("shift-assignments")]
         public async Task<ActionResult<BrandOverview>> GetShiftAssignmentsOfStore(
             [FromQuery] ShiftAssignmentParams @params)

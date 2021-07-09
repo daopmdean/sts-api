@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Responses;
 using Data.Pagings;
@@ -9,6 +10,7 @@ namespace Data.Repositories.Interfaces
     {
         Task<PagedList<StoreStaffOverview>> GetStaffFromStoreAsync(int storeId,
             StoreStaffParams @params);
+        Task<IEnumerable<StoreStaffOverview>> GetStaffFromStoreAsync(int storeId);
         Task<PagedList<StoreStaffOverview>> GetStoresFromStaffAsync(string username,
             StoreStaffParams @params);
         Task<StoreStaff> GetStoreStaffAsync(int storeId, string username);

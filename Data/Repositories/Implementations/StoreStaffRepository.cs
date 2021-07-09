@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -84,6 +85,18 @@ namespace Data.Repositories.Implementations
                 => ss.StoreId == storeId
                 && ss.Username == username
                 && ss.Status == Enums.Status.Active);
+        }
+
+        public async Task<IEnumerable<StoreStaffOverview>> GetStaffFromStoreAsync(
+            int storeId)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.StoreId == storeId)
+                .OrderBy(s => s.Username)
+                .ProjectTo<StoreStaffOverview>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
         }
     }
 }
