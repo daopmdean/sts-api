@@ -286,33 +286,6 @@ namespace STS.Controllers
             }
         }
 
-        [HttpPost("assign/staff")]
-        public async Task<ActionResult> AssignStaff(StoreAssign storeAssign)
-        {
-            try
-            {
-                return Ok(await _storeStaffService.AssignStaff(storeAssign));
-            }
-            catch (AppException ex)
-            {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
-            }
-        }
-
         [HttpPut]
         public async Task<ActionResult> UpdateStore(
             StoreUpdate storeUpdate)
