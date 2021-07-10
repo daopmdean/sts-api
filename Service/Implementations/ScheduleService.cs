@@ -52,8 +52,8 @@ namespace Service.Implementations
             int weekScheduleId, int brandId)
         {
             HttpClient client = new();
-            //client.BaseAddress = new Uri("https://sts-schedule.herokuapp.com/");
-            client.BaseAddress = new Uri("https://localhost:44354/");
+            client.BaseAddress = new Uri("https://sts-schedule.herokuapp.com/");
+            //client.BaseAddress = new Uri("https://localhost:44354/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
