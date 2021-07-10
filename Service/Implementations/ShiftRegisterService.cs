@@ -68,7 +68,7 @@ namespace Service.Implementations
             if (await _shiftRegisterRepo.SaveChangesAsync())
                 return null;
 
-            throw new AppException(400, "Can not create ShiftRegister");
+            throw new AppException(400, "Can not create ShiftRegisters");
         }
 
         public async Task DeleteShiftRegister(int id)

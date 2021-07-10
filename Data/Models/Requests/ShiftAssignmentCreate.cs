@@ -1,7 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Data.Models.Requests
 {
     public class ShiftAssignmentCreate
+    {
+        public IEnumerable<ShiftAssignmentInfo> ShiftAssignments { get; set; }
+    }
+
+    public class ShiftAssignmentInfo
     {
         public string Username { get; set; }
 
@@ -17,4 +24,5 @@ namespace Data.Models.Requests
 
         public DateTime MealEnd { get; set; }
     }
+
 }
