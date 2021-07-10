@@ -20,6 +20,7 @@ namespace Service.Implementations
     public class ScheduleService : IScheduleService
     {
         private readonly IShiftRegisterService _shiftRegisterService;
+        private readonly IWeekScheduleService _weekScheduleService;
         private readonly IWeekScheduleDetailService _weekScheduleDetailService;
         private readonly IStoreScheduleDetailService _storeScheduleDetailService;
         private readonly IStaffSkillService _staffSkillService;
@@ -29,6 +30,7 @@ namespace Service.Implementations
 
         public ScheduleService(
             IShiftRegisterService shiftRegisterService,
+            IWeekScheduleService weekScheduleService,
             IWeekScheduleDetailService weekScheduleDetailService,
             IStoreScheduleDetailService storeScheduleDetailService,
             IStaffSkillService staffSkillService,
@@ -37,6 +39,7 @@ namespace Service.Implementations
             IMapper mapper)
         {
             _shiftRegisterService = shiftRegisterService;
+            _weekScheduleService = weekScheduleService;
             _weekScheduleDetailService = weekScheduleDetailService;
             _storeScheduleDetailService = storeScheduleDetailService;
             _staffSkillService = staffSkillService;
@@ -49,40 +52,29 @@ namespace Service.Implementations
             int weekScheduleId, int brandId)
         {
             HttpClient client = new();
-            client.BaseAddress = new Uri("https://sts-schedule.herokuapp.com/");
-            //client.BaseAddress = new Uri("https://localhost:5001/");
+            //client.BaseAddress = new Uri("https://sts-schedule.herokuapp.com/");
+            client.BaseAddress = new Uri("https://localhost:44354/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
+            client.Timeout = TimeSpan.FromMinutes(4);
 
-            ScheduleRequest request = new();
-
-            var shiftRegisters = await _shiftRegisterService
-                .GetShiftRegisters(weekScheduleId);
-            var staffRequests = await ConvertToStaffs(shiftRegisters);
-            request.Staffs = staffRequests;
-
-            var weekScheduleDetails = await _weekScheduleDetailService
-                .GetWeekScheduleDetailsAsync(weekScheduleId);
-            var demands = Scheduling.ConvertToDemands(weekScheduleDetails);
-            request.Demands = demands;
-
-            var storeScheduleDetails = await _storeScheduleDetailService
-                .GetStoreScheduleDetails(weekScheduleId);
-            var contraint = ConvertToContraints(storeScheduleDetails);
-            request.Constraints = contraint;
-
-            var skills = await _skillService.GetSkills(brandId);
-            var skillRequests = ConvertToSkills(skills);
-            request.Skills = skillRequests;
+            ScheduleRequest request = await GetScheduleRequest(weekScheduleId, brandId);
 
             HttpResponseMessage response = await client.PostAsJsonAsync(
-                "api/scheduling", request);
+                "api/scheduling/testing", request);
 
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content
                     .ReadFromJsonAsync<ScheduleResponse>();
+                var weekSchedule = await _weekScheduleService
+                    .GetWeekScheduleAsync(weekScheduleId);
+                var shiftAssignments = result.ShiftAssignments;
+                foreach (var shift in shiftAssignments)
+                {
+                    shift.StoreId = weekSchedule.StoreId;
+                }
                 return result;
             }
 
@@ -178,7 +170,7 @@ namespace Service.Implementations
             return constraint;
         }
 
-        public async Task<ScheduleRequest> Testing(
+        public async Task<ScheduleRequest> GetScheduleRequest(
             int weekScheduleId, int brandId)
         {
             ScheduleRequest request = new();

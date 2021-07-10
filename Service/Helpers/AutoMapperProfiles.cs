@@ -76,7 +76,7 @@ namespace Service.Helpers
             CreateMap<ShiftAttendanceUpdate, ShiftAttendance>();
 
             CreateMap<SkillOverview, SkillRequest>()
-                .ForMember(dest => dest.SkillId,
+                .ForMember(dest => dest.Id,
                     obj => obj.MapFrom(src => src.Id));
             CreateMap<StoreScheduleDetail, ConstraintSpecific>();
             CreateMap<StaffSkillOverview, SkillStaff>()

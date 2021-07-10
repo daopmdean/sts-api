@@ -8,7 +8,7 @@ namespace Service.Interfaces
     {
         Task<ScheduleResponse> ComputeSchedule(
             int weekScheduleId, int brandId);
-        Task<ScheduleRequest> Testing(
+        Task<ScheduleRequest> GetScheduleRequest(
             int weekScheduleId, int brandId);
     }
 }
