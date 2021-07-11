@@ -50,31 +50,7 @@ namespace Data.Repositories.Implementations
 
         public Task<WeekSchedule> GetWeekSchedulesAsync(int storeId, DateTime dateStart)
         {
-            DayOfWeek currentDayOfWeek = dateStart.DayOfWeek;
-            switch (currentDayOfWeek)
-            {
-                case DayOfWeek.Monday:
-                    dateStart = dateStart.AddDays(0);
-                    break;
-                case DayOfWeek.Tuesday:
-                    dateStart = dateStart.AddDays(-1);
-                    break;
-                case DayOfWeek.Wednesday:
-                    dateStart = dateStart.AddDays(-2);
-                    break;
-                case DayOfWeek.Thursday:
-                    dateStart = dateStart.AddDays(-3);
-                    break;
-                case DayOfWeek.Friday:
-                    dateStart = dateStart.AddDays(-4);
-                    break;
-                case DayOfWeek.Saturday:
-                    dateStart = dateStart.AddDays(-5);
-                    break;
-                case DayOfWeek.Sunday:
-                    dateStart = dateStart.AddDays(-6);
-                    break;
-            }
+            Helpers.Helper.TransformDateStart(ref dateStart);
             return _entities
                 .Where(s => s.Status == Enums.Status.Active)
                 .Where(s => s.DateStart.Year == dateStart.Year

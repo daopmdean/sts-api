@@ -60,8 +60,14 @@ namespace Service.Implementations
                 .GetWeekSchedulesAsync(storeId, dateStart);
 
             if (weekSchedule == null)
-                throw new AppException(400,
-                    "WeekSchedule not found or has been deleted");
+            {
+                Data.Helpers.Helper.TransformDateStart(ref dateStart);
+                weekSchedule = await CreateWeekScheduleAsync(new WeekScheduleCreate
+                {
+                    StoreId = storeId,
+                    DateStart = dateStart
+                });
+            }
 
             return weekSchedule;
         }
