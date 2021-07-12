@@ -175,8 +175,36 @@ namespace STS.Controllers
                 var brandId = int.Parse(User.GetBrandId());
                 return Ok(await _scheduleService
                     .ComputeSchedule(request.WeekScheduleId, brandId));
-                //return Ok(await _scheduleService
-                //    .GetScheduleRequest(request.WeekScheduleId, brandId));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpPost("schedule/data")]
+        public async Task<IActionResult> GetScheduleRequest(
+            ComputeScheduleRequest request)
+        {
+            try
+            {
+                var brandId = int.Parse(User.GetBrandId());
+                return Ok(await _scheduleService
+                    .GetScheduleRequest(request.WeekScheduleId, brandId));
             }
             catch (AppException ex)
             {
