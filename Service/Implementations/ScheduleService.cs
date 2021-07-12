@@ -52,6 +52,7 @@ namespace Service.Implementations
             int weekScheduleId, int brandId)
         {
             HttpClient client = new();
+            //client.BaseAddress = new Uri("http://35.72.3.192:8080/");
             client.BaseAddress = new Uri("https://sts-schedule.herokuapp.com/");
             //client.BaseAddress = new Uri("https://localhost:44354/");
             client.DefaultRequestHeaders.Accept.Clear();
@@ -59,8 +60,9 @@ namespace Service.Implementations
                 new MediaTypeWithQualityHeaderValue("application/json"));
             client.Timeout = TimeSpan.FromMinutes(4);
 
-            ScheduleRequest request = await GetScheduleRequest(weekScheduleId, brandId);
-
+            ScheduleRequest request = await GetScheduleRequest(weekScheduleId, 
+                brandId);
+            
             HttpResponseMessage response = await client.PostAsJsonAsync(
                 "api/scheduling/testing", request);
 
@@ -71,15 +73,20 @@ namespace Service.Implementations
                 var weekSchedule = await _weekScheduleService
                     .GetWeekScheduleAsync(weekScheduleId);
                 var shiftAssignments = result.ShiftAssignments;
-                foreach (var shift in shiftAssignments)
-                {
-                    shift.StoreId = weekSchedule.StoreId;
+                if (shiftAssignments != null)
+                { 
+                    foreach (var shift in shiftAssignments)
+                    {
+                        shift.StoreId = weekSchedule.StoreId;
+                    }
                 }
                 return result;
             }
 
-            throw new AppException((int)StatusCode.BadRequest,
-                "Can not compute schedule");
+            var error = await response.Content
+                    .ReadFromJsonAsync<ErrorResponse>();
+            error.Message = "From Schedule server: " + error.Message;
+            throw new AppException(error);
         }
 
         private List<SkillRequest> ConvertToSkills(
@@ -174,6 +181,10 @@ namespace Service.Implementations
             int weekScheduleId, int brandId)
         {
             ScheduleRequest request = new();
+
+            var weekSchedule = await _weekScheduleService
+                    .GetWeekScheduleAsync(weekScheduleId);
+            request.DateStart = weekSchedule.DateStart;
 
             var shiftRegisters = await _shiftRegisterService
                 .GetShiftRegisters(weekScheduleId);

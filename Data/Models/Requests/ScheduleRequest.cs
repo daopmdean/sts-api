@@ -5,6 +5,7 @@ namespace Data.Models.Requests
 {
     public class ScheduleRequest
     {
+        public DateTime DateStart { get; set; }
         public List<StaffRequestData> Staffs { get; set; }
 
         public List<SkillRequest> Skills { get; set; }
