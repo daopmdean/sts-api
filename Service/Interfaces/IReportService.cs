@@ -7,6 +7,6 @@ namespace Service.Interfaces
     public interface IReportService
     {
         Task<WorkHoursResponse> GetWorkHoursResponse(
-            string username, WorkHoursReportParams @params);
+            string username, DateTimeParams @params);
     }
 }

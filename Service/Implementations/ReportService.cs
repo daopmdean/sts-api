@@ -21,7 +21,7 @@ namespace Service.Implementations
         }
 
         public async Task<WorkHoursResponse> GetWorkHoursResponse(
-            string username, WorkHoursReportParams @params)
+            string username, DateTimeParams @params)
         {
             WorkHoursResponse result = new();
             var shiftAssignments = await _shiftAssignmentRepo

@@ -15,6 +15,6 @@ namespace Data.Repositories.Interfaces
         Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
             int storeId, ShiftAssignmentParams @params);
         Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
-            string username, WorkHoursReportParams @params);
+            string username, DateTimeParams @params);
     }
 }

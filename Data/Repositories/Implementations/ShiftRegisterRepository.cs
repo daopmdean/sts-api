@@ -46,5 +46,15 @@ namespace Data.Repositories.Implementations
                 .OrderByDescending(s => s.TimeStart)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<ShiftRegister>> GetShiftRegistersAsync(
+            int weekScheduleId, DateTimeParams @params)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.WeekScheduleId == weekScheduleId)
+                .OrderByDescending(s => s.TimeStart)
+                .ToListAsync();
+        }
     }
 }

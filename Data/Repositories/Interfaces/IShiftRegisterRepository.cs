@@ -13,5 +13,7 @@ namespace Data.Repositories.Interfaces
             string username, ShiftRegisterParams @params);
         Task<IEnumerable<ShiftRegister>> GetShiftRegistersAsync(
             int weekScheduleId);
+        Task<IEnumerable<ShiftRegister>> GetShiftRegistersAsync(
+            int weekScheduleId, DateTimeParams @params);
     }
 }

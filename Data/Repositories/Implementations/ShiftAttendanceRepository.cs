@@ -46,7 +46,7 @@ namespace Data.Repositories.Implementations
         }
 
         public async Task<IEnumerable<ShiftAttendanceOverview>> GetShiftAttendancesAsync(
-            string username, WorkHoursReportParams @params)
+            string username, DateTimeParams @params)
         {
             return await _context.ShiftAssignments
                     .Join(_context.ShiftAttendances,

@@ -93,6 +93,7 @@ namespace Data.Repositories.Implementations
             return await _entities
                 .Where(s => s.Status == Enums.Status.Active)
                 .Where(s => s.StoreId == storeId)
+                .Where(s => s.IsManager == false)
                 .OrderBy(s => s.Username)
                 .ProjectTo<StoreStaffOverview>(_mapper.ConfigurationProvider)
                 .ToListAsync();

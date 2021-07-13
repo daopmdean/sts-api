@@ -52,7 +52,7 @@ namespace Data.Repositories.Implementations
         }
 
         public async Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
-            string username, WorkHoursReportParams @params)
+            string username, DateTimeParams @params)
         {
             return await _entities
                 .Where(s => s.Status == Enums.Status.Active)

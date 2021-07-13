@@ -202,7 +202,7 @@ namespace STS.Controllers
 
         [HttpGet("work-report")]
         public async Task<ActionResult> GetWorkReport(
-            [FromQuery] WorkHoursReportParams @params)
+            [FromQuery] DateTimeParams @params)
         {
             try
             {
