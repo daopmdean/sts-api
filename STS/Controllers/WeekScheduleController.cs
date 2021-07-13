@@ -21,18 +21,21 @@ namespace STS.Controllers
         private readonly IStoreScheduleDetailService _storeScheduleDetailService;
         private readonly IStaffScheduleDetailService _staffScheduleDetailService;
         private readonly IStoreStaffService _storeStaffService;
+        private readonly IShiftRegisterService _shiftRegisterService;
 
         public WeekScheduleController(IWeekScheduleService weekScheduleService,
             IWeekScheduleDetailService weekScheduleDetailService,
             IStoreScheduleDetailService storeScheduleDetailService,
             IStaffScheduleDetailService staffScheduleDetailService,
-            IStoreStaffService storeStaffService)
+            IStoreStaffService storeStaffService,
+            IShiftRegisterService shiftRegisterService)
         {
             _weekScheduleService = weekScheduleService;
             _weekScheduleDetailService = weekScheduleDetailService;
             _storeScheduleDetailService = storeScheduleDetailService;
             _staffScheduleDetailService = staffScheduleDetailService;
             _storeStaffService = storeStaffService;
+            _shiftRegisterService = shiftRegisterService;
         }
 
         [HttpGet]
@@ -177,6 +180,37 @@ namespace STS.Controllers
                     .GetStaffScheduleDetails(weekScheduleId);
 
                 return Ok(staffScheduleDetails);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpGet("{weekScheduleId}/shift-registers")]
+        public async Task<ActionResult> GetShiftRegisters(
+            int weekScheduleId)
+        {
+            try
+            {
+                var shiftRegisters = await _shiftRegisterService
+                    .GetShiftRegisters(weekScheduleId);
+
+                return Ok(shiftRegisters);
             }
             catch (AppException ex)
             {
