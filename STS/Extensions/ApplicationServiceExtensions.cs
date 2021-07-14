@@ -35,6 +35,10 @@ namespace STS.Extensions
             services.AddScoped<IShiftAssignmentRepository, ShiftAssignmentRepository>();
             services.AddScoped<IShiftAttendanceRepository, ShiftAttendanceRepository>();
 
+            services.AddScoped<IShiftScheduleResultRepository, ShiftScheduleResultRepository>();
+            services.AddScoped<IShiftScheduleDetailResultRepository, 
+                ShiftScheduleDetailResultRepository>();
+
             // Services
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IReportService, ReportService>();
@@ -63,6 +67,8 @@ namespace STS.Extensions
             services.AddScoped<IShiftRegisterService, ShiftRegisterService>();
             services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
             services.AddScoped<IShiftAttendanceService, ShiftAttendanceService>();
+
+
 
             var emailConfig = configuration
                 .GetSection("EmailConfiguration")

@@ -82,6 +82,9 @@ namespace Service.Helpers
             CreateMap<StaffSkillOverview, SkillStaff>()
                 .ForMember(dest => dest.SkillId,
                     obj => obj.MapFrom(src => src.SkillId));
+
+            CreateMap<ShiftScheduleResult, ScheduleResponse>();
+            CreateMap<ShiftScheduleDetailResult, ShiftAssignmentResponse>();
         }
     }
 }

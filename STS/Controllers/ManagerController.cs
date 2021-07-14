@@ -18,6 +18,7 @@ namespace STS.Controllers
     {
         private readonly IManagerService _managerService;
         private readonly IScheduleService _scheduleService;
+        private readonly IShiftScheduleResultService _scheduleResultService;
         private readonly IStoreStaffService _storeStaffService;
         private readonly IWeekScheduleService _weekService;
         private readonly IStoreService _storeService;
@@ -27,6 +28,7 @@ namespace STS.Controllers
         public ManagerController(
             IManagerService managerService,
             IScheduleService scheduleService,
+            IShiftScheduleResultService scheduleResultService,
             IStoreStaffService storeStaffService,
             IWeekScheduleService weekService,
             IStoreService storeService,
@@ -35,6 +37,7 @@ namespace STS.Controllers
         {
             _managerService = managerService;
             _scheduleService = scheduleService;
+            _scheduleResultService = scheduleResultService;
             _storeStaffService = storeStaffService;
             _weekService = weekService;
             _storeService = storeService;
@@ -175,6 +178,64 @@ namespace STS.Controllers
                 var brandId = int.Parse(User.GetBrandId());
                 return Ok(await _scheduleService
                     .ComputeSchedule(request.WeekScheduleId, brandId));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpPost("schedule/check")]
+        public async Task<IActionResult> CheckScheduleComplete(
+            ShiftScheduleRequest request)
+        {
+            try
+            {
+                return Ok(await _scheduleResultService
+                    .CheckShiftScheduleResult(request.ShiftScheduleResultId));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
+        [HttpPost("schedule/result")]
+        public async Task<IActionResult> GetScheduleResult(
+            ShiftScheduleRequest request)
+        {
+            try
+            {
+                return Ok(await _scheduleResultService
+                    .GetScheduleResult(request.ShiftScheduleResultId));
             }
             catch (AppException ex)
             {

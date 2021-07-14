@@ -27,6 +27,9 @@ namespace Data
         public DbSet<ShiftAttendance> ShiftAttendances { get; set; }
         public DbSet<ShiftLog> ShiftLogs { get; set; }
 
+        public DbSet<ShiftScheduleResult> ShiftScheduleResults { get; set; }
+        public DbSet<ShiftScheduleDetailResult> ShiftScheduleDetailResults { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -147,6 +150,12 @@ namespace Data
             //    .HasForeignKey(ssd => ssd.WeekScheduleId)
             //    .OnDelete(DeleteBehavior.NoAction);
 
+            // shift schedule detail - shift schedule
+            modelBuilder.Entity<ShiftScheduleDetailResult>()
+                .HasOne(rd => rd.ShiftScheduleResult)
+                .WithMany(r => r.ShiftScheduleDetailResults)
+                .HasForeignKey(rd => rd.ShiftScheduleResultId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
