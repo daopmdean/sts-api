@@ -4,6 +4,8 @@ namespace Data.Models.Responses
 {
     public class ScheduleResponse
     {
+        public long ShiftScheduleResultId { get; set; }
+
         public long Conflicts { get; set; }
 
         public long Branches { get; set; }

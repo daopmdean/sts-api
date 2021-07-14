@@ -13,7 +13,7 @@ namespace Data.Entities
 
         public int SkillId { get; set; }
 
-        public int ShiftScheduleResultId { get; set; }
+        public long ShiftScheduleResultId { get; set; }
 
         public ShiftScheduleResult ShiftScheduleResult { get; set; }
 

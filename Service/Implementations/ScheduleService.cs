@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Data.Entities;
 using Data.Enums;
 using Data.Models.Requests;
@@ -13,10 +6,11 @@ using Data.Models.Responses;
 using Data.Repositories.Interfaces;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using Service.Enums;
-using Service.Exceptions;
 using Service.Helpers;
 using Service.Interfaces;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Service.Implementations
 {
@@ -67,7 +61,7 @@ namespace Service.Implementations
             var properties = _rabbitMqChannel.CreateBasicProperties();
             properties.Persistent = true;
             _rabbitMqChannel.BasicPublish("", "sts_api_request", properties, body);
-            
+
             var result = await _shiftScheduleResultService
                 .CreateShiftScheduleResult();
 

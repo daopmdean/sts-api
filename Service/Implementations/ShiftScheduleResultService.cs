@@ -56,5 +56,27 @@ namespace Service.Implementations
 
             return shiftScheduleResult;
         }
+
+        public async Task CreateShiftScheduleResult(ScheduleResponse create)
+        {
+            var shiftAssignments = create.ShiftAssignments;
+            foreach (var shiftAssignment in shiftAssignments)
+            {
+                var shiftScheduleDetailResult = _mapper
+                    .Map<ShiftScheduleDetailResult>(shiftAssignment);
+                await _scheduleDetailRepo.CreateAsync(shiftScheduleDetailResult);
+            }
+
+            var scheduleResult = await _scheduleRepo
+                .GetByIdAsync((int)create.ShiftScheduleResultId);
+            _mapper.Map(create, scheduleResult);
+            scheduleResult.IsComplete = true;
+            _scheduleRepo.Update(scheduleResult);
+
+            if (await _scheduleRepo.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Fail to create shift schedule result");
+        }
     }
 }

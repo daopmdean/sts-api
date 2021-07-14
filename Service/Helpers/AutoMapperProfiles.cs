@@ -85,6 +85,7 @@ namespace Service.Helpers
 
             CreateMap<ShiftScheduleResult, ScheduleResponse>();
             CreateMap<ShiftScheduleDetailResult, ShiftAssignmentResponse>();
+            CreateMap<ShiftAssignmentResponse, ShiftScheduleDetailResult>();
         }
     }
 }
