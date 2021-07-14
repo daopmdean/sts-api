@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 using Service.Interfaces;
 
 namespace STS
@@ -18,6 +19,8 @@ namespace STS
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
+
+            InitializedRabbitMq();
 
             try
             {
@@ -45,5 +48,23 @@ namespace STS
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static void InitializedRabbitMq()
+        {
+            var rabbitMqHostName = "localhost";
+            var factory = new ConnectionFactory
+            {
+                HostName = rabbitMqHostName
+            };
+
+            using var connection = factory.CreateConnection();
+            using var channel = connection.CreateModel();
+
+            channel.QueueDeclare(queue: "request_message_queue",
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
+        }
     }
 }

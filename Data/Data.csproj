@@ -9,7 +9,6 @@
     <Folder Include="Repositories\" />
     <Folder Include="Repositories\Interfaces\" />
     <Folder Include="Repositories\Implementations\" />
-    <Folder Include="Pagings\" />
     <Folder Include="Enums\" />
     <Folder Include="Repositories\RepoEntities\" />
   </ItemGroup>
