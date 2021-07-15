@@ -67,13 +67,12 @@ namespace Service.Implementations
                 {
                     var shiftScheduleDetailResult = _mapper
                         .Map<ShiftScheduleDetailResult>(shiftAssignment);
-                    shiftScheduleDetailResult.ShiftScheduleResultId = create.ShiftScheduleResultId;
+                    shiftScheduleDetailResult.ShiftScheduleResultId 
+                        = create.ShiftScheduleResultId;
+                    shiftScheduleDetailResult.StoreId = create.StoreId;
                     await _scheduleDetailRepo.CreateAsync(shiftScheduleDetailResult);
                 }
             }
-
-            //if (!await _scheduleRepo.SaveChangesAsync())
-            //    throw new AppException(400, "Fail to create shift schedule detail result");
 
             var scheduleResult = await _scheduleRepo
                 .GetByIdAsync(create.ShiftScheduleResultId);

@@ -58,7 +58,6 @@ namespace Service.Implementations
             var result = await _shiftScheduleResultService
                 .CreateShiftScheduleResult();
             request.Id = result.Id;
-
             var message = JsonConvert.SerializeObject(request);
             var body = Encoding.UTF8.GetBytes(message);
             var properties = _rabbitMqChannel.CreateBasicProperties();
@@ -164,6 +163,7 @@ namespace Service.Implementations
             var weekSchedule = await _weekScheduleService
                     .GetWeekScheduleAsync(weekScheduleId);
             request.DateStart = weekSchedule.DateStart;
+            request.StoreId = weekSchedule.StoreId;
 
             var shiftRegisters = await _shiftRegisterService
                 .GetShiftRegisters(weekScheduleId);
