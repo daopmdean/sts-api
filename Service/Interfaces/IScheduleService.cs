@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Data.Entities;
 using Data.Models.Requests;
-using Data.Models.Responses;
+using System.Threading.Tasks;
 
 namespace Service.Interfaces
 {
     public interface IScheduleService
     {
-        Task<ScheduleResponse> ComputeSchedule(
+        Task<ShiftScheduleResult> ComputeSchedule(
             int weekScheduleId, int brandId);
         Task<ScheduleRequest> GetScheduleRequest(
             int weekScheduleId, int brandId);

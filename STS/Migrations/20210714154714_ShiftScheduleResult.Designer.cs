@@ -3,15 +3,17 @@ using System;
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace STS.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210714154714_ShiftScheduleResult")]
+    partial class ShiftScheduleResult
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,9 +224,9 @@ namespace STS.Migrations
 
             modelBuilder.Entity("Data.Entities.ShiftScheduleDetailResult", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("MealEnd")
@@ -233,8 +235,8 @@ namespace STS.Migrations
                     b.Property<DateTime>("MealStart")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("ShiftScheduleResultId")
-                        .HasColumnType("integer");
+                    b.Property<long>("ShiftScheduleResultId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("SkillId")
                         .HasColumnType("integer");
@@ -263,9 +265,9 @@ namespace STS.Migrations
 
             modelBuilder.Entity("Data.Entities.ShiftScheduleResult", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<long>("Branches")

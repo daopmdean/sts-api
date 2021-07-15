@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 using Service.Interfaces;
 
 namespace STS
@@ -45,5 +46,6 @@ namespace STS
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
     }
 }

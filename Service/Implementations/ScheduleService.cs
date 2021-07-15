@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Data.Entities;
 using Data.Enums;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Repositories.Interfaces;
-using Service.Enums;
-using Service.Exceptions;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
 using Service.Helpers;
 using Service.Interfaces;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Service.Implementations
 {
     public class ScheduleService : IScheduleService
     {
+        private readonly IShiftScheduleResultService _shiftScheduleResultService;
         private readonly IShiftRegisterService _shiftRegisterService;
         private readonly IWeekScheduleService _weekScheduleService;
         private readonly IWeekScheduleDetailService _weekScheduleDetailService;
@@ -26,9 +24,11 @@ namespace Service.Implementations
         private readonly IStaffSkillService _staffSkillService;
         private readonly ISkillService _skillService;
         private readonly IUserRepository _userRepository;
+        private readonly IModel _rabbitMqChannel;
         private readonly IMapper _mapper;
 
         public ScheduleService(
+            IShiftScheduleResultService shiftScheduleResultService,
             IShiftRegisterService shiftRegisterService,
             IWeekScheduleService weekScheduleService,
             IWeekScheduleDetailService weekScheduleDetailService,
@@ -36,8 +36,10 @@ namespace Service.Implementations
             IStaffSkillService staffSkillService,
             ISkillService skillService,
             IUserRepository userRepository,
+            IModel rabbitMqChannel,
             IMapper mapper)
         {
+            _shiftScheduleResultService = shiftScheduleResultService;
             _shiftRegisterService = shiftRegisterService;
             _weekScheduleService = weekScheduleService;
             _weekScheduleDetailService = weekScheduleDetailService;
@@ -45,48 +47,24 @@ namespace Service.Implementations
             _staffSkillService = staffSkillService;
             _skillService = skillService;
             _userRepository = userRepository;
+            _rabbitMqChannel = rabbitMqChannel;
             _mapper = mapper;
         }
 
-        public async Task<ScheduleResponse> ComputeSchedule(
+        public async Task<ShiftScheduleResult> ComputeSchedule(
             int weekScheduleId, int brandId)
         {
-            HttpClient client = new();
-            //client.BaseAddress = new Uri("http://35.72.3.192:8080/");
-            client.BaseAddress = new Uri("https://sts-schedule.herokuapp.com/");
-            //client.BaseAddress = new Uri("https://localhost:44354/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            client.Timeout = TimeSpan.FromMinutes(4);
+            ScheduleRequest request = await GetScheduleRequest(weekScheduleId, brandId);
+            var result = await _shiftScheduleResultService
+                .CreateShiftScheduleResult();
+            request.Id = result.Id;
+            var message = JsonConvert.SerializeObject(request);
+            var body = Encoding.UTF8.GetBytes(message);
+            var properties = _rabbitMqChannel.CreateBasicProperties();
+            properties.Persistent = true;
+            _rabbitMqChannel.BasicPublish("", "sts_api_request", properties, body);
 
-            ScheduleRequest request = await GetScheduleRequest(weekScheduleId, 
-                brandId);
-            
-            HttpResponseMessage response = await client.PostAsJsonAsync(
-                "api/scheduling/testing", request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var result = await response.Content
-                    .ReadFromJsonAsync<ScheduleResponse>();
-                var weekSchedule = await _weekScheduleService
-                    .GetWeekScheduleAsync(weekScheduleId);
-                var shiftAssignments = result.ShiftAssignments;
-                if (shiftAssignments != null)
-                { 
-                    foreach (var shift in shiftAssignments)
-                    {
-                        shift.StoreId = weekSchedule.StoreId;
-                    }
-                }
-                return result;
-            }
-
-            var error = await response.Content
-                    .ReadFromJsonAsync<ErrorResponse>();
-            error.Message = "From Schedule server: " + error.Message;
-            throw new AppException(error);
+            return result;
         }
 
         private List<SkillRequest> ConvertToSkills(
@@ -185,6 +163,7 @@ namespace Service.Implementations
             var weekSchedule = await _weekScheduleService
                     .GetWeekScheduleAsync(weekScheduleId);
             request.DateStart = weekSchedule.DateStart;
+            request.StoreId = weekSchedule.StoreId;
 
             var shiftRegisters = await _shiftRegisterService
                 .GetShiftRegisters(weekScheduleId);

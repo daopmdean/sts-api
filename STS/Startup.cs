@@ -45,6 +45,7 @@ namespace STS
             services.AddDbConnectionServices(Configuration);
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
+            services.AddRabbitMQService(Configuration);
             services.AddControllers().AddNewtonsoftJson(
                 opt => opt.SerializerSettings.ReferenceLoopHandling
                     = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
