@@ -226,6 +226,35 @@ namespace STS.Controllers
             }
         }
 
+        [HttpDelete("users/{username}")]
+        public async Task<ActionResult> DeleteUser(string username)
+        {
+            try
+            {
+                await _userService.DeleteUserAsync(username);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+
+            return NoContent();
+        }
+
         [HttpGet("{brandId}/stores")]
         public async Task<ActionResult<BrandOverview>> GetStoresOfBrand(
             int brandId, [FromQuery] StoreParams @params)
