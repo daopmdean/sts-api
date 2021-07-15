@@ -24,7 +24,7 @@ namespace STS.Controllers
             try
             {
                 await _scheduleResultService.CreateShiftScheduleResult(create);
-                return Ok();
+                return Ok("success");
             }
             catch (AppException ex)
             {

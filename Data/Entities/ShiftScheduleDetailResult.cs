@@ -5,7 +5,7 @@ namespace Data.Entities
 {
     public class ShiftScheduleDetailResult : BaseEntity
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public string Username { get; set; }
 
@@ -13,7 +13,7 @@ namespace Data.Entities
 
         public int SkillId { get; set; }
 
-        public long ShiftScheduleResultId { get; set; }
+        public int ShiftScheduleResultId { get; set; }
 
         public ShiftScheduleResult ShiftScheduleResult { get; set; }
 

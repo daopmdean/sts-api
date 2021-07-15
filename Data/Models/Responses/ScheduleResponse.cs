@@ -4,7 +4,7 @@ namespace Data.Models.Responses
 {
     public class ScheduleResponse
     {
-        public long ShiftScheduleResultId { get; set; }
+        public int ShiftScheduleResultId { get; set; }
 
         public long Conflicts { get; set; }
 

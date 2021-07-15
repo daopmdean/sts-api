@@ -55,15 +55,15 @@ namespace Service.Implementations
             int weekScheduleId, int brandId)
         {
             ScheduleRequest request = await GetScheduleRequest(weekScheduleId, brandId);
+            var result = await _shiftScheduleResultService
+                .CreateShiftScheduleResult();
+            request.Id = result.Id;
 
             var message = JsonConvert.SerializeObject(request);
             var body = Encoding.UTF8.GetBytes(message);
             var properties = _rabbitMqChannel.CreateBasicProperties();
             properties.Persistent = true;
             _rabbitMqChannel.BasicPublish("", "sts_api_request", properties, body);
-
-            var result = await _shiftScheduleResultService
-                .CreateShiftScheduleResult();
 
             return result;
         }

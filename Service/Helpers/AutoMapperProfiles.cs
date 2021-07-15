@@ -84,6 +84,7 @@ namespace Service.Helpers
                     obj => obj.MapFrom(src => src.SkillId));
 
             CreateMap<ShiftScheduleResult, ScheduleResponse>();
+            CreateMap<ScheduleResponse, ShiftScheduleResult>();
             CreateMap<ShiftScheduleDetailResult, ShiftAssignmentResponse>();
             CreateMap<ShiftAssignmentResponse, ShiftScheduleDetailResult>();
         }

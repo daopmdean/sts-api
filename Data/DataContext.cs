@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -156,6 +159,47 @@ namespace Data
                 .WithMany(r => r.ShiftScheduleDetailResults)
                 .HasForeignKey(rd => rd.ShiftScheduleResultId)
                 .OnDelete(DeleteBehavior.NoAction);
+        }
+
+        public override Task<int> SaveChangesAsync(
+            CancellationToken cancellationToken = default)
+        {
+            try
+            { 
+                return base.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                var exception = HandleDbUpdateException(ex);
+                throw exception;
+            }
+            catch (DbUpdateException ex)
+            {
+                var exception = HandleDbUpdateException(ex);
+                throw exception;
+            }
+        }
+
+        private Exception HandleDbUpdateException(DbUpdateException dbu)
+        {
+            var builder = new StringBuilder(
+                "A DbUpdateException was caught while saving changes. ");
+
+            try
+            {
+                foreach (var result in dbu.Entries)
+                {
+                    builder.AppendFormat("Type: {0} was part of the problem. ", 
+                        result.Entity.GetType().Name);
+                }
+            }
+            catch (Exception e)
+            {
+                builder.Append("Error parsing DbUpdateException: " + e.ToString());
+            }
+
+            string message = builder.ToString();
+            return new Exception(message, dbu);
         }
     }
 }

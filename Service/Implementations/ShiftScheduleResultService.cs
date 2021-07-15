@@ -60,15 +60,27 @@ namespace Service.Implementations
         public async Task CreateShiftScheduleResult(ScheduleResponse create)
         {
             var shiftAssignments = create.ShiftAssignments;
-            foreach (var shiftAssignment in shiftAssignments)
-            {
-                var shiftScheduleDetailResult = _mapper
-                    .Map<ShiftScheduleDetailResult>(shiftAssignment);
-                await _scheduleDetailRepo.CreateAsync(shiftScheduleDetailResult);
+
+            if (shiftAssignments != null)
+            { 
+                foreach (var shiftAssignment in shiftAssignments)
+                {
+                    var shiftScheduleDetailResult = _mapper
+                        .Map<ShiftScheduleDetailResult>(shiftAssignment);
+                    shiftScheduleDetailResult.ShiftScheduleResultId = create.ShiftScheduleResultId;
+                    await _scheduleDetailRepo.CreateAsync(shiftScheduleDetailResult);
+                }
             }
 
+            //if (!await _scheduleRepo.SaveChangesAsync())
+            //    throw new AppException(400, "Fail to create shift schedule detail result");
+
             var scheduleResult = await _scheduleRepo
-                .GetByIdAsync((int)create.ShiftScheduleResultId);
+                .GetByIdAsync(create.ShiftScheduleResultId);
+
+            if (scheduleResult == null)
+                throw new AppException(400, "schedule result not found");
+
             _mapper.Map(create, scheduleResult);
             scheduleResult.IsComplete = true;
             _scheduleRepo.Update(scheduleResult);

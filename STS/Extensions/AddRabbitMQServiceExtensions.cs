@@ -16,8 +16,8 @@ namespace STS.Extensions
                 Password = configuration.GetSection("RabbitMq")["Password"]
             };
 
-            using var connection = factory.CreateConnection();
-            using var channel = connection.CreateModel();
+            var connection = factory.CreateConnection();
+            var channel = connection.CreateModel();
 
             channel.QueueDeclare(queue: "sts_api_request",
                 durable: true,
