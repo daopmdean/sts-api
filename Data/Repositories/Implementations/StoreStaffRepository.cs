@@ -99,5 +99,16 @@ namespace Data.Repositories.Implementations
                 .ToListAsync();
 
         }
+
+        public async Task<IEnumerable<StoreStaffOverview>> GetStoresFromStaffAsync(
+            string username)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.Username == username)
+                .OrderBy(s => s.StoreId)
+                .ProjectTo<StoreStaffOverview>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
     }
 }

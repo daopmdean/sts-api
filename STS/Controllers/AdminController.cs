@@ -86,16 +86,31 @@ namespace STS.Controllers
         [HttpGet("users/{username}")]
         public async Task<ActionResult> GetUser(string username)
         {
-            var user = await _userService.GetUserAsync(username);
-
-            if (user != null)
-                return Ok(user);
-
-            return BadRequest(new ErrorResponse
+            try
             {
-                StatusCode = 400,
-                Message = "Username not found"
-            });
+                var user = await _userService
+                    .GetUserGeneralAsync(username);
+
+                return Ok(user);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
         }
 
         [HttpGet("users/{username}/skills")]

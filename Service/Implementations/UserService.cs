@@ -15,12 +15,20 @@ namespace Service.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _repository;
+        private readonly IUserRepository _userRepo;
+        private readonly IStoreStaffRepository _storeStaffRepo;
+        private readonly IStaffSkillRepository _staffSkillRepo;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository repository, IMapper mapper)
+        public UserService(
+            IUserRepository userRepo,
+            IStoreStaffRepository storeStaffRepo,
+            IStaffSkillRepository staffSkillRepo,
+            IMapper mapper)
         {
-            _repository = repository;
+            _userRepo = userRepo;
+            _storeStaffRepo = storeStaffRepo;
+            _staffSkillRepo = staffSkillRepo;
             _mapper = mapper;
         }
 
@@ -36,10 +44,10 @@ namespace Service.Implementations
 
         public async Task DeleteUserAsync(string username)
         {
-            var user = await _repository.GetUserByUsernameAsync(username);
-            _repository.Delete(user);
+            var user = await _userRepo.GetUserByUsernameAsync(username);
+            _userRepo.Delete(user);
 
-            if (await _repository.SaveChangesAsync())
+            if (await _userRepo.SaveChangesAsync())
                 return;
 
             throw new AppException(400, "Can not delete user");
@@ -47,45 +55,62 @@ namespace Service.Implementations
 
         public async Task<PagedList<UserOverview>> GetBrandManagers(UserParams @params)
         {
-            return await _repository.GetBrandManagersAsync(@params);
+            return await _userRepo.GetBrandManagersAsync(@params);
         }
 
         public async Task<PagedList<UserOverview>> GetStaff(UserParams @params)
         {
-            return await _repository.GetStaffAsync(@params);
+            return await _userRepo.GetStaffAsync(@params);
         }
 
         public async Task<PagedList<UserOverview>> GetStaffAsync(
             int brandId, UserParams @params)
         {
-            return await _repository.GetStaffAsync(brandId, @params);
+            return await _userRepo.GetStaffAsync(brandId, @params);
         }
 
         public async Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params)
         {
-            return await _repository.GetStoreManagersAsync(@params);
+            return await _userRepo.GetStoreManagersAsync(@params);
         }
 
         public async Task<UserInfoResponse> GetUserAsync(string username)
         {
-            return await _repository.GetByUsernameAsync(username);
+            var user = await _userRepo.GetByUsernameAsync(username);
+
+            if (user != null)
+                return user;
+
+            throw new AppException(400, "Username not found");
+        }
+
+        public async Task<UserGeneralResponse> GetUserGeneralAsync(string username)
+        {
+            UserGeneralResponse result = new();
+            result.GeneralInfo = await GetUserAsync(username);
+            result.JobInformations = await _storeStaffRepo
+                .GetStoresFromStaffAsync(username);
+            result.StaffSkills = await _staffSkillRepo
+                .GetSkillsFromStaffAsync(username);
+
+            return result;
         }
 
         public async Task<PagedList<UserOverview>> GetUsersAsync(UserParams @params)
         {
-            return await _repository.GetUsersAsync(@params);
+            return await _userRepo.GetUsersAsync(@params);
         }
 
         public async Task<PagedList<UserOverview>> GetUsersAsync(int brandId,
             UserParams @params)
         {
-            return await _repository.GetUsersAsync(brandId, @params);
+            return await _userRepo.GetUsersAsync(brandId, @params);
         }
 
         public async Task UpdatePasswordAsync(
             string username, PasswordUpdate update)
         {
-            var user = await _repository.GetUserByUsernameAsync(username);
+            var user = await _userRepo.GetUserByUsernameAsync(username);
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac
@@ -102,9 +127,9 @@ namespace Service.Implementations
                 .ComputeHash(Encoding.UTF8.GetBytes(update.NewPassword));
 
             user.Password = computedHash;
-            _repository.Update(user);
+            _userRepo.Update(user);
 
-            if (await _repository.SaveChangesAsync())
+            if (await _userRepo.SaveChangesAsync())
                 return;
 
             throw new AppException(400, "Can not update password");
@@ -113,12 +138,12 @@ namespace Service.Implementations
         public async Task UpdateUserAsync(string username,
             UserUpdate updateInfo)
         {
-            var user = await _repository.GetUserByUsernameAsync(username);
+            var user = await _userRepo.GetUserByUsernameAsync(username);
 
             _mapper.Map(updateInfo, user);
-            _repository.Update(user);
+            _userRepo.Update(user);
 
-            if (await _repository.SaveChangesAsync())
+            if (await _userRepo.SaveChangesAsync())
                 return;
 
             throw new AppException(400, "Can not update user");

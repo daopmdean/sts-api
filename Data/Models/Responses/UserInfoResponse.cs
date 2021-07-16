@@ -1,4 +1,5 @@
 ﻿using System;
+using Data.Enums;
 
 namespace Data.Models.Responses
 {
@@ -17,6 +18,8 @@ namespace Data.Models.Responses
         public string Phone { get; set; }
 
         public int Gender { get; set; }
+
+        public StaffType? Type { get; set; }
 
         public int BrandId { get; set; }
 
