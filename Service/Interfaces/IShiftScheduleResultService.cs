@@ -8,7 +8,6 @@ namespace Service.Interfaces
     {
         Task<ShiftScheduleResult> CreateShiftScheduleResult();
         Task CreateShiftScheduleResult(ScheduleResponse create);
-        Task<ShiftScheduleResult> CheckShiftScheduleResult(long id);
-        Task<ScheduleResponse> GetScheduleResult(long id);
+        Task<ScheduleResponse> GetScheduleResult(int id);
     }
 }

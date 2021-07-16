@@ -199,35 +199,6 @@ namespace STS.Controllers
             }
         }
 
-        [HttpPost("schedule/check")]
-        public async Task<IActionResult> CheckScheduleComplete(
-            ShiftScheduleRequest request)
-        {
-            try
-            {
-                return Ok(await _scheduleResultService
-                    .CheckShiftScheduleResult(request.ShiftScheduleResultId));
-            }
-            catch (AppException ex)
-            {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
-            }
-        }
-
         [HttpPost("schedule/result")]
         public async Task<IActionResult> GetScheduleResult(
             ShiftScheduleRequest request)

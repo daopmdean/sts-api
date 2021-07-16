@@ -35,20 +35,25 @@ namespace Service.Implementations
             throw new AppException(400, "Can not create ShiftScheduleResult");
         }
 
-        public async Task<ScheduleResponse> GetScheduleResult(long id)
+        public async Task<ScheduleResponse> GetScheduleResult(int id)
         {
             var shiftScheduleResult = await CheckShiftScheduleResult(id);
             var result = _mapper.Map<ScheduleResponse>(shiftScheduleResult);
-            var shiftAssignments = await _scheduleDetailRepo
+
+            if (shiftScheduleResult.IsComplete == true)
+            {
+                var shiftAssignments = await _scheduleDetailRepo
                 .GetShiftAssignments(id);
-            result.ShiftAssignments = shiftAssignments;
+                result.ShiftAssignments = shiftAssignments;
+            }
+
             return result;
         }
 
-        public async Task<ShiftScheduleResult> CheckShiftScheduleResult(long id)
+        private async Task<ShiftScheduleResult> CheckShiftScheduleResult(int id)
         {
             var shiftScheduleResult = await _scheduleRepo
-                .GetByIdAsync((int)id);
+                .GetByIdAsync(id);
 
             if (shiftScheduleResult == null)
                 throw new AppException(400,
@@ -62,12 +67,12 @@ namespace Service.Implementations
             var shiftAssignments = create.ShiftAssignments;
 
             if (shiftAssignments != null)
-            { 
+            {
                 foreach (var shiftAssignment in shiftAssignments)
                 {
                     var shiftScheduleDetailResult = _mapper
                         .Map<ShiftScheduleDetailResult>(shiftAssignment);
-                    shiftScheduleDetailResult.ShiftScheduleResultId 
+                    shiftScheduleDetailResult.ShiftScheduleResultId
                         = create.ShiftScheduleResultId;
                     shiftScheduleDetailResult.StoreId = create.StoreId;
                     await _scheduleDetailRepo.CreateAsync(shiftScheduleDetailResult);

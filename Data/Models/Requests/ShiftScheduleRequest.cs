@@ -2,6 +2,6 @@
 {
     public class ShiftScheduleRequest
     {
-        public long ShiftScheduleResultId { get; set; }
+        public int ShiftScheduleResultId { get; set; }
     }
 }
