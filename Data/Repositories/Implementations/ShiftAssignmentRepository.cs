@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -21,6 +22,17 @@ namespace Data.Repositories.Implementations
             IMapper mapper) : base(context)
         {
             _mapper = mapper;
+        }
+
+        public async Task<ShiftAssignment> GetShiftAssignmentAsync(
+            string username, DateTime timeRequest, int timeRange)
+        {
+            return await _entities
+                .Where(s => (timeRequest <= s.TimeStart.AddMinutes(timeRange)
+                    && timeRequest >= s.TimeStart.AddMinutes(-timeRange))
+                    || (timeRequest <= s.TimeEnd.AddMinutes(timeRange)
+                    && timeRequest >= s.TimeEnd.AddMinutes(-timeRange)))
+                .FirstOrDefaultAsync(s => s.Username == username);
         }
 
         public async Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(

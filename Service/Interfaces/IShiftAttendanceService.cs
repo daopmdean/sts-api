@@ -14,7 +14,8 @@ namespace Service.Interfaces
         Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
             int StoreId, ShiftAttendanceParams @params);
         Task<ShiftAttendance> GetShiftAttendance(int id);
-        Task<ShiftAttendance> CreateShiftAttendance(ShiftAttendanceCreate create);
+        Task<ShiftAttendance> CreateShiftAttendance(
+            ShiftAttendanceCreate create, int timeRange);
         Task UpdateShiftAttendance(int id, ShiftAttendanceUpdate update);
         Task DeleteShiftAttendance(int id);
     }

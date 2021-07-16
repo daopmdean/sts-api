@@ -14,5 +14,17 @@ namespace Service.Helpers
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+        public static bool InTimeRange(
+            DateTime time, DateTime timeRequest, int timeRange)
+        {
+            if (timeRequest <= time.AddMinutes(timeRange)
+                && timeRequest >= time.AddMinutes(-timeRange))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

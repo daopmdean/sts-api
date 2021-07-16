@@ -7,6 +7,7 @@ using Data.Models.Responses;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
 using Service.Exceptions;
+using Service.Helpers;
 using Service.Interfaces;
 
 namespace Service.Implementations
@@ -28,22 +29,59 @@ namespace Service.Implementations
         }
 
         public async Task<ShiftAttendance> CreateShiftAttendance(
-            ShiftAttendanceCreate create)
+            ShiftAttendanceCreate create, int timeRange)
         {
             var shiftAssignment = await _shiftAssignmentRepo
-                .GetByIdAsync(create.ShiftAssignmentId);
+                .GetShiftAssignmentAsync(create.Username,
+                    create.TimeRequest, timeRange);
 
             if (shiftAssignment == null)
                 throw new AppException(400,
-                    "Conflicted with the FOREIGN KEY constraint, ShiftAssignmentId does not exist");
+                    "Can not create ShiftAttendance - ShiftAssignment does not exist");
 
-            var shiftAttendance = _mapper.Map<ShiftAttendance>(create);
-            await _shiftAttendanceRepo.CreateAsync(shiftAttendance);
+            var shiftAttendance = await _shiftAttendanceRepo
+                .GetByIdAsync(shiftAssignment.Id);
+
+            if (shiftAttendance == null)
+            {
+                shiftAttendance = new()
+                {
+                    ShiftAssignmentId = shiftAssignment.Id,
+                };
+                ProcessShiftAttendance(ref shiftAttendance,
+                    shiftAssignment, create.TimeRequest, timeRange);
+
+                await _shiftAttendanceRepo.CreateAsync(shiftAttendance);
+            }
+            else
+            {
+                ProcessShiftAttendance(ref shiftAttendance,
+                    shiftAssignment, create.TimeRequest, timeRange);
+                await _shiftAttendanceRepo.CreateAsync(shiftAttendance);
+            }
 
             if (await _shiftAttendanceRepo.SaveChangesAsync())
                 return shiftAttendance;
 
-            throw new AppException(400, "Can not create ShiftAttendance");
+            throw new AppException(400,
+                "Error at ShiftAttendanceService.cs - CreateShiftAttendance()");
+        }
+
+        private void ProcessShiftAttendance(
+            ref ShiftAttendance shiftAttendance,
+            ShiftAssignment shiftAssignment,
+            DateTime timeRequest, int timeRange)
+        {
+            if (Helper.InTimeRange(shiftAssignment.TimeStart,
+                        timeRequest, timeRange))
+            {
+                shiftAttendance.TimeCheckIn = timeRequest;
+            }
+            else if (Helper.InTimeRange(shiftAssignment.TimeEnd,
+                        timeRequest, timeRange))
+            {
+                shiftAttendance.TimeCheckOut = timeRequest;
+            }
         }
 
         public async Task DeleteShiftAttendance(int id)

@@ -22,13 +22,14 @@ namespace STS.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<ShiftAttendance>> CreateShiftAttendance(
             ShiftAttendanceCreate create)
         {
             try
             {
-                return Ok(await _service.CreateShiftAttendance(create));
+                return Ok(await _service.CreateShiftAttendance(create, 15));
             }
             catch (AppException ex)
             {
