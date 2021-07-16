@@ -67,7 +67,7 @@ namespace Service.Implementations
                 "Error at ShiftAttendanceService.cs - CreateShiftAttendance()");
         }
 
-        private void ProcessShiftAttendance(
+        private static void ProcessShiftAttendance(
             ref ShiftAttendance shiftAttendance,
             ShiftAssignment shiftAssignment,
             DateTime timeRequest, int timeRange)
@@ -75,12 +75,14 @@ namespace Service.Implementations
             if (Helper.InTimeRange(shiftAssignment.TimeStart,
                         timeRequest, timeRange))
             {
-                shiftAttendance.TimeCheckIn = timeRequest;
+                if (shiftAttendance.TimeCheckIn == DateTime.MinValue)
+                    shiftAttendance.TimeCheckIn = timeRequest;
             }
             else if (Helper.InTimeRange(shiftAssignment.TimeEnd,
                         timeRequest, timeRange))
             {
-                shiftAttendance.TimeCheckOut = timeRequest;
+                if (shiftAttendance.TimeCheckOut == DateTime.MinValue)
+                    shiftAttendance.TimeCheckOut = timeRequest;
             }
         }
 
