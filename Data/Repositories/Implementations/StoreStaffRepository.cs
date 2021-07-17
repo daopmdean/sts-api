@@ -100,7 +100,7 @@ namespace Data.Repositories.Implementations
 
         }
 
-        public async Task<IEnumerable<StoreStaffOverview>> GetStoresFromStaffAsync(
+        public async Task<IEnumerable<StoreStaffOverview>> GetStoreOverviewsFromStaffAsync(
             string username)
         {
             return await _entities
@@ -108,6 +108,16 @@ namespace Data.Repositories.Implementations
                 .Where(s => s.Username == username)
                 .OrderBy(s => s.StoreId)
                 .ProjectTo<StoreStaffOverview>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<StoreStaff>> GetStoresFromStaffAsync(
+            string username)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.Username == username)
+                .OrderBy(s => s.StoreId)
                 .ToListAsync();
         }
     }

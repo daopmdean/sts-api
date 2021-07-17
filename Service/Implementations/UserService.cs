@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
@@ -50,6 +52,14 @@ namespace Service.Implementations
             if (user == null)
                 throw new AppException(400, "User not found or have been deleted");
 
+            IEnumerable<StoreStaff> storeStaffs = await _storeStaffRepo
+                .GetStoresFromStaffAsync(user.Username);
+
+            foreach (var storeStaff in storeStaffs)
+            {
+                _storeStaffRepo.Delete(storeStaff);
+            }
+
             _userRepo.Delete(user);
 
             if (await _userRepo.SaveChangesAsync())
@@ -94,7 +104,7 @@ namespace Service.Implementations
             UserGeneralResponse result = new();
             result.GeneralInfo = await GetUserAsync(username);
             result.JobInformations = await _storeStaffRepo
-                .GetStoresFromStaffAsync(username);
+                .GetStoreOverviewsFromStaffAsync(username);
             result.StaffSkills = await _staffSkillRepo
                 .GetSkillsFromStaffAsync(username);
 
