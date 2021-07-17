@@ -44,7 +44,12 @@ namespace Service.Implementations
 
         public async Task DeleteUserAsync(string username)
         {
-            var user = await _userRepo.GetUserByUsernameAsync(username);
+            var user = await _userRepo
+                .GetUserByUsernameAsync(username);
+
+            if (user == null)
+                throw new AppException(400, "User not found or have been deleted");
+
             _userRepo.Delete(user);
 
             if (await _userRepo.SaveChangesAsync())
