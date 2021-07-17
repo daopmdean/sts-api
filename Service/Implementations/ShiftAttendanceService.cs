@@ -81,8 +81,7 @@ namespace Service.Implementations
             else if (Helper.InTimeRange(shiftAssignment.TimeEnd,
                         timeRequest, timeRange))
             {
-                if (shiftAttendance.TimeCheckOut == DateTime.MinValue)
-                    shiftAttendance.TimeCheckOut = timeRequest;
+                shiftAttendance.TimeCheckOut = timeRequest;
             }
         }
 
