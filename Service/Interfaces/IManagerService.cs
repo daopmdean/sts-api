@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Data.Models.Requests;
 
 namespace Service.Interfaces
@@ -10,5 +9,7 @@ namespace Service.Interfaces
         Task<StaffCreate> CreateStaff(int brandId, StaffCreate info);
         Task<StoreManagerCreate> CreateStoreManager(
             int brandId, StoreManagerCreate info);
+        Task<BrandManagerCreate> CreateBrandManager(
+            BrandManagerCreate info);
     }
 }

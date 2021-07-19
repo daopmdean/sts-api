@@ -109,6 +109,36 @@ namespace STS.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpPost("users/brand-manager")]
+        public async Task<IActionResult> RegisterBrandManager(
+            BrandManagerCreate info)
+        {
+            try
+            {
+                return Ok(await _managerService
+                    .CreateBrandManager(info));
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = ex.StatusCode,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
+                    Message = ex.Message,
+                    StackTrace = ex.StackTrace
+                });
+            }
+        }
+
         [HttpPost("users/store-manager")]
         public async Task<IActionResult> RegisterStoreManager(
             StoreManagerCreate info)
