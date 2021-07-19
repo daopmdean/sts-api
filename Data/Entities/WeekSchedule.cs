@@ -11,7 +11,11 @@ namespace Data.Entities
 
         public Store Store { get; set; }
 
+        public DateTime DateCreated { get; set; } = DateTime.Now;
+
         public DateTime DateStart { get; set; }
+
+        public ICollection<ShiftScheduleResult> ShiftScheduleResults { get; set; }
 
         public ICollection<StoreScheduleDetail> StoreScheduleDetails { get; set; }
 

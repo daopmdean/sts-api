@@ -9,7 +9,8 @@ namespace Data.Entities
         public long Conflicts { get; set; }
         public long Branches { get; set; }
         public double WallTime { get; set; }
+        public int WeekScheduleId { get; set; }
+        public WeekSchedule WeekSchedule { get; set; }
         public ICollection<ShiftScheduleDetailResult> ShiftScheduleDetailResults { get; set; }
-
     }
 }
