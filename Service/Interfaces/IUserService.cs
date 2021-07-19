@@ -17,8 +17,6 @@ namespace Service.Interfaces
         Task<PagedList<UserOverview>> GetStaff(UserParams @params);
         Task<UserInfoResponse> GetUserAsync(string username);
         Task<UserGeneralResponse> GetUserGeneralAsync(string username);
-        Task CreateStoreManager(RegisterRequest user);
-        Task CreateStaff(RegisterRequest user);
         Task UpdateUserAsync(string username, UserUpdate updateInfo);
         Task UpdatePasswordAsync(string username, PasswordUpdate update);
         Task DeleteUserAsync(string username);

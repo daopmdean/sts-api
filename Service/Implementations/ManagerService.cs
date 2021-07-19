@@ -59,5 +59,27 @@ namespace Service.Implementations
 
             return info;
         }
+
+        public async Task<StoreManagerCreate> CreateStoreManager(
+            int brandId, StoreManagerCreate info)
+        {
+            var storeManagerInfo = info.GeneralInfo;
+            storeManagerInfo.Password = Helper.GenerateRandomPassword(6);
+            await _authService
+                .RegisterWithRole(brandId,
+                    (int)UserRole.StoreManager, storeManagerInfo);
+
+            var storeStaff = info.JobInformation;
+            storeStaff.Username = storeManagerInfo.Username;
+            await _storeStaffService.CreateStoreStaff(storeStaff);
+
+            await _emailSender.SendEmailAsync(new Message(
+                new string[] { storeManagerInfo.Email },
+                "STS store manager account",
+                "<p>You are invited with username: " + storeManagerInfo.Username + "</p>" +
+                "password: " + storeManagerInfo.Password));
+
+            return info;
+        }
     }
 }

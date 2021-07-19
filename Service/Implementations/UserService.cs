@@ -34,16 +34,6 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
-        public Task CreateStaff(RegisterRequest user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CreateStoreManager(RegisterRequest user)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task DeleteUserAsync(string username)
         {
             var user = await _userRepo

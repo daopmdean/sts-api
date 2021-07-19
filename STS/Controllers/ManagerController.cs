@@ -110,14 +110,15 @@ namespace STS.Controllers
         }
 
         [HttpPost("users/store-manager")]
-        public async Task<IActionResult> RegisterStoreManager(RegisterRequest info)
+        public async Task<IActionResult> RegisterStoreManager(
+            StoreManagerCreate info)
         {
             try
             {
                 var brandId = int.Parse(User.GetBrandId());
 
-                return Ok(await _authService
-                    .RegisterWithRole(brandId, (int)UserRole.StoreManager, info));
+                return Ok(await _managerService
+                    .CreateStoreManager(brandId, info));
             }
             catch (AppException ex)
             {
@@ -263,7 +264,8 @@ namespace STS.Controllers
         {
             try
             {
-                await _storeStaffService.AssignStoreManager(info);
+                return Ok(await _storeStaffService
+                    .AssignStoreManager(info));
             }
             catch (AppException ex)
             {
@@ -283,8 +285,6 @@ namespace STS.Controllers
                     StackTrace = ex.StackTrace
                 });
             }
-
-            return NoContent();
         }
 
         [HttpPost("assign/staff")]
@@ -292,7 +292,8 @@ namespace STS.Controllers
         {
             try
             {
-                return Ok(await _storeStaffService.AssignStaff(storeAssign));
+                return Ok(await _storeStaffService
+                    .AssignStaff(storeAssign));
             }
             catch (AppException ex)
             {
