@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
+using Data.Enums;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
@@ -54,18 +56,26 @@ namespace Service.Implementations
             return weekSchedule;
         }
 
-        public async Task<WeekSchedule> GetWeekScheduleAsync(int storeId, DateTime dateStart)
+        public async Task<IEnumerable<WeekSchedule>> GetWeekScheduleAsync(
+            int storeId, DateTime dateStart, Status weekStatus)
         {
             var weekSchedule = await _weekRepo
-                .GetWeekSchedulesAsync(storeId, dateStart);
+                .GetWeekSchedulesAsync(storeId, dateStart, weekStatus);
 
             if (weekSchedule == null)
             {
                 Data.Helpers.Helper.TransformDateStart(ref dateStart);
-                weekSchedule = await CreateWeekScheduleAsync(new WeekScheduleCreate
+                await CreateWeekScheduleAsync(new WeekScheduleCreate
                 {
                     StoreId = storeId,
-                    DateStart = dateStart
+                    DateStart = dateStart,
+                    Status = Status.Register
+                });
+                await CreateWeekScheduleAsync(new WeekScheduleCreate
+                {
+                    StoreId = storeId,
+                    DateStart = dateStart,
+                    Status = Status.Unpublished
                 });
             }
 

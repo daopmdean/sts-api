@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Data.Entities;
+using Data.Enums;
 using Data.Models.Responses;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
@@ -29,7 +31,7 @@ namespace Data.Repositories.Implementations
                 .Include(x => x.StaffScheduleDetails)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (result?.Status == Enums.Status.Active)
+            if (result?.Status == Status.Active)
                 return result;
 
             return null;
@@ -39,7 +41,7 @@ namespace Data.Repositories.Implementations
             int storeId, WeekScheduleParams @params)
         {
             var source = _entities
-                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.Status == Status.Active)
                 .Where(s => s.StoreId == storeId)
                 .OrderByDescending(ws => ws.DateStart)
                 .ProjectTo<WeekScheduleOverview>(_mapper.ConfigurationProvider);
@@ -48,16 +50,30 @@ namespace Data.Repositories.Implementations
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
         }
 
-        public Task<WeekSchedule> GetWeekSchedulesAsync(int storeId, DateTime dateStart)
+        public Task<WeekSchedule> GetWeekSchedulesAsync(
+            int storeId, DateTime dateStart)
         {
             Helpers.Helper.TransformDateStart(ref dateStart);
             return _entities
-                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.Status == Status.Active)
                 .Where(s => s.DateStart.Year == dateStart.Year
                     && s.DateStart.Month == dateStart.Month
                     && s.DateStart.Day == dateStart.Day)
                 .Where(w => w.StoreId == storeId)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<WeekSchedule>> GetWeekSchedulesAsync(
+            int storeId, DateTime dateStart, Status weekStatus)
+        {
+            Helpers.Helper.TransformDateStart(ref dateStart);
+            return await _entities
+                .Where(s => s.Status == weekStatus)
+                .Where(s => s.DateStart.Year == dateStart.Year
+                    && s.DateStart.Month == dateStart.Month
+                    && s.DateStart.Day == dateStart.Day)
+                .Where(w => w.StoreId == storeId)
+                .ToListAsync();
         }
     }
 }

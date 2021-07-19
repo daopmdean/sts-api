@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Data.Entities;
+using Data.Enums;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
@@ -40,7 +41,7 @@ namespace STS.Controllers
 
         [HttpGet]
         public async Task<ActionResult> GetWeekScheduleByDate(
-            [FromQuery] DateTime dateStart)
+            [FromQuery] DateTime dateStart, string status)
         {
             try
             {
@@ -55,9 +56,20 @@ namespace STS.Controllers
                     storeId = await _storeStaffService
                         .GetStaffStoreIdAsync(User.GetUsername());
                 }
-                
+
+                var weekStatus = Status.Register;
+                switch (status)
+                {
+                    case "unpublished":
+                        weekStatus = Status.Unpublished;
+                        break;
+                    case "published":
+                        weekStatus = Status.Published;
+                        break;
+                }
+
                 var weekSchedule = await _weekScheduleService
-                    .GetWeekScheduleAsync(storeId, dateStart);
+                    .GetWeekScheduleAsync(storeId, dateStart, weekStatus);
                 return Ok(weekSchedule);
             }
             catch (AppException ex)
