@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
@@ -120,11 +121,25 @@ namespace Service.Implementations
                 .GetShiftAttendancesAsync(username, @params);
         }
 
+        public async Task<IEnumerable<ShiftAttendance>> GetShiftAttendencesAsync(
+            string username, DateTimeParams @params)
+        {
+            throw new Exception();
+            //return await _shiftAttendanceRepo
+            //    .GetShiftAttendancesAsync(username, @params);
+        }
+
         public async Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
             int StoreId, ShiftAttendanceParams @params)
         {
             return await _shiftAttendanceRepo
                 .GetShiftAttendancesAsync(StoreId, @params);
+        }
+
+        public Task<IEnumerable<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
+            int StoreId, DateTimeParams @params)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task UpdateShiftAttendance(int id,
@@ -145,5 +160,7 @@ namespace Service.Implementations
 
             throw new AppException(400, "Can not update ShiftAttendance");
         }
+
+
     }
 }

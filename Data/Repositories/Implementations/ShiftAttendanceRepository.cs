@@ -89,5 +89,11 @@ namespace Data.Repositories.Implementations
             return await PagedList<ShiftAttendanceOverview>
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
         }
+
+        public Task<IEnumerable<StaffAttendancesResponse>> GetShiftAttendancesAsync(
+            int storeId, DateTimeParams @params)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

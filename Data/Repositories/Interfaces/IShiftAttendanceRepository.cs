@@ -17,5 +17,8 @@ namespace Data.Repositories.Interfaces
 
         Task<IEnumerable<ShiftAttendanceOverview>> GetShiftAttendancesAsync(
             string username, DateTimeParams @params);
+
+        Task<IEnumerable<StaffAttendancesResponse>> GetShiftAttendancesAsync(
+            int storeId, DateTimeParams @params);
     }
 }

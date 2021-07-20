@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
@@ -11,8 +12,14 @@ namespace Service.Interfaces
     {
         Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
             string username, ShiftAttendanceParams @params);
+        Task<IEnumerable<ShiftAttendance>> GetShiftAttendencesAsync(
+            string username, DateTimeParams @params);
+
         Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
             int StoreId, ShiftAttendanceParams @params);
+        Task<IEnumerable<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
+            int StoreId, DateTimeParams @params);
+
         Task<ShiftAttendance> GetShiftAttendance(int id);
         Task<ShiftAttendance> CreateShiftAttendance(
             ShiftAttendanceCreate create, int timeRange);
