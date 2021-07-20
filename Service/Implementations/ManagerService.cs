@@ -42,7 +42,6 @@ namespace Service.Implementations
             var brand = await _brandService.CreateBrand(brandCreate);
 
             var brandManagerInfo = info.GeneralInfo;
-            brandManagerInfo.Password = Helper.GenerateRandomPassword(6);
             await _authService
                 .RegisterWithRole(brand.Id,
                     (int)UserRole.BrandManager, brandManagerInfo);
