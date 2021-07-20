@@ -45,7 +45,7 @@ namespace Data.Repositories.Implementations
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
         }
 
-        public async Task<IEnumerable<ShiftAttendanceOverview>> GetShiftAttendancesAsync(
+        public async Task<IEnumerable<ShiftAttendance>> GetShiftAttendancesAsync(
             string username, DateTimeParams @params)
         {
             return await _context.ShiftAssignments
@@ -61,9 +61,8 @@ namespace Data.Repositories.Implementations
                         })
                     .Where(x => x.Status == Enums.Status.Active)
                     .Where(s => s.TimeCheckIn >= @params.FromDate &&
-                    s.TimeCheckOut <= @params.ToDate)
+                        s.TimeCheckOut <= @params.ToDate)
                     .OrderByDescending(s => s.TimeCheckIn)
-                    .ProjectTo<ShiftAttendanceOverview>(_mapper.ConfigurationProvider)
                     .ToListAsync();
         }
 

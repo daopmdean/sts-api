@@ -49,21 +49,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -83,21 +73,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -116,21 +96,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -149,34 +119,23 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
         [HttpGet("shift-attendances")]
         public async Task<ActionResult> GetShiftAttendancesOfUser(
-            [FromQuery] ShiftAttendanceParams @params)
+            [FromQuery] DateTimeParams @params)
         {
             try
             {
                 var username = User.GetUsername();
                 var shiftAttendances = await _shiftAttendanceService
                     .GetShiftAttendencesAsync(username, @params);
-                Response.AddPaginationHeader(shiftAttendances);
 
                 return Ok(shiftAttendances);
             }
@@ -204,21 +163,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -235,21 +184,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
 
             return NoContent();
@@ -269,21 +208,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
 
             return NoContent();

@@ -124,9 +124,8 @@ namespace Service.Implementations
         public async Task<IEnumerable<ShiftAttendance>> GetShiftAttendencesAsync(
             string username, DateTimeParams @params)
         {
-            throw new Exception();
-            //return await _shiftAttendanceRepo
-            //    .GetShiftAttendancesAsync(username, @params);
+            return await _shiftAttendanceRepo
+                .GetShiftAttendancesAsync(username, @params);
         }
 
         public async Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
