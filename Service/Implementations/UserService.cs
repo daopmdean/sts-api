@@ -11,6 +11,7 @@ using Data.Pagings;
 using Data.Repositories.Interfaces;
 using Service.Enums;
 using Service.Exceptions;
+using Service.Helpers;
 using Service.Interfaces;
 
 namespace Service.Implementations
@@ -20,17 +21,20 @@ namespace Service.Implementations
         private readonly IUserRepository _userRepo;
         private readonly IStoreStaffRepository _storeStaffRepo;
         private readonly IStaffSkillRepository _staffSkillRepo;
+        private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
 
         public UserService(
             IUserRepository userRepo,
             IStoreStaffRepository storeStaffRepo,
             IStaffSkillRepository staffSkillRepo,
+            IEmailSender emailSender,
             IMapper mapper)
         {
             _userRepo = userRepo;
             _storeStaffRepo = storeStaffRepo;
             _staffSkillRepo = staffSkillRepo;
+            _emailSender = emailSender;
             _mapper = mapper;
         }
 
@@ -110,6 +114,34 @@ namespace Service.Implementations
             UserParams @params)
         {
             return await _userRepo.GetUsersAsync(brandId, @params);
+        }
+
+        public async Task RestorePasswordAsync(string username)
+        {
+            var user = await _userRepo.GetUserByUsernameAsync(username);
+
+            if (user == null)
+                throw new AppException(400, "User not found");
+
+            using var hmac = new HMACSHA512(user.PasswordSalt);
+            var newPassword = Helper.GenerateRandomPassword(6);
+            var computedHash = hmac
+                .ComputeHash(Encoding.UTF8.GetBytes(newPassword));
+
+            user.Password = computedHash;
+            _userRepo.Update(user);
+
+            if (await _userRepo.SaveChangesAsync())
+            {
+                await _emailSender.SendEmailAsync(new Message(
+                    new string[] { user.Email },
+                    "STS account restore",
+                    "<p>Your new password for username: " + user.Username + "</p>" +
+                    "Is: " + newPassword));
+                return;
+            }
+
+            throw new AppException(400, "Can not restore password");
         }
 
         public async Task UpdatePasswordAsync(

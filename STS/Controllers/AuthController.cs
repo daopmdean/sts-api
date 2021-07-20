@@ -10,11 +10,15 @@ namespace STS.Controllers
     [Route("api/auth")]
     public class AuthController : ApiBaseController
     {
-        private readonly IAuthService _service;
+        private readonly IAuthService _authService;
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthService service)
+        public AuthController(
+            IAuthService authService,
+            IUserService userService)
         {
-            _service = service;
+            _authService = authService;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -22,7 +26,7 @@ namespace STS.Controllers
         {
             try
             {
-                return Ok(await _service.Register(info));
+                return Ok(await _authService.Register(info));
             }
             catch (AppException appEx)
             {
@@ -39,7 +43,25 @@ namespace STS.Controllers
         {
             try
             {
-                return Ok(await _service.Login(info));
+                return Ok(await _authService.Login(info));
+            }
+            catch (AppException ex)
+            {
+                return UnauthorizedResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpPost("restore")]
+        public async Task<IActionResult> RestorePassword(PasswordRestore info)
+        {
+            try
+            {
+                await _userService.RestorePasswordAsync(info.Username);
+                return Ok();
             }
             catch (AppException ex)
             {

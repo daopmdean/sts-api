@@ -19,6 +19,7 @@ namespace Service.Interfaces
         Task<UserGeneralResponse> GetUserGeneralAsync(string username);
         Task UpdateUserAsync(string username, UserUpdate updateInfo);
         Task UpdatePasswordAsync(string username, PasswordUpdate update);
+        Task RestorePasswordAsync(string username);
         Task DeleteUserAsync(string username);
     }
 }
