@@ -9,6 +9,7 @@ using RabbitMQ.Client;
 using Service.Helpers;
 using Service.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,13 +55,16 @@ namespace Service.Implementations
         public async Task<ShiftScheduleResult> ComputeSchedule(
             int weekScheduleId, int brandId)
         {
-            ScheduleRequest request = await GetScheduleRequest(weekScheduleId, brandId);
+            ScheduleRequest request = await GetScheduleRequest(
+                weekScheduleId, brandId);
+
             var result = await _shiftScheduleResultService
-                .CreateShiftScheduleResult();
+                .CreateShiftScheduleResult(weekScheduleId);
             request.Id = result.Id;
             var message = JsonConvert.SerializeObject(request);
             var body = Encoding.UTF8.GetBytes(message);
             var properties = _rabbitMqChannel.CreateBasicProperties();
+
             properties.Persistent = true;
             _rabbitMqChannel.BasicPublish("", "sts_api_request", properties, body);
 
@@ -165,11 +169,6 @@ namespace Service.Implementations
             request.DateStart = weekSchedule.DateStart;
             request.StoreId = weekSchedule.StoreId;
 
-            var shiftRegisters = await _shiftRegisterService
-                .GetShiftRegisters(weekScheduleId);
-            var staffRequests = await ConvertToStaffs(shiftRegisters);
-            request.Staffs = staffRequests;
-
             var weekScheduleDetails = await _weekScheduleDetailService
                 .GetWeekScheduleDetailsAsync(weekScheduleId);
             var demands = Scheduling.ConvertToDemands(weekScheduleDetails);
@@ -183,6 +182,16 @@ namespace Service.Implementations
             var skills = await _skillService.GetSkills(brandId);
             var skillRequests = ConvertToSkills(skills);
             request.Skills = skillRequests;
+
+
+            var weekRegister = (await _weekScheduleService
+                .GetWeekScheduleAsync(weekSchedule.StoreId,
+                    weekSchedule.DateStart, Status.Register))
+                .First();
+            var shiftRegisters = await _shiftRegisterService
+                .GetShiftRegisters(weekRegister.Id);
+            var staffRequests = await ConvertToStaffs(shiftRegisters);
+            request.Staffs = staffRequests;
 
             return request;
         }

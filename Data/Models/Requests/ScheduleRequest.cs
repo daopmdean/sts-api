@@ -7,6 +7,7 @@ namespace Data.Models.Requests
     {
         public int Id { get; set; }
         public int StoreId { get; set; }
+        public int WeekScheduleId { get; set; }
         public DateTime DateStart { get; set; }
         public List<StaffRequestData> Staffs { get; set; }
 

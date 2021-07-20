@@ -6,7 +6,7 @@ namespace Service.Interfaces
 {
     public interface IShiftScheduleResultService
     {
-        Task<ShiftScheduleResult> CreateShiftScheduleResult();
+        Task<ShiftScheduleResult> CreateShiftScheduleResult(int weekScheduleId);
         Task CreateShiftScheduleResult(ScheduleResponse create);
         Task<ScheduleResponse> GetScheduleResult(int id);
     }

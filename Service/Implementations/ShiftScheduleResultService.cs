@@ -23,9 +23,13 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
-        public async Task<ShiftScheduleResult> CreateShiftScheduleResult()
+        public async Task<ShiftScheduleResult> CreateShiftScheduleResult(
+            int weekScheduleId)
         {
-            var shiftScheduleResult = new ShiftScheduleResult();
+            var shiftScheduleResult = new ShiftScheduleResult
+            {
+                WeekScheduleId = weekScheduleId
+            };
             await _scheduleRepo
                 .CreateAsync(shiftScheduleResult);
 
