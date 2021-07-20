@@ -17,15 +17,21 @@ namespace Service.Implementations
     {
         private readonly IShiftAttendanceRepository _shiftAttendanceRepo;
         private readonly IShiftAssignmentRepository _shiftAssignmentRepo;
+        private readonly IStoreStaffService _storeStaffService;
+        private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
 
         public ShiftAttendanceService(
             IShiftAttendanceRepository shiftAttendanceRepo,
             IShiftAssignmentRepository shiftAssignmentRepo,
+            IStoreStaffService storeStaffService,
+            IUserRepository userRepo,
             IMapper mapper)
         {
             _shiftAttendanceRepo = shiftAttendanceRepo;
             _shiftAssignmentRepo = shiftAssignmentRepo;
+            _storeStaffService = storeStaffService;
+            _userRepo = userRepo;
             _mapper = mapper;
         }
 
@@ -135,10 +141,29 @@ namespace Service.Implementations
                 .GetShiftAttendancesAsync(StoreId, @params);
         }
 
-        public Task<IEnumerable<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
-            int StoreId, DateTimeParams @params)
+        public async Task<IEnumerable<StaffAttendancesResponse>> GetShiftAttendencesAsync(
+            int storeId, DateTimeParams @params)
         {
-            throw new NotImplementedException();
+            List<StaffAttendancesResponse> result = new();
+            var storeStaffs = await _storeStaffService
+                    .GetStaffFromStoreAsync(storeId);
+
+            foreach (var staff in storeStaffs)
+            {   
+                var user = await _userRepo.GetUserByUsernameAsync(staff.Username);
+                IEnumerable<ShiftAttendance> attendances = await 
+                    GetShiftAttendencesAsync(user.Username, @params);
+                var staffAttendanceResponse = new StaffAttendancesResponse()
+                {
+                    Username = user.Username,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Attendances = attendances
+                };
+                result.Add(staffAttendanceResponse);
+            }
+
+            return result;
         }
 
         public async Task UpdateShiftAttendance(int id,
@@ -159,7 +184,5 @@ namespace Service.Implementations
 
             throw new AppException(400, "Can not update ShiftAttendance");
         }
-
-
     }
 }

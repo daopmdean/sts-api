@@ -166,7 +166,7 @@ namespace STS.Controllers
         }
 
         [HttpGet("shift-attendances")]
-        public async Task<ActionResult<BrandOverview>> GetShiftAttendancesOfStore(
+        public async Task<ActionResult> GetShiftAttendancesOfStore(
             [FromQuery] ShiftAttendanceParams @params)
         {
             try
@@ -175,6 +175,28 @@ namespace STS.Controllers
                 var shiftAttendances = await _shiftAttendanceService
                     .GetShiftAttendencesAsync(storeId, @params);
                 Response.AddPaginationHeader(shiftAttendances);
+
+                return Ok(shiftAttendances);
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpGet("timekeeping")]
+        public async Task<ActionResult> GetShiftAttendancesResponse(
+            [FromQuery] DateTimeParams @params)
+        {
+            try
+            {
+                int storeId = int.Parse(User.GetStoreId());
+                var shiftAttendances = await _shiftAttendanceService
+                    .GetShiftAttendencesAsync(storeId, @params);
 
                 return Ok(shiftAttendances);
             }

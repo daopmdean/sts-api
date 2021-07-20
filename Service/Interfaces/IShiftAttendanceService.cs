@@ -16,9 +16,9 @@ namespace Service.Interfaces
             string username, DateTimeParams @params);
 
         Task<PagedList<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
-            int StoreId, ShiftAttendanceParams @params);
-        Task<IEnumerable<ShiftAttendanceOverview>> GetShiftAttendencesAsync(
-            int StoreId, DateTimeParams @params);
+            int storeId, ShiftAttendanceParams @params);
+        Task<IEnumerable<StaffAttendancesResponse>> GetShiftAttendencesAsync(
+            int storeId, DateTimeParams @params);
 
         Task<ShiftAttendance> GetShiftAttendance(int id);
         Task<ShiftAttendance> CreateShiftAttendance(
