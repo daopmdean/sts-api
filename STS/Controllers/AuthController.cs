@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Data.Models.Requests;
-using Data.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
 using Service.Interfaces;
@@ -27,20 +26,11 @@ namespace STS.Controllers
             }
             catch (AppException appEx)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = appEx.StatusCode,
-                    Message = appEx.Message
-                });
+                return UnauthorizedResponse(appEx);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = 500,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -53,21 +43,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return Unauthorized(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return UnauthorizedResponse(ex);
             }
             catch (Exception ex)
             {
-                return Unauthorized(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
     }
