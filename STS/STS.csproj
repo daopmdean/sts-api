@@ -30,5 +30,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <None Remove="Response\" />
   </ItemGroup>
 </Project>

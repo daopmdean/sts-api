@@ -67,13 +67,18 @@ namespace Data.Repositories.Implementations
             int storeId, DateTime dateStart, Status weekStatus)
         {
             Helpers.Helper.TransformDateStart(ref dateStart);
-            return await _entities
+            var result = await _entities
                 .Where(s => s.Status == weekStatus)
                 .Where(s => s.DateStart.Year == dateStart.Year
                     && s.DateStart.Month == dateStart.Month
                     && s.DateStart.Day == dateStart.Day)
                 .Where(w => w.StoreId == storeId)
                 .ToListAsync();
+
+            if (result.Count == 0)
+                return null;
+
+            return result;
         }
     }
 }

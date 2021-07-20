@@ -64,19 +64,30 @@ namespace Service.Implementations
 
             if (weekSchedule == null)
             {
+                List<WeekSchedule> result = new();
                 Data.Helpers.Helper.TransformDateStart(ref dateStart);
-                await CreateWeekScheduleAsync(new WeekScheduleCreate
+                switch (weekStatus)
                 {
-                    StoreId = storeId,
-                    DateStart = dateStart,
-                    Status = Status.Register
-                });
-                await CreateWeekScheduleAsync(new WeekScheduleCreate
-                {
-                    StoreId = storeId,
-                    DateStart = dateStart,
-                    Status = Status.Unpublished
-                });
+                    case Status.Register:
+                        var res = await CreateWeekScheduleAsync(new WeekScheduleCreate
+                        {
+                            StoreId = storeId,
+                            DateStart = dateStart,
+                            Status = Status.Register
+                        });
+                        result.Add(res);
+                        break;
+                    case Status.Unpublished:
+                        var unp = await CreateWeekScheduleAsync(new WeekScheduleCreate
+                        {
+                            StoreId = storeId,
+                            DateStart = dateStart,
+                            Status = Status.Unpublished
+                        });
+                        result.Add(unp);
+                        break;
+                }
+                weekSchedule = result;
             }
 
             return weekSchedule;
