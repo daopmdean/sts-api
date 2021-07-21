@@ -19,17 +19,20 @@ namespace Service.Implementations
         private readonly IStoreRepository _storeRepo;
         private readonly IWeekScheduleRepository _weekRepo;
         private readonly IWeekScheduleDetailRepository _weekDetailRepo;
+        private readonly IStoreScheduleDetailRepository _storeScheduleRepo;
         private readonly IMapper _mapper;
 
         public WeekScheduleService(
             IStoreRepository storeRepo,
             IWeekScheduleRepository weekRepo,
             IWeekScheduleDetailRepository weekDetailRepo,
+            IStoreScheduleDetailRepository storeScheduleRepo,
             IMapper mapper)
         {
             _weekRepo = weekRepo;
             _storeRepo = storeRepo;
             _weekDetailRepo = weekDetailRepo;
+            _storeScheduleRepo = storeScheduleRepo;
             _mapper = mapper;
         }
 
@@ -44,16 +47,23 @@ namespace Service.Implementations
 
             var baseWeekScheduleDetails = await _weekDetailRepo
                 .GetWeekScheduleDetailsAsync(baseWeekSchedule.Id);
-
             foreach (var baseWeekScheduleDetail in baseWeekScheduleDetails)
             {
                 var cloneWeekScheduleDetail = baseWeekScheduleDetail
                     .ShallowClone();
-
-
+                cloneWeekScheduleDetail.WeekScheduleId = cloneWeekSchedule.Id;
+                await _weekDetailRepo.CreateAsync(cloneWeekScheduleDetail);
             }
 
-
+            var baseStoreScheduleDetails = await _storeScheduleRepo
+                .GetStoreScheduleDetailsAsync(cloneWeekSchedule.Id);
+            foreach (var baseStoreScheduleDetail in baseStoreScheduleDetails)
+            {
+                var cloneStoreScheduleDetail = baseStoreScheduleDetail
+                    .ShallowClone();
+                cloneStoreScheduleDetail.WeekScheduleId = cloneWeekSchedule.Id;
+                await _storeScheduleRepo.CreateAsync(cloneStoreScheduleDetail);
+            }
 
             if (await _weekRepo.SaveChangesAsync())
                 return cloneWeekSchedule;

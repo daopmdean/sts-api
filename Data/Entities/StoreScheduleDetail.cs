@@ -32,7 +32,10 @@ namespace Data.Entities
 
         public StoreScheduleDetail ShallowClone()
         {
-            return (StoreScheduleDetail)MemberwiseClone();
+            var cloneStoreScheduleDetail = (StoreScheduleDetail)MemberwiseClone();
+            cloneStoreScheduleDetail.Id = 0;
+
+            return cloneStoreScheduleDetail;
         }
     }
 }
