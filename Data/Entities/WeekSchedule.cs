@@ -11,6 +11,10 @@ namespace Data.Entities
 
         public Store Store { get; set; }
 
+        public string Name { get; set; }
+
+        public string CreatedBy { get; set; }
+
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public DateTime DateStart { get; set; }
