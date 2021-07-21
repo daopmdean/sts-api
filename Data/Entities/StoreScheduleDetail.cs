@@ -29,5 +29,10 @@ namespace Data.Entities
         public float MaxShiftDuration { get; set; }
 
         public int MaxShiftPerDay { get; set; }
+
+        public StoreScheduleDetail ShallowClone()
+        {
+            return (StoreScheduleDetail)MemberwiseClone();
+        }
     }
 }

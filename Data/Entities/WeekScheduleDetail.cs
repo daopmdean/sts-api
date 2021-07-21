@@ -20,5 +20,13 @@ namespace Data.Entities
         public DateTime WorkStart { get; set; }
 
         public DateTime WorkEnd { get; set; }
+
+        public WeekScheduleDetail ShallowClone()
+        {
+            var cloneWeekScheduleDetail = (WeekScheduleDetail)MemberwiseClone();
+            cloneWeekScheduleDetail.Id = 0;
+
+            return cloneWeekScheduleDetail;
+        }
     }
 }

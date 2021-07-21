@@ -27,7 +27,12 @@ namespace Data.Entities
 
         public WeekSchedule ShallowClone()
         {
-            return (WeekSchedule)MemberwiseClone();
+            var cloneWeekSchedule = (WeekSchedule)MemberwiseClone();
+            cloneWeekSchedule.Id = 0;
+            cloneWeekSchedule.Status = Enums.Status.Unpublished;
+            cloneWeekSchedule.DateCreated = DateTime.Now;
+
+            return cloneWeekSchedule;
         }
     }
 }

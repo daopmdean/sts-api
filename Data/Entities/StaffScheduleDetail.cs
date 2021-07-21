@@ -23,5 +23,10 @@
         public float MinShiftDuration { get; set; }
 
         public float MaxShiftDuration { get; set; }
+
+        public StoreScheduleDetail ShallowCopy()
+        {
+            return (StoreScheduleDetail)MemberwiseClone();
+        }
     }
 }

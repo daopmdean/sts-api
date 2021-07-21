@@ -18,13 +18,18 @@ namespace Service.Implementations
     {
         private readonly IStoreRepository _storeRepo;
         private readonly IWeekScheduleRepository _weekRepo;
+        private readonly IWeekScheduleDetailRepository _weekDetailRepo;
         private readonly IMapper _mapper;
 
-        public WeekScheduleService(IStoreRepository storeRepo,
-            IWeekScheduleRepository weekRepo, IMapper mapper)
+        public WeekScheduleService(
+            IStoreRepository storeRepo,
+            IWeekScheduleRepository weekRepo,
+            IWeekScheduleDetailRepository weekDetailRepo,
+            IMapper mapper)
         {
             _weekRepo = weekRepo;
             _storeRepo = storeRepo;
+            _weekDetailRepo = weekDetailRepo;
             _mapper = mapper;
         }
 
@@ -33,13 +38,22 @@ namespace Service.Implementations
         {
             var baseWeekSchedule = await _weekRepo
                 .GetByIdAsync(cloneRequest.WeekScheduleId);
-
             var cloneWeekSchedule = baseWeekSchedule.ShallowClone();
-            cloneWeekSchedule.Id = 0;
-            cloneWeekSchedule.Status = Status.Unpublished;
-            cloneWeekSchedule.DateCreated = DateTime.Now;
 
             await _weekRepo.CreateAsync(cloneWeekSchedule);
+
+            var baseWeekScheduleDetails = await _weekDetailRepo
+                .GetWeekScheduleDetailsAsync(baseWeekSchedule.Id);
+
+            foreach (var baseWeekScheduleDetail in baseWeekScheduleDetails)
+            {
+                var cloneWeekScheduleDetail = baseWeekScheduleDetail
+                    .ShallowClone();
+
+
+            }
+
+
 
             if (await _weekRepo.SaveChangesAsync())
                 return cloneWeekSchedule;
@@ -65,6 +79,22 @@ namespace Service.Implementations
 
             throw new AppException((int)StatusCode.BadRequest,
                 "Can not create week schedule");
+        }
+
+        public async Task DeleteWeekScheduleAsync(int id)
+        {
+            var weekSchedule = await _weekRepo
+                .GetByIdAsync(id);
+
+            if (weekSchedule == null)
+                throw new AppException(400, "WeekSchedule not found");
+
+            _weekRepo.Delete(weekSchedule);
+
+            if (await _weekRepo.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not delete WeekSchedule");
         }
 
         public async Task<WeekSchedule> GetWeekScheduleAsync(int id)
