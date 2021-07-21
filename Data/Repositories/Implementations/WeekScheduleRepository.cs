@@ -31,7 +31,7 @@ namespace Data.Repositories.Implementations
                 .Include(x => x.StaffScheduleDetails)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (result?.Status == Status.Active)
+            if (result?.Status != Status.Deleted)
                 return result;
 
             return null;
