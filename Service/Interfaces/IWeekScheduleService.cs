@@ -18,5 +18,7 @@ namespace Service.Interfaces
             int storeId, DateTime dateStart, Status weekStatus);
         Task<WeekSchedule> CreateWeekScheduleAsync(
             WeekScheduleCreate weekSchedule);
+        Task<WeekSchedule> CloneWeekScheduleAsync(
+            WeekScheduleCloneRequest cloneRequest);
     }
 }

@@ -24,5 +24,10 @@ namespace Data.Entities
         public ICollection<StaffScheduleDetail> StaffScheduleDetails { get; set; }
 
         public ICollection<ShiftRegister> ShiftRegisters { get; set; }
+
+        public WeekSchedule ShallowClone()
+        {
+            return (WeekSchedule)MemberwiseClone();
+        }
     }
 }

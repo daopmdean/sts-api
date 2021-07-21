@@ -8,6 +8,7 @@ using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
+using Service.Enums;
 using Service.Exceptions;
 using Service.Interfaces;
 
@@ -27,6 +28,26 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
+        public async Task<WeekSchedule> CloneWeekScheduleAsync(
+            WeekScheduleCloneRequest cloneRequest)
+        {
+            var baseWeekSchedule = await _weekRepo
+                .GetByIdAsync(cloneRequest.WeekScheduleId);
+
+            var cloneWeekSchedule = baseWeekSchedule.ShallowClone();
+            cloneWeekSchedule.Id = 0;
+            cloneWeekSchedule.Status = Status.Unpublished;
+            cloneWeekSchedule.DateCreated = DateTime.Now;
+
+            await _weekRepo.CreateAsync(cloneWeekSchedule);
+
+            if (await _weekRepo.SaveChangesAsync())
+                return cloneWeekSchedule;
+
+            throw new AppException((int)StatusCode.BadRequest,
+                "Can not clone week schedule");
+        }
+
         public async Task<WeekSchedule> CreateWeekScheduleAsync(
             WeekScheduleCreate weekScheduleCreate)
         {
@@ -42,7 +63,8 @@ namespace Service.Implementations
             if (await _weekRepo.SaveChangesAsync())
                 return weekSchedule;
 
-            throw new AppException(400, "Can not create week schedule");
+            throw new AppException((int)StatusCode.BadRequest,
+                "Can not create week schedule");
         }
 
         public async Task<WeekSchedule> GetWeekScheduleAsync(int id)
@@ -50,7 +72,7 @@ namespace Service.Implementations
             var weekSchedule = await _weekRepo.GetByIdAsync(id);
 
             if (weekSchedule == null)
-                throw new AppException(400,
+                throw new AppException((int)StatusCode.BadRequest,
                     "WeekSchedule not found or has been deleted");
 
             return weekSchedule;
