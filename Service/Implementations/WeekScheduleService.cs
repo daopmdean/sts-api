@@ -20,6 +20,8 @@ namespace Service.Implementations
         private readonly IWeekScheduleRepository _weekRepo;
         private readonly IWeekScheduleDetailRepository _weekDetailRepo;
         private readonly IStoreScheduleDetailRepository _storeScheduleRepo;
+        private readonly IShiftScheduleResultRepository _shiftScheduleRepo;
+        private readonly IShiftScheduleDetailResultRepository _shiftScheduleDetailRepo;
         private readonly IMapper _mapper;
 
         public WeekScheduleService(
@@ -27,12 +29,16 @@ namespace Service.Implementations
             IWeekScheduleRepository weekRepo,
             IWeekScheduleDetailRepository weekDetailRepo,
             IStoreScheduleDetailRepository storeScheduleRepo,
+            IShiftScheduleResultRepository shiftScheduleRepo,
+            IShiftScheduleDetailResultRepository shiftScheduleDetailRepo,
             IMapper mapper)
         {
             _weekRepo = weekRepo;
             _storeRepo = storeRepo;
             _weekDetailRepo = weekDetailRepo;
             _storeScheduleRepo = storeScheduleRepo;
+            _shiftScheduleRepo = shiftScheduleRepo;
+            _shiftScheduleDetailRepo = shiftScheduleDetailRepo;
             _mapper = mapper;
         }
 
@@ -63,6 +69,21 @@ namespace Service.Implementations
                     .ShallowClone();
                 cloneStoreScheduleDetail.WeekScheduleId = cloneWeekSchedule.Id;
                 await _storeScheduleRepo.CreateAsync(cloneStoreScheduleDetail);
+            }
+
+            var shiftScheduleResult = new ShiftScheduleResult
+            {
+                IsComplete = true,
+                WeekScheduleId = cloneWeekSchedule.Id
+            };
+            await _shiftScheduleRepo.CreateAsync(shiftScheduleResult);
+
+            var shiftAssignments = cloneRequest.ShiftAssignments;
+            foreach (var shiftAssignment in shiftAssignments)
+            {
+                var assignment = _mapper.Map<ShiftScheduleDetailResult>(shiftAssignment);
+                assignment.ShiftScheduleResultId = shiftScheduleResult.Id;
+                await _shiftScheduleDetailRepo.CreateAsync(assignment);
             }
 
             if (await _weekRepo.SaveChangesAsync())
