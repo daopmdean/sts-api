@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using Data.Entities;
 using Data.Enums;
 using Data.Models.Requests;
-using Data.Models.Responses;
-using Data.Pagings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
@@ -210,6 +208,25 @@ namespace STS.Controllers
             {
                 return Ok(await _weekScheduleService
                     .CloneWeekScheduleAsync(clone));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<WeekSchedule>> DeleteWeekSchedule(
+            int id)
+        {
+            try
+            {
+                await _weekScheduleService.DeleteWeekScheduleAsync(id);
+                return NoContent();
             }
             catch (AppException ex)
             {
