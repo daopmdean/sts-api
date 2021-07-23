@@ -210,7 +210,8 @@ namespace STS.Controllers
         }
 
         [HttpPost("assign/store-manager")]
-        public async Task<IActionResult> AssignStoreManager(StoreAssign info)
+        public async Task<IActionResult> AssignStoreManager(
+            StoreAssign info)
         {
             try
             {
@@ -228,7 +229,8 @@ namespace STS.Controllers
         }
 
         [HttpPost("assign/staff")]
-        public async Task<ActionResult> AssignStaff(StoreAssign storeAssign)
+        public async Task<ActionResult> AssignStaff(
+            StoreAssign storeAssign)
         {
             try
             {

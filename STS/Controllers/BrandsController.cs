@@ -188,7 +188,8 @@ namespace STS.Controllers
             try
             {
                 var brandId = int.Parse(User.GetBrandId());
-                var users = await _userService.GetUsersAsync(brandId, @params);
+                var users = await _userService
+                    .GetUsersAsync(brandId, @params);
 
                 Response.AddPaginationHeader(users);
                 return Ok(users);
@@ -220,7 +221,8 @@ namespace STS.Controllers
             try
             {
                 var brandId = int.Parse(User.GetBrandId());
-                var staff = await _userService.GetStaffAsync(brandId, @params);
+                var staff = await _userService
+                    .GetStaffAsync(brandId, @params);
 
                 Response.AddPaginationHeader(staff);
                 return Ok(staff);

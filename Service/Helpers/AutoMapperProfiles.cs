@@ -40,6 +40,7 @@ namespace Service.Helpers
                     obj => obj.MapFrom(src => src.User.Address));
             CreateMap<StoreStaffCreate, StoreStaff>();
             CreateMap<StoreStaffUpdate, StoreStaff>();
+            CreateMap<StoreAssign, StoreStaffCreate>();
 
             CreateMap<StaffSkill, StaffSkillOverview>();
             CreateMap<StaffSkillCreate, StaffSkill>();

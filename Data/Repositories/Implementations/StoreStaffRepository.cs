@@ -120,5 +120,10 @@ namespace Data.Repositories.Implementations
                 .OrderBy(s => s.StoreId)
                 .ToListAsync();
         }
+
+        public override void Delete(StoreStaff entity)
+        {
+            _entities.Remove(entity);
+        }
     }
 }
