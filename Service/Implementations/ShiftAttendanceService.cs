@@ -56,15 +56,15 @@ namespace Service.Implementations
                     ShiftAssignmentId = shiftAssignment.Id,
                 };
                 ProcessShiftAttendance(ref shiftAttendance,
-                    shiftAssignment, create.TimeRequest, timeRange);
+                    shiftAssignment, create.TimeRequest, timeRange, create.Type);
 
                 await _shiftAttendanceRepo.CreateAsync(shiftAttendance);
             }
             else
             {
                 ProcessShiftAttendance(ref shiftAttendance,
-                    shiftAssignment, create.TimeRequest, timeRange);
-                await _shiftAttendanceRepo.CreateAsync(shiftAttendance);
+                    shiftAssignment, create.TimeRequest, timeRange, create.Type);
+                _shiftAttendanceRepo.Update(shiftAttendance);
             }
 
             if (await _shiftAttendanceRepo.SaveChangesAsync())
@@ -77,16 +77,18 @@ namespace Service.Implementations
         private static void ProcessShiftAttendance(
             ref ShiftAttendance shiftAttendance,
             ShiftAssignment shiftAssignment,
-            DateTime timeRequest, int timeRange)
+            DateTime timeRequest, int timeRange, string type)
         {
+            type = type.ToLower();
+
             if (Helper.InTimeRange(shiftAssignment.TimeStart,
-                        timeRequest, timeRange))
+                        timeRequest, timeRange) && type == "checkin")
             {
                 if (shiftAttendance.TimeCheckIn == DateTime.MinValue)
                     shiftAttendance.TimeCheckIn = timeRequest;
             }
             else if (Helper.InTimeRange(shiftAssignment.TimeEnd,
-                        timeRequest, timeRange))
+                        timeRequest, timeRange) && type == "checkout")
             {
                 shiftAttendance.TimeCheckOut = timeRequest;
             }
@@ -149,9 +151,9 @@ namespace Service.Implementations
                     .GetStaffFromStoreAsync(storeId);
 
             foreach (var staff in storeStaffs)
-            {   
+            {
                 var user = await _userRepo.GetUserByUsernameAsync(staff.Username);
-                IEnumerable<ShiftAttendance> attendances = await 
+                IEnumerable<ShiftAttendance> attendances = await
                     GetShiftAttendencesAsync(user.Username, @params);
                 var staffAttendanceResponse = new StaffAttendancesResponse()
                 {
