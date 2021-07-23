@@ -51,7 +51,6 @@ namespace Service.Implementations
             {
                 var register = new ShiftRegister
                 {
-                    Id = -1,
                     Username = create.Username,
                     WeekScheduleId = create.WeekScheduleId,
                     TimeStart = item.TimeStart,
