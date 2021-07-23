@@ -52,6 +52,7 @@ namespace Service.Helpers
 
             CreateMap<WeekSchedule, WeekScheduleOverview>();
             CreateMap<WeekScheduleCreate, WeekSchedule>();
+            CreateMap<WeekScheduleUpdate, WeekSchedule>();
 
             CreateMap<WeekScheduleDetail, WeekScheduleDetailOverview>();
             CreateMap<WeekScheduleDetailCreate, WeekScheduleDetail>();

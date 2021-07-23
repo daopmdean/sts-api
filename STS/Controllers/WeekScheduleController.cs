@@ -219,6 +219,26 @@ namespace STS.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult<WeekSchedule>> UpdateWeekSchedule(
+            int id, WeekScheduleUpdate update)
+        {
+            try
+            {
+                await _weekScheduleService
+                    .UpdateWeekScheduleAsync(id, update);
+                return NoContent();
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<WeekSchedule>> DeleteWeekSchedule(
             int id)

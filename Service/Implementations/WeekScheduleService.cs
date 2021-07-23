@@ -181,5 +181,24 @@ namespace Service.Implementations
         {
             return await _weekRepo.GetWeekSchedulesAsync(storeId, @params);
         }
+
+        public async Task UpdateWeekScheduleAsync(
+            int id, WeekScheduleUpdate update)
+        {
+            var weekSchedule = await _weekRepo
+                .GetByIdAsync(id);
+
+            if (weekSchedule == null)
+                throw new AppException(400, "WeekSchedule not found");
+
+            _mapper.Map(update, weekSchedule);
+
+            _weekRepo.Update(weekSchedule);
+
+            if (await _weekRepo.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not update WeekSchedule");
+        }
     }
 }

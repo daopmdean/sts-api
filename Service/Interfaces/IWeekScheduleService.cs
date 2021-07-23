@@ -20,6 +20,8 @@ namespace Service.Interfaces
             WeekScheduleCreate weekSchedule);
         Task<WeekSchedule> CloneWeekScheduleAsync(
             WeekScheduleCloneRequest cloneRequest);
+        Task UpdateWeekScheduleAsync(
+            int id, WeekScheduleUpdate update);
         Task DeleteWeekScheduleAsync(
             int id);
     }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Data.Models.Requests;
-using Data.Repositories.Interfaces;
 using Service.Enums;
 using Service.Helpers;
 using Service.Interfaces;
@@ -28,11 +26,6 @@ namespace Service.Implementations
             _staffSkillService = staffSkillService;
             _brandService = brandService;
             _emailSender = emailSender;
-        }
-
-        public Task AssignStoreManager(StoreAssign brandAssign)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<BrandManagerCreate> CreateBrandManager(
@@ -77,8 +70,9 @@ namespace Service.Implementations
             await _emailSender.SendEmailAsync(new Message(
                 new string[] { staffInfo.Email },
                 "STS staff account",
-                "<p>You are invited with username: " + staffInfo.Username + "</p>" +
-                "password: " + staffInfo.Password));
+                "<p>You are invited as staff.</p>" +
+                "<p>Your username: " + staffInfo.Username + "</p>" +
+                "<p>password: " + staffInfo.Password + "</p>"));
 
             return info;
         }
@@ -99,8 +93,9 @@ namespace Service.Implementations
             await _emailSender.SendEmailAsync(new Message(
                 new string[] { storeManagerInfo.Email },
                 "STS store manager account",
-                "<p>You are invited with username: " + storeManagerInfo.Username + "</p>" +
-                "password: " + storeManagerInfo.Password));
+                "<p>You are invited as store manager</p>" +
+                "<p>Your username: " + storeManagerInfo.Username + "</p>" +
+                "<p>password: " + storeManagerInfo.Password + "</p>"));
 
             return info;
         }
