@@ -36,6 +36,9 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ShiftRegister>()
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
 
             // user - role
             modelBuilder.Entity<User>()
@@ -165,7 +168,7 @@ namespace Data
             CancellationToken cancellationToken = default)
         {
             try
-            { 
+            {
                 return base.SaveChangesAsync(cancellationToken);
             }
             catch (DbUpdateConcurrencyException ex)
@@ -189,7 +192,7 @@ namespace Data
             {
                 foreach (var result in dbu.Entries)
                 {
-                    builder.AppendFormat("Type: {0} was part of the problem. ", 
+                    builder.AppendFormat("Type: {0} was part of the problem. ",
                         result.Entity.GetType().Name);
                 }
             }

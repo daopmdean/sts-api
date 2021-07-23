@@ -1,5 +1,4 @@
 ﻿using System;
-using Data.Enums;
 
 namespace Data.Entities
 {

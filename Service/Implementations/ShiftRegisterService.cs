@@ -47,22 +47,16 @@ namespace Service.Implementations
                 throw new AppException(400,
                     "Conflicted with the FOREIGN KEY constraint, Username does not exist");
 
-            List<ShiftRegister> registers = new();
-
             foreach (var item in create.TimeWorks)
             {
-                registers.Add(new ShiftRegister
+                var register = new ShiftRegister
                 {
                     Username = create.Username,
                     WeekScheduleId = create.WeekScheduleId,
                     TimeStart = item.TimeStart,
                     TimeEnd = item.TimeEnd
-                });
-            }
-
-            foreach (var item in registers)
-            {
-                await _shiftRegisterRepo.CreateAsync(item);
+                };
+                await _shiftRegisterRepo.CreateAsync(register);
             }
 
             if (await _shiftRegisterRepo.SaveChangesAsync())
