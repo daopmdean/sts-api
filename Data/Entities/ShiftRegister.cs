@@ -17,7 +17,5 @@ namespace Data.Entities
         public DateTime TimeStart { get; set; }
 
         public DateTime TimeEnd { get; set; }
-
-        public string PreferSkill { get; set; }
     }
 }
