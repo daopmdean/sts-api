@@ -36,7 +36,7 @@ namespace STS.Extensions
             services.AddScoped<IShiftAttendanceRepository, ShiftAttendanceRepository>();
 
             services.AddScoped<IShiftScheduleResultRepository, ShiftScheduleResultRepository>();
-            services.AddScoped<IShiftScheduleDetailResultRepository, 
+            services.AddScoped<IShiftScheduleDetailResultRepository,
                 ShiftScheduleDetailResultRepository>();
 
             // Services
@@ -74,6 +74,11 @@ namespace STS.Extensions
                 .GetSection("EmailConfiguration")
                 .Get<EmailConfiguration>();
             services.AddSingleton(emailConfig);
+
+            var fcmConfig = configuration
+                .GetSection("FCMConfiguration")
+                .Get<FCMConfiguration>();
+            services.AddSingleton(fcmConfig);
 
             return services;
         }
