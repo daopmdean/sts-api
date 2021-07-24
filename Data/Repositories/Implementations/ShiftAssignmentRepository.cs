@@ -75,5 +75,23 @@ namespace Data.Repositories.Implementations
                 .ProjectTo<ShiftAssignmentOverview>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
+
+        public override async Task CreateAsync(ShiftAssignment entity)
+        {
+            if (entity.TimeStart > DateTime.Now)
+            {
+                await _entities.AddAsync(entity);
+            }
+        }
+
+        public async Task<IEnumerable<ShiftAssignment>> GetShiftAssignmentsAsync(
+            int weekScheduleId, DateTime fromDate)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.WeekScheduleId == weekScheduleId)
+                .Where(s => s.TimeStart > fromDate)
+                .ToListAsync();
+        }
     }
 }

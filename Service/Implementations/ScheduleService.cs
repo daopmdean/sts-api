@@ -6,6 +6,7 @@ using Data.Models.Responses;
 using Data.Repositories.Interfaces;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
+using Service.Exceptions;
 using Service.Helpers;
 using Service.Interfaces;
 using System.Collections.Generic;
@@ -62,6 +63,9 @@ namespace Service.Implementations
                 .CreateShiftScheduleResult(weekScheduleId);
             request.Id = result.Id;
             var message = JsonConvert.SerializeObject(request);
+            if (message.Length >= 10000)
+                throw new AppException(400, "message length exceed 10000");
+
             var body = Encoding.UTF8.GetBytes(message);
             var properties = _rabbitMqChannel.CreateBasicProperties();
 

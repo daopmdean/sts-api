@@ -65,13 +65,21 @@ namespace Service.Implementations
                 foreach (var schedule in publishedWeekSchedule)
                 {
                     schedule.Status = Status.Unpublished;
+
+                    var shiftAssignments = await _shiftAssignmentRepo
+                        .GetShiftAssignmentsAsync(create.WeekScheduleId, DateTime.Now);
+
+                    foreach (var shiftAssignment in shiftAssignments)
+                    {
+                        _shiftAssignmentRepo.Delete(shiftAssignment);
+                    }
                 }
             }
 
             foreach (var shift in create.ShiftAssignments)
             {
                 var store = await _storeRepo
-                .GetByIdAsync(shift.StoreId);
+                    .GetByIdAsync(shift.StoreId);
 
                 if (store == null)
                     throw new AppException(400,
