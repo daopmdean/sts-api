@@ -9,6 +9,10 @@ namespace Data.Entities
 
         public string Username { get; set; }
 
+        public int WeekScheduleId { get; set; }
+
+        public WeekSchedule WeekSchedule { get; set; }
+
         public User User { get; set; }
 
         public int StoreId { get; set; }
