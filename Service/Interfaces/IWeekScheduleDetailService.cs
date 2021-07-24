@@ -10,7 +10,7 @@ namespace Service.Interfaces
         Task<IEnumerable<WeekScheduleDetail>> GetWeekScheduleDetailsAsync(
             int weekScheduleId);
         Task<WeekScheduleDetail> GetWeekScheduleDetail(int id);
-        Task<IEnumerable<WeekScheduleDetailCreate>> CreateWeekScheduleDetailAsync(
+        Task<IEnumerable<WeekScheduleDetail>> CreateWeekScheduleDetailAsync(
             IEnumerable<WeekScheduleDetailCreate> create);
         Task UpdateWeekScheduleDetailAsync(int id,
             WeekScheduleDetailUpdate update);

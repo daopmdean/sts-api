@@ -163,6 +163,7 @@ namespace Service.Implementations
             int weekScheduleId, int brandId)
         {
             ScheduleRequest request = new();
+            request.WeekScheduleId = weekScheduleId;
 
             var weekSchedule = await _weekScheduleService
                     .GetWeekScheduleAsync(weekScheduleId);
