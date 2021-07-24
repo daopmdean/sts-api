@@ -30,8 +30,6 @@ namespace STS.Extensions
                 autoDelete: false,
                 arguments: null);
 
-            //var properties = channel.CreateBasicProperties();
-            //properties.Persistent = true;
             services.AddSingleton(channel);
 
             return services;

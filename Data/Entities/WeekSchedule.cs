@@ -29,6 +29,8 @@ namespace Data.Entities
 
         public ICollection<ShiftRegister> ShiftRegisters { get; set; }
 
+        public ICollection<ShiftAssignment> ShiftAssignments { get; set; }
+
         public WeekSchedule ShallowClone()
         {
             var cloneWeekSchedule = (WeekSchedule)MemberwiseClone();

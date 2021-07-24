@@ -5,6 +5,7 @@ namespace Data.Models.Requests
 {
     public class ShiftAssignmentCreate
     {
+        public int WeekScheduleId { get; set; }
         public IEnumerable<ShiftAssignmentInfo> ShiftAssignments { get; set; }
     }
 
@@ -19,10 +20,6 @@ namespace Data.Models.Requests
         public DateTime TimeStart { get; set; }
 
         public DateTime TimeEnd { get; set; }
-
-        public DateTime MealStart { get; set; }
-
-        public DateTime MealEnd { get; set; }
     }
 
 }
