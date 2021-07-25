@@ -11,6 +11,8 @@ namespace Data.Repositories.Interfaces
     {
         Task<PagedList<ShiftRegisterOverview>> GetShiftRegistersAsync(
             string username, ShiftRegisterParams @params);
+        Task<IEnumerable<ShiftRegisterOverview>> GetShiftRegistersAsync(
+            string username, DateTimeParams @params);
         Task<IEnumerable<ShiftRegister>> GetShiftRegistersAsync(
             int weekScheduleId);
         Task<IEnumerable<ShiftRegister>> GetShiftRegistersAsync(

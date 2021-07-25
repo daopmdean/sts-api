@@ -83,14 +83,13 @@ namespace STS.Controllers
 
         [HttpGet("shift-registers")]
         public async Task<ActionResult> GetShiftRegistersOfUser(
-            [FromQuery] ShiftRegisterParams @params)
+            [FromQuery] DateTimeParams @params)
         {
             try
             {
                 var username = User.GetUsername();
                 var shiftRegisters = await _shiftRegisterService
                     .GetShiftRegisters(username, @params);
-                Response.AddPaginationHeader(shiftRegisters);
 
                 return Ok(shiftRegisters);
             }

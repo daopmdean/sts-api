@@ -56,5 +56,20 @@ namespace Data.Repositories.Implementations
                 .OrderByDescending(s => s.TimeStart)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<ShiftRegisterOverview>> GetShiftRegistersAsync(
+            string username, DateTimeParams @params)
+        {
+            var source = await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.Username == username)
+                .Where(s => s.TimeStart >= @params.FromDate &&
+                    s.TimeStart <= @params.ToDate.AddDays(1))
+                .OrderByDescending(s => s.TimeStart)
+                .ProjectTo<ShiftRegisterOverview>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return source;
+        }
     }
 }
