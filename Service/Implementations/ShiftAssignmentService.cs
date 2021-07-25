@@ -46,11 +46,11 @@ namespace Service.Implementations
                 .GetByIdAsync(create.WeekScheduleId);
 
             if (weekSchedule == null)
-                throw new AppException((int)StatusCode.BadRequest, 
+                throw new AppException((int)StatusCode.BadRequest,
                     "WeekSchedule not found");
 
             if (weekSchedule.Status != Status.Unpublished)
-                throw new AppException((int)StatusCode.BadRequest, 
+                throw new AppException((int)StatusCode.BadRequest,
                     "Can only publish unpublished week schedule");
 
             var publishedWeekSchedule = await _weekScheduleRepo
@@ -103,7 +103,7 @@ namespace Service.Implementations
                 shiftAssignment.WeekScheduleId = create.WeekScheduleId;
                 await _shiftAssignmentRepo.CreateAsync(shiftAssignment);
             }
-            
+
             if (await _shiftAssignmentRepo.SaveChangesAsync())
                 return null;
 
@@ -150,6 +150,13 @@ namespace Service.Implementations
         {
             return await _shiftAssignmentRepo
                 .GetShiftAssignmentsAsync(storeId, @params);
+        }
+
+        public async Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignments(
+            string username, DateTimeParams @params)
+        {
+            return await _shiftAssignmentRepo
+                .GetShiftAssignmentsAsync(username, @params);
         }
 
         public async Task UpdateShiftAssignment(int id,

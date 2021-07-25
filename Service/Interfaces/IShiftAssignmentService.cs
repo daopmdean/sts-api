@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -10,6 +11,8 @@ namespace Service.Interfaces
     {
         Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(string username,
             ShiftAssignmentParams @params);
+        Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignments(string username,
+            DateTimeParams @params);
         Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(int storeId,
             ShiftAssignmentParams @params);
         Task<ShiftAssignment> GetShiftAssignment(int id);

@@ -105,14 +105,13 @@ namespace STS.Controllers
 
         [HttpGet("shift-assignments")]
         public async Task<ActionResult> GetShiftAssignmentsOfUser(
-            [FromQuery] ShiftAssignmentParams @params)
+            [FromQuery] DateTimeParams @params)
         {
             try
             {
                 var username = User.GetUsername();
                 var shiftAssignments = await _shiftAssignmentService
                     .GetShiftAssignments(username, @params);
-                Response.AddPaginationHeader(shiftAssignments);
 
                 return Ok(shiftAssignments);
             }
