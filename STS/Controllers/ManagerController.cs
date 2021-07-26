@@ -5,7 +5,6 @@ using Data.Models.Responses;
 using Data.Pagings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service.Enums;
 using Service.Exceptions;
 using Service.Interfaces;
 using STS.Extensions;
@@ -22,8 +21,6 @@ namespace STS.Controllers
         private readonly IStoreStaffService _storeStaffService;
         private readonly IWeekScheduleService _weekService;
         private readonly IStoreService _storeService;
-        private readonly IUserService _userService;
-        private readonly IAuthService _authService;
 
         public ManagerController(
             IManagerService managerService,
@@ -31,9 +28,7 @@ namespace STS.Controllers
             IShiftScheduleResultService scheduleResultService,
             IStoreStaffService storeStaffService,
             IWeekScheduleService weekService,
-            IStoreService storeService,
-            IUserService userService,
-            IAuthService authService)
+            IStoreService storeService)
         {
             _managerService = managerService;
             _scheduleService = scheduleService;
@@ -41,8 +36,6 @@ namespace STS.Controllers
             _storeStaffService = storeStaffService;
             _weekService = weekService;
             _storeService = storeService;
-            _userService = userService;
-            _authService = authService;
         }
 
         [HttpGet("stores/{storeId}/week-schedules")]
@@ -78,26 +71,6 @@ namespace STS.Controllers
                 Response.AddPaginationHeader(staff);
 
                 return Ok(staff);
-            }
-            catch (AppException ex)
-            {
-                return BadRequestResponse(ex);
-            }
-            catch (Exception ex)
-            {
-                return InternalErrorResponse(ex);
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpPost("users/brand-manager")]
-        public async Task<IActionResult> RegisterBrandManager(
-            BrandManagerCreate info)
-        {
-            try
-            {
-                return Ok(await _managerService
-                    .CreateBrandManager(info));
             }
             catch (AppException ex)
             {
