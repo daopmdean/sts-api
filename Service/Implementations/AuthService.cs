@@ -11,6 +11,7 @@ using Data.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 using Service.Enums;
 using Service.Exceptions;
+using Service.Helpers;
 using Service.Interfaces;
 
 namespace Service.Implementations
@@ -19,14 +20,40 @@ namespace Service.Implementations
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
+        private readonly IBrandService _brandService;
+        private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
 
         public AuthService(DataContext context,
-            ITokenService tokenService, IMapper mapper)
+            ITokenService tokenService,
+            IBrandService brandService,
+            IEmailSender emailSender,
+            IMapper mapper)
         {
             _context = context;
             _tokenService = tokenService;
+            _brandService = brandService;
+            _emailSender = emailSender;
             _mapper = mapper;
+        }
+
+        public async Task<BrandManagerCreate> CreateBrandManager(
+            BrandManagerCreate info)
+        {
+            var brandCreate = info.Brand;
+            var brand = await _brandService.CreateBrand(brandCreate);
+
+            var brandManagerInfo = info.GeneralInfo;
+            await RegisterWithRole(brand.Id,
+                    (int)UserRole.BrandManager, brandManagerInfo);
+
+            await _emailSender.SendEmailAsync(new Message(
+                new string[] { brandManagerInfo.Email },
+                "STS welcome you on board",
+                "<p>You have successfully register with username: " + brandManagerInfo.Username + "</p>" +
+                "<p>We hope you will have the best experience with us</p>"));
+
+            return info;
         }
 
         public async Task<UserTokenResponse> Login(LoginRequest login)
