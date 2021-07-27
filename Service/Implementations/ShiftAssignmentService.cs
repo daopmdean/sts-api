@@ -172,8 +172,8 @@ namespace Service.Implementations
             foreach (var staff in storeStaffs)
             {
                 var user = await _userRepo.GetUserByUsernameAsync(staff.Username);
-                IEnumerable<ShiftAssignment> assignments = await _shiftAssignmentRepo
-                    .GetShiftAssignmentsAsync(user.Username, @params);
+                IEnumerable<ShiftAssignmentOverview> assignments =
+                    await GetShiftAssignmentOverviews(user.Username, @params);
 
                 var staffAssignmentResponse = new StaffAssignmentsResponse()
                 {

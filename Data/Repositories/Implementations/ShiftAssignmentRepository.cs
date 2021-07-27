@@ -78,6 +78,7 @@ namespace Data.Repositories.Implementations
             string username, DateTimeParams @params)
         {
             return await _entities
+                .Include(x => x.ShiftAttendance)
                 .Where(s => s.Status == Enums.Status.Active)
                 .Where(s => s.Username == username)
                 .Where(s => s.TimeStart >= @params.FromDate &&
