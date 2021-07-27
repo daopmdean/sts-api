@@ -19,27 +19,6 @@ namespace STS.Seeding
             SeedStoresIfNeeded(context);
         }
 
-        private static void SeedRolesIfNeeded(DataContext context)
-        {
-            if (context.Roles.Any())
-                return;
-
-            var roles = new List<Role>
-            {
-                new Role{ Name = "admin"},
-                new Role{ Name = "brand manager"},
-                new Role{ Name = "store manager"},
-                new Role{ Name = "staff"},
-            };
-
-            foreach (var role in roles)
-            {
-                context.Add(role);
-            }
-
-            context.SaveChanges();
-        }
-
         public static async Task SeedUsersIfNeeded(DataContext context,
             IAuthService service, IUserRepository userRepository)
         {
@@ -115,6 +94,200 @@ namespace STS.Seeding
             userRepository.Update(staff);
             userRepository.Update(store1);
             userRepository.Update(store2);
+
+            await SeedPassioStaff(context, service);
+            await SeedCoffeeHouseStaff(context, service);
+
+            context.SaveChanges();
+        }
+
+        private static async Task SeedPassioStaff(
+            DataContext context, IAuthService service)
+        {
+            var passioStaffRequests = new List<RegisterRequest>
+            {
+                new RegisterRequest
+                {
+                    Username = "mystaff01",
+                    Password = "123456",
+                    FirstName = "Asc",
+                    LastName = "Qws"
+                },
+                new RegisterRequest
+                {
+                    Username = "mystaff02",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                },
+                new RegisterRequest
+                {
+                    Username = "mystaff03",
+                    Password = "123456",
+                    FirstName = "Asc",
+                    LastName = "Qws"
+                },
+                new RegisterRequest
+                {
+                    Username = "mystaff04",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                },
+                new RegisterRequest
+                {
+                    Username = "mystaff05",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                },
+                new RegisterRequest
+                {
+                    Username = "mystaff06",
+                    Password = "123456",
+                    FirstName = "Asc",
+                    LastName = "Qws"
+                },
+                new RegisterRequest
+                {
+                    Username = "mystaff07",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                },
+                new RegisterRequest
+                {
+                    Username = "mystaff08",
+                    Password = "123456",
+                    FirstName = "Asc",
+                    LastName = "Qws"
+                },
+                new RegisterRequest
+                {
+                    Username = "mystaff09",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                },
+                new RegisterRequest
+                {
+                    Username = "mystaff10",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                }
+            };
+
+            foreach (var request in passioStaffRequests)
+            {
+                await service.RegisterWithRole(1, 4, request);
+            }
+
+            context.SaveChanges();
+        }
+
+        private static async Task SeedCoffeeHouseStaff(
+            DataContext context, IAuthService service)
+        {
+            var coffeeHouseStaffRequests = new List<RegisterRequest>
+            {
+                new RegisterRequest
+                {
+                    Username = "coffee01",
+                    Password = "123456",
+                    FirstName = "Asc",
+                    LastName = "Qws"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffee02",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffee03",
+                    Password = "123456",
+                    FirstName = "Asc",
+                    LastName = "Qws"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffee04",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffee05",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffee06",
+                    Password = "123456",
+                    FirstName = "Asc",
+                    LastName = "Qws"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffee07",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffee08",
+                    Password = "123456",
+                    FirstName = "Asc",
+                    LastName = "Qws"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffee09",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffee10",
+                    Password = "123456",
+                    FirstName = "Iuj",
+                    LastName = "Scd"
+                }
+            };
+
+            foreach (var request in coffeeHouseStaffRequests)
+            {
+                await service.RegisterWithRole(2, 4, request);
+            }
+
+            context.SaveChanges();
+        }
+
+        private static void SeedRolesIfNeeded(DataContext context)
+        {
+            if (context.Roles.Any())
+                return;
+
+            var roles = new List<Role>
+            {
+                new Role{ Name = "admin"},
+                new Role{ Name = "brand manager"},
+                new Role{ Name = "store manager"},
+                new Role{ Name = "staff"},
+            };
+
+            foreach (var role in roles)
+            {
+                context.Add(role);
+            }
 
             context.SaveChanges();
         }
