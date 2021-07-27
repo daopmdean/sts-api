@@ -30,10 +30,11 @@ namespace Data.Entities
 
         public int MaxShiftPerDay { get; set; }
 
-        public StoreScheduleDetail ShallowClone()
+        public StoreScheduleDetail ShallowClone(int weekScheduleId)
         {
             var cloneStoreScheduleDetail = (StoreScheduleDetail)MemberwiseClone();
             cloneStoreScheduleDetail.Id = 0;
+            cloneStoreScheduleDetail.WeekScheduleId = weekScheduleId;
 
             return cloneStoreScheduleDetail;
         }

@@ -51,46 +51,84 @@ namespace Service.Implementations
 
             await _weekRepo.CreateAsync(cloneWeekSchedule);
 
+            //--------------------------------
+            if (await _weekRepo.SaveChangesAsync())
+            {
+                Console.WriteLine(cloneWeekSchedule.Id);
+            }
+            else
+            {
+                throw new AppException((int)StatusCode.BadRequest,
+                    "CloneWeekScheduleAsync: Can not clone WeekSchedule");
+            }
+            //--------------------------------
+
             var baseWeekScheduleDetails = await _weekDetailRepo
                 .GetWeekScheduleDetailsAsync(baseWeekSchedule.Id);
             foreach (var baseWeekScheduleDetail in baseWeekScheduleDetails)
             {
-                var cloneWeekScheduleDetail = baseWeekScheduleDetail
-                    .ShallowClone();
+                var cloneWeekScheduleDetail = _mapper
+                    .Map<WeekScheduleDetail>(baseWeekScheduleDetail);
+                cloneWeekScheduleDetail.Id = 0;
                 cloneWeekScheduleDetail.WeekScheduleId = cloneWeekSchedule.Id;
+
                 await _weekDetailRepo.CreateAsync(cloneWeekScheduleDetail);
             }
 
+            //--------------------------------
+            if (await _weekRepo.SaveChangesAsync())
+            {
+                Console.WriteLine(cloneWeekSchedule.Id);
+            }
+            else
+            {
+                throw new AppException((int)StatusCode.BadRequest,
+                    "CloneWeekScheduleAsync: Can not clone WeekScheduleDetail");
+            }
+            //--------------------------------
+
             var baseStoreScheduleDetails = await _storeScheduleRepo
-                .GetStoreScheduleDetailsAsync(cloneWeekSchedule.Id);
+                .GetStoreScheduleDetailsAsync(baseWeekSchedule.Id);
             foreach (var baseStoreScheduleDetail in baseStoreScheduleDetails)
             {
-                var cloneStoreScheduleDetail = baseStoreScheduleDetail
-                    .ShallowClone();
+                var cloneStoreScheduleDetail = _mapper
+                    .Map<StoreScheduleDetail>(baseStoreScheduleDetail);
+                cloneStoreScheduleDetail.Id = 0;
                 cloneStoreScheduleDetail.WeekScheduleId = cloneWeekSchedule.Id;
+
                 await _storeScheduleRepo.CreateAsync(cloneStoreScheduleDetail);
             }
 
-            var shiftScheduleResult = new ShiftScheduleResult
-            {
-                IsComplete = true,
-                WeekScheduleId = cloneWeekSchedule.Id
-            };
-            await _shiftScheduleRepo.CreateAsync(shiftScheduleResult);
-
-            var shiftAssignments = cloneRequest.ShiftAssignments;
-            foreach (var shiftAssignment in shiftAssignments)
-            {
-                var assignment = _mapper.Map<ShiftScheduleDetailResult>(shiftAssignment);
-                assignment.ShiftScheduleResultId = shiftScheduleResult.Id;
-                await _shiftScheduleDetailRepo.CreateAsync(assignment);
-            }
-
+            //--------------------------------
             if (await _weekRepo.SaveChangesAsync())
+            {
                 return cloneWeekSchedule;
+            }
+            else
+            {
+                throw new AppException((int)StatusCode.BadRequest,
+                    "CloneWeekScheduleAsync: Can not clone StoreScheduleDetail");
+            }
+            //--------------------------------
 
-            throw new AppException((int)StatusCode.BadRequest,
-                "Can not clone week schedule");
+            //var shiftScheduleResult = new ShiftScheduleResult
+            //{
+            //    IsComplete = true,
+            //    WeekScheduleId = cloneWeekSchedule.Id
+            //};
+            //await _shiftScheduleRepo.CreateAsync(shiftScheduleResult);
+
+            //var shiftAssignments = cloneRequest.ShiftAssignments;
+
+            //if (shiftAssignments != null)
+            //{
+            //    foreach (var shiftAssignment in shiftAssignments)
+            //    {
+            //        var assignment = _mapper.Map<ShiftScheduleDetailResult>(shiftAssignment);
+            //        assignment.ShiftScheduleResultId = shiftScheduleResult.Id;
+            //        await _shiftScheduleDetailRepo.CreateAsync(assignment);
+            //    }
+            //}
         }
 
         public async Task<WeekSchedule> CreateWeekScheduleAsync(

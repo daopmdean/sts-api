@@ -83,21 +83,18 @@ namespace Service.Implementations
             {
                 var store = await _storeRepo
                     .GetByIdAsync(shift.StoreId);
-
                 if (store == null)
                     throw new AppException(400,
                         "Conflicted with the FOREIGN KEY constraint, StoreId does not exist");
 
                 var skill = await _skillRepo
                     .GetByIdAsync(shift.SkillId);
-
                 if (skill == null)
                     throw new AppException(400,
                         "Conflicted with the FOREIGN KEY constraint, SkillId does not exist");
 
                 var user = await _userRepo
                     .GetUserByUsernameAsync(shift.Username);
-
                 if (user == null)
                     throw new AppException(400,
                         "Conflicted with the FOREIGN KEY constraint, Username does not exist");

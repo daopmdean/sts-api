@@ -21,11 +21,11 @@ namespace Data.Entities
 
         public DateTime WorkEnd { get; set; }
 
-        public WeekScheduleDetail ShallowClone()
+        public WeekScheduleDetail ShallowClone(int weekScheduleId)
         {
             var cloneWeekScheduleDetail = (WeekScheduleDetail)MemberwiseClone();
             cloneWeekScheduleDetail.Id = 0;
-
+            cloneWeekScheduleDetail.WeekScheduleId = weekScheduleId;
             return cloneWeekScheduleDetail;
         }
     }
