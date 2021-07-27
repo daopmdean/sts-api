@@ -40,7 +40,7 @@ namespace Service.Implementations
         {
             var shiftAssignment = await _shiftAssignmentRepo
                 .GetShiftAssignmentAsync(create.Username,
-                    create.TimeRequest, timeRange);
+                    create.TimeRequest, timeRange, create.Type);
 
             if (shiftAssignment == null)
                 throw new AppException(400,

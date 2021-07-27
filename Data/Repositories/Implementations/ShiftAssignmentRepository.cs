@@ -25,14 +25,25 @@ namespace Data.Repositories.Implementations
         }
 
         public async Task<ShiftAssignment> GetShiftAssignmentAsync(
-            string username, DateTime timeRequest, int timeRange)
+            string username, DateTime timeRequest, int timeRange, string type)
         {
-            return await _entities
-                .Where(s => (timeRequest <= s.TimeStart.AddMinutes(timeRange)
-                    && timeRequest >= s.TimeStart.AddMinutes(-timeRange))
-                    || (timeRequest <= s.TimeEnd.AddMinutes(timeRange)
-                    && timeRequest >= s.TimeEnd.AddMinutes(-timeRange)))
-                .FirstOrDefaultAsync(s => s.Username == username);
+            type = type.ToLower();
+            if (type == "checkin")
+            {
+                return await _entities
+                    .Where(s => timeRequest <= s.TimeStart.AddMinutes(timeRange)
+                        && timeRequest >= s.TimeStart.AddMinutes(-timeRange))
+                    .FirstOrDefaultAsync(s => s.Username == username);
+            }
+            else if (type == "checkout")
+            {
+                return await _entities
+                    .Where(s => timeRequest <= s.TimeEnd.AddMinutes(timeRange)
+                        && timeRequest >= s.TimeEnd.AddMinutes(-timeRange))
+                    .FirstOrDefaultAsync(s => s.Username == username);
+            }
+
+            return null;
         }
 
         public async Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
