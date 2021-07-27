@@ -111,7 +111,7 @@ namespace STS.Controllers
             {
                 var username = User.GetUsername();
                 var shiftAssignments = await _shiftAssignmentService
-                    .GetShiftAssignments(username, @params);
+                    .GetShiftAssignmentOverviews(username, @params);
 
                 return Ok(shiftAssignments);
             }

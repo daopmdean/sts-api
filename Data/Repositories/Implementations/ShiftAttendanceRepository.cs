@@ -50,6 +50,8 @@ namespace Data.Repositories.Implementations
         {
             return await _context.ShiftAssignments
                     .Where(x => x.Username == username)
+                    .Where(s => s.TimeStart >= @params.FromDate &&
+                        s.TimeEnd <= @params.ToDate)
                     .Join(_context.ShiftAttendances,
                         sas => sas.Id,
                         sat => sat.ShiftAssignmentId,
@@ -62,8 +64,6 @@ namespace Data.Repositories.Implementations
                             Status = sat.Status
                         })
                     .Where(x => x.Status == Enums.Status.Active)
-                    .Where(s => s.TimeCheckIn >= @params.FromDate &&
-                        s.TimeCheckOut <= @params.ToDate)
                     .OrderByDescending(s => s.TimeCheckIn)
                     .ToListAsync();
         }

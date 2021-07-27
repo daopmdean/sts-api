@@ -143,7 +143,7 @@ namespace STS.Controllers
         }
 
         [HttpGet("shift-assignments")]
-        public async Task<ActionResult<BrandOverview>> GetShiftAssignmentsOfStore(
+        public async Task<ActionResult> GetShiftAssignmentsOfStore(
             [FromQuery] ShiftAssignmentParams @params)
         {
             try
@@ -197,6 +197,28 @@ namespace STS.Controllers
                 int storeId = int.Parse(User.GetStoreId());
                 var shiftAttendances = await _shiftAttendanceService
                     .GetShiftAttendencesAsync(storeId, @params);
+
+                return Ok(shiftAttendances);
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpGet("timekeeping/v2")]
+        public async Task<ActionResult> GetShiftAssignmentsResponse(
+            [FromQuery] DateTimeParams @params)
+        {
+            try
+            {
+                int storeId = int.Parse(User.GetStoreId());
+                var shiftAttendances = await _shiftAssignmentService
+                    .GetShiftAssignments(storeId, @params);
 
                 return Ok(shiftAttendances);
             }

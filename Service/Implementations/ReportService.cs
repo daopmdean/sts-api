@@ -25,7 +25,7 @@ namespace Service.Implementations
         {
             WorkHoursResponse result = new();
             var shiftAssignments = await _shiftAssignmentRepo
-                .GetShiftAssignmentsAsync(username, @params);
+                .GetShiftAssignmentOverviewsAsync(username, @params);
 
             var shiftAttendances = await _shiftAttendanceRepo
                 .GetShiftAttendancesAsync(username, @params);

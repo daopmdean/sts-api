@@ -9,12 +9,14 @@ namespace Service.Interfaces
 {
     public interface IShiftAssignmentService
     {
-        Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(string username,
-            ShiftAssignmentParams @params);
-        Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignments(string username,
-            DateTimeParams @params);
-        Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(int storeId,
-            ShiftAssignmentParams @params);
+        Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(
+            string username, ShiftAssignmentParams @params);
+        Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentOverviews(
+            string username, DateTimeParams @params);
+        Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(
+            int storeId, ShiftAssignmentParams @params);
+        Task<IEnumerable<StaffAssignmentsResponse>> GetShiftAssignments(
+            int storeId, DateTimeParams @params);
         Task<ShiftAssignment> GetShiftAssignment(int id);
         Task<ShiftAssignment> CreateShiftAssignment(ShiftAssignmentCreate create);
         Task UpdateShiftAssignment(int id, ShiftAssignmentUpdate update);

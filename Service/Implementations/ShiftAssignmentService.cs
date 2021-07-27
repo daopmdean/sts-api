@@ -19,6 +19,7 @@ namespace Service.Implementations
         private readonly IShiftAssignmentRepository _shiftAssignmentRepo;
         private readonly IUserRepository _userRepo;
         private readonly IStoreRepository _storeRepo;
+        private readonly IStoreStaffService _storeStaffService;
         private readonly ISkillRepository _skillRepo;
         private readonly IWeekScheduleRepository _weekScheduleRepo;
         private readonly IMapper _mapper;
@@ -27,6 +28,7 @@ namespace Service.Implementations
             IShiftAssignmentRepository shiftAssignmentRepo,
             IUserRepository userRepo,
             IStoreRepository storeRepo,
+            IStoreStaffService storeStaffService,
             ISkillRepository skillRepo,
             IWeekScheduleRepository weekScheduleRepo,
             IMapper mapper)
@@ -34,6 +36,7 @@ namespace Service.Implementations
             _shiftAssignmentRepo = shiftAssignmentRepo;
             _userRepo = userRepo;
             _storeRepo = storeRepo;
+            _storeStaffService = storeStaffService;
             _skillRepo = skillRepo;
             _weekScheduleRepo = weekScheduleRepo;
             _mapper = mapper;
@@ -152,11 +155,37 @@ namespace Service.Implementations
                 .GetShiftAssignmentsAsync(storeId, @params);
         }
 
-        public async Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignments(
+        public async Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentOverviews(
             string username, DateTimeParams @params)
         {
             return await _shiftAssignmentRepo
-                .GetShiftAssignmentsAsync(username, @params);
+                .GetShiftAssignmentOverviewsAsync(username, @params);
+        }
+
+        public async Task<IEnumerable<StaffAssignmentsResponse>> GetShiftAssignments(
+            int storeId, DateTimeParams @params)
+        {
+            List<StaffAssignmentsResponse> result = new();
+            var storeStaffs = await _storeStaffService
+                    .GetStaffFromStoreAsync(storeId);
+
+            foreach (var staff in storeStaffs)
+            {
+                var user = await _userRepo.GetUserByUsernameAsync(staff.Username);
+                IEnumerable<ShiftAssignment> assignments = await _shiftAssignmentRepo
+                    .GetShiftAssignmentsAsync(user.Username, @params);
+
+                var staffAssignmentResponse = new StaffAssignmentsResponse()
+                {
+                    Username = user.Username,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Assignments = assignments
+                };
+                result.Add(staffAssignmentResponse);
+            }
+
+            return result;
         }
 
         public async Task UpdateShiftAssignment(int id,

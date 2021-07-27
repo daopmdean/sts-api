@@ -74,7 +74,7 @@ namespace Data.Repositories.Implementations
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
         }
 
-        public async Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
+        public async Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentOverviewsAsync(
             string username, DateTimeParams @params)
         {
             return await _entities
@@ -102,6 +102,19 @@ namespace Data.Repositories.Implementations
                 .Where(s => s.Status == Enums.Status.Active)
                 .Where(s => s.WeekScheduleId == weekScheduleId)
                 .Where(s => s.TimeStart > fromDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ShiftAssignment>> GetShiftAssignmentsAsync(
+            string username, DateTimeParams @params)
+        {
+            return await _entities
+                .Include(x => x.ShiftAttendance)
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.Username == username)
+                .Where(s => s.TimeStart >= @params.FromDate &&
+                    s.TimeEnd <= @params.ToDate.AddDays(1))
+                .OrderByDescending(s => s.TimeStart)
                 .ToListAsync();
         }
     }
