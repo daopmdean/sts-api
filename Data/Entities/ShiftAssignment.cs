@@ -27,10 +27,6 @@ namespace Data.Entities
 
         public DateTime TimeEnd { get; set; }
 
-        public DateTime MealStart { get; set; }
-
-        public DateTime MealEnd { get; set; }
-
         public int ReferenceId { get; set; }
 
         public ShiftAttendance ShiftAttendance { get; set; }

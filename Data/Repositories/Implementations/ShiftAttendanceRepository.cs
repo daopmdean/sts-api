@@ -49,12 +49,14 @@ namespace Data.Repositories.Implementations
             string username, DateTimeParams @params)
         {
             return await _context.ShiftAssignments
+                    .Where(x => x.Username == username)
                     .Join(_context.ShiftAttendances,
                         sas => sas.Id,
                         sat => sat.ShiftAssignmentId,
                         (sas, sat) => new ShiftAttendance
                         {
                             ShiftAssignmentId = sas.Id,
+                            ShiftAssignment = sas,
                             TimeCheckIn = sat.TimeCheckIn,
                             TimeCheckOut = sat.TimeCheckOut,
                             Status = sat.Status
