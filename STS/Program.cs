@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using RabbitMQ.Client;
 using Service.Interfaces;
 
 namespace STS
@@ -25,11 +24,15 @@ namespace STS
                 var context = services.GetRequiredService<DataContext>();
                 var userRepo = services.GetRequiredService<IUserRepository>();
                 var authService = services.GetRequiredService<IAuthService>();
+                var storeStaffService = services
+                    .GetRequiredService<IStoreStaffService>();
+                var staffSkillService = services
+                    .GetRequiredService<IStaffSkillService>();
 
                 await context.Database.MigrateAsync();
                 Seeding.SeedData.SeedDataIfNeeded(context);
                 await Seeding.SeedData.SeedUsersIfNeeded(context,
-                    authService, userRepo);
+                    authService, userRepo, storeStaffService, staffSkillService);
             }
             catch (Exception ex)
             {
