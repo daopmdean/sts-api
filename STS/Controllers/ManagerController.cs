@@ -18,6 +18,7 @@ namespace STS.Controllers
         private readonly IManagerService _managerService;
         private readonly IScheduleService _scheduleService;
         private readonly IShiftScheduleResultService _scheduleResultService;
+        private readonly IShiftAssignmentService _shiftAssignmentService;
         private readonly IStoreStaffService _storeStaffService;
         private readonly IWeekScheduleService _weekService;
         private readonly IStoreService _storeService;
@@ -26,6 +27,7 @@ namespace STS.Controllers
             IManagerService managerService,
             IScheduleService scheduleService,
             IShiftScheduleResultService scheduleResultService,
+            IShiftAssignmentService shiftAssignmentService,
             IStoreStaffService storeStaffService,
             IWeekScheduleService weekService,
             IStoreService storeService)
@@ -33,6 +35,7 @@ namespace STS.Controllers
             _managerService = managerService;
             _scheduleService = scheduleService;
             _scheduleResultService = scheduleResultService;
+            _shiftAssignmentService = shiftAssignmentService;
             _storeStaffService = storeStaffService;
             _weekService = weekService;
             _storeService = storeService;
@@ -132,6 +135,44 @@ namespace STS.Controllers
                 var brandId = int.Parse(User.GetBrandId());
                 return Ok(await _scheduleService
                     .ComputeSchedule(request.WeekScheduleId, brandId));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpPost("schedule/publish")]
+        public async Task<ActionResult> PublishSchedule(
+            ShiftAssignmentCreate create)
+        {
+            try
+            {
+                return Ok(await _shiftAssignmentService
+                    .CreateShiftAssignment(create));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpPost("schedule/unpublish")]
+        public async Task<ActionResult> UnpublishSchedule(
+            ShiftAssignmentCreate create)
+        {
+            try
+            {
+                return Ok(await _shiftAssignmentService
+                    .CreateShiftAssignment(create));
             }
             catch (AppException ex)
             {
