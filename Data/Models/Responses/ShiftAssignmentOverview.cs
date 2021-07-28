@@ -1,5 +1,4 @@
 ﻿using System;
-using Data.Entities;
 
 namespace Data.Models.Responses
 {
@@ -17,7 +16,9 @@ namespace Data.Models.Responses
 
         public DateTime TimeEnd { get; set; }
 
-        public ShiftAttendance ShiftAttendance { get; set; }
+        public DateTime TimeCheckIn { get; set; }
+
+        public DateTime TimeCheckOut { get; set; }
 
         public int ReferenceId { get; set; }
     }

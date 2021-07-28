@@ -59,11 +59,6 @@ namespace Data
                 .HasForeignKey(sr => sr.Username)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // shift attendance - shift assignment
-            modelBuilder.Entity<ShiftAssignment>()
-                .HasOne(sa => sa.ShiftAttendance)
-                .WithOne(sa => sa.ShiftAssignment);
-
             // shift register - user
             modelBuilder.Entity<ShiftRegister>()
                 .HasOne(sr => sr.User)

@@ -21,19 +21,19 @@ namespace STS.Controllers
         private readonly IWeekScheduleService _weekService;
         private readonly IStoreStaffService _storeStaffService;
         private readonly IShiftAssignmentService _shiftAssignmentService;
-        private readonly IShiftAttendanceService _shiftAttendanceService;
+        private readonly IAttendanceService _attendanceService;
 
         public StoresController(IStoreService storeService,
             IWeekScheduleService weekService,
             IStoreStaffService storeStaffService,
             IShiftAssignmentService shiftAssignmentService,
-            IShiftAttendanceService shiftAttendanceService)
+            IAttendanceService attendanceService)
         {
             _storeService = storeService;
             _weekService = weekService;
             _storeStaffService = storeStaffService;
             _shiftAssignmentService = shiftAssignmentService;
-            _shiftAttendanceService = shiftAttendanceService;
+            _attendanceService = attendanceService;
         }
 
         [HttpGet]
@@ -165,53 +165,8 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("shift-attendances")]
-        public async Task<ActionResult> GetShiftAttendancesOfStore(
-            [FromQuery] ShiftAttendanceParams @params)
-        {
-            try
-            {
-                int storeId = int.Parse(User.GetStoreId());
-                var shiftAttendances = await _shiftAttendanceService
-                    .GetShiftAttendencesAsync(storeId, @params);
-                Response.AddPaginationHeader(shiftAttendances);
-
-                return Ok(shiftAttendances);
-            }
-            catch (AppException ex)
-            {
-                return BadRequestResponse(ex);
-            }
-            catch (Exception ex)
-            {
-                return InternalErrorResponse(ex);
-            }
-        }
-
         [HttpGet("timekeeping")]
         public async Task<ActionResult> GetShiftAttendancesResponse(
-            [FromQuery] DateTimeParams @params)
-        {
-            try
-            {
-                int storeId = int.Parse(User.GetStoreId());
-                var shiftAttendances = await _shiftAttendanceService
-                    .GetShiftAttendencesAsync(storeId, @params);
-
-                return Ok(shiftAttendances);
-            }
-            catch (AppException ex)
-            {
-                return BadRequestResponse(ex);
-            }
-            catch (Exception ex)
-            {
-                return InternalErrorResponse(ex);
-            }
-        }
-
-        [HttpGet("timekeeping/v2")]
-        public async Task<ActionResult> GetShiftAssignmentsResponse(
             [FromQuery] DateTimeParams @params)
         {
             try
