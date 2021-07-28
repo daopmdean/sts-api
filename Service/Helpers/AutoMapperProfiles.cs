@@ -77,6 +77,9 @@ namespace Service.Helpers
             CreateMap<ShiftAttendanceCreate, ShiftAttendance>();
             CreateMap<ShiftAttendanceUpdate, ShiftAttendance>();
 
+            CreateMap<AttendanceCreate, Attendance>();
+            CreateMap<AttendanceUpdate, Attendance>();
+
             CreateMap<SkillOverview, SkillRequest>()
                 .ForMember(dest => dest.Id,
                     obj => obj.MapFrom(src => src.Id));

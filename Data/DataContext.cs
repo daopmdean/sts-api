@@ -27,8 +27,8 @@ namespace Data
 
         public DbSet<ShiftRegister> ShiftRegisters { get; set; }
         public DbSet<ShiftAssignment> ShiftAssignments { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
         public DbSet<ShiftAttendance> ShiftAttendances { get; set; }
-        public DbSet<ShiftLog> ShiftLogs { get; set; }
 
         public DbSet<ShiftScheduleResult> ShiftScheduleResults { get; set; }
         public DbSet<ShiftScheduleDetailResult> ShiftScheduleDetailResults { get; set; }
@@ -63,13 +63,6 @@ namespace Data
             modelBuilder.Entity<ShiftAssignment>()
                 .HasOne(sa => sa.ShiftAttendance)
                 .WithOne(sa => sa.ShiftAssignment);
-
-            // shift assignment - shift log
-            modelBuilder.Entity<ShiftLog>()
-                .HasOne(sl => sl.ShiftAssignment)
-                .WithMany(sa => sa.ShiftLogs)
-                .HasForeignKey(sl => sl.ShiftAssignmentId)
-                .OnDelete(DeleteBehavior.NoAction);
 
             // shift register - user
             modelBuilder.Entity<ShiftRegister>()
@@ -183,7 +176,7 @@ namespace Data
             }
         }
 
-        private Exception HandleDbUpdateException(DbUpdateException dbu)
+        private static Exception HandleDbUpdateException(DbUpdateException dbu)
         {
             var builder = new StringBuilder(
                 "A DbUpdateException was caught while saving changes. ");

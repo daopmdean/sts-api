@@ -48,6 +48,8 @@ namespace Data.Entities
 
         public ICollection<ShiftAssignment> ShiftAssignments { get; set; }
 
+        public ICollection<Attendance> Attendances { get; set; }
+
         public ICollection<StaffScheduleDetail> StaffScheduleDetails { get; set; }
     }
 }

@@ -19,21 +19,21 @@ namespace STS.Controllers
         private readonly IStaffSkillService _staffSkillService;
         private readonly IShiftRegisterService _shiftRegisterService;
         private readonly IShiftAssignmentService _shiftAssignmentService;
-        private readonly IShiftAttendanceService _shiftAttendanceService;
+        private readonly IAttendanceService _attendanceService;
         private readonly IReportService _reportService;
 
         public UsersController(IUserService userService,
             IStaffSkillService staffSkillService,
             IShiftRegisterService shiftRegisterService,
             IShiftAssignmentService shiftAssignmentService,
-            IShiftAttendanceService shiftAttendanceService,
+            IAttendanceService attendanceService,
             IReportService reportService)
         {
             _userService = userService;
             _staffSkillService = staffSkillService;
             _shiftRegisterService = shiftRegisterService;
             _shiftAssignmentService = shiftAssignmentService;
-            _shiftAttendanceService = shiftAttendanceService;
+            _attendanceService = attendanceService;
             _reportService = reportService;
         }
 
@@ -125,17 +125,17 @@ namespace STS.Controllers
             }
         }
 
-        [HttpGet("shift-attendances")]
-        public async Task<ActionResult> GetShiftAttendancesOfUser(
+        [HttpGet("attendances")]
+        public async Task<ActionResult> GetAttendancesOfUser(
             [FromQuery] DateTimeParams @params)
         {
             try
             {
                 var username = User.GetUsername();
-                var shiftAttendances = await _shiftAttendanceService
-                    .GetShiftAttendencesAsync(username, @params);
+                var attendances = await _attendanceService
+                    .GetAttendancesAsync(username, @params);
 
-                return Ok(shiftAttendances);
+                return Ok(attendances);
             }
             catch (AppException ex)
             {
