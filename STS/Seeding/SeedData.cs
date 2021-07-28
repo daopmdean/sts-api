@@ -19,8 +19,11 @@ namespace STS.Seeding
             SeedStoresIfNeeded(context);
         }
 
-        public static async Task SeedUsersIfNeeded(DataContext context,
-            IAuthService service, IUserRepository userRepository)
+        public static async Task SeedUsersIfNeeded(
+            DataContext context,
+            IAuthService authService,
+            IUserRepository userRepository,
+            IStoreStaffService storeStaffService)
         {
             if (context.Users.Any())
                 return;
@@ -40,13 +43,6 @@ namespace STS.Seeding
                     Password = "123456",
                     FirstName = "Dao",
                     LastName = "Pham"
-                },
-                new RegisterRequest
-                {
-                    Username = "staff",
-                    Password = "123456",
-                    FirstName = "Trung",
-                    LastName = "Do"
                 },
                 new RegisterRequest
                 {
@@ -73,36 +69,34 @@ namespace STS.Seeding
 
             foreach (var registerRequest in registerRequests)
             {
-                await service.Register(registerRequest);
+                await authService.Register(registerRequest);
             }
 
             var admin = await userRepository.GetUserByUsernameAsync("admin");
             admin.RoleId = 1;
 
-            var staff = await userRepository.GetUserByUsernameAsync("staff");
-            staff.RoleId = 4;
+            var passioStoreManager = await userRepository
+                .GetUserByUsernameAsync("passiostore");
+            passioStoreManager.RoleId = 3;
 
-            var store1 = await userRepository.GetUserByUsernameAsync(
-                "coffeehousestore");
-            store1.RoleId = 3;
-
-            var store2 = await userRepository.GetUserByUsernameAsync(
-                "passiostore");
-            store2.RoleId = 3;
+            var coffeeHouseStoreManager = await userRepository
+                .GetUserByUsernameAsync("coffeehousestore");
+            coffeeHouseStoreManager.RoleId = 3;
 
             userRepository.Update(admin);
-            userRepository.Update(staff);
-            userRepository.Update(store1);
-            userRepository.Update(store2);
+            userRepository.Update(coffeeHouseStoreManager);
+            userRepository.Update(passioStoreManager);
 
-            await SeedPassioStaff(context, service);
-            await SeedCoffeeHouseStaff(context, service);
+            await SeedPassioStaff(context, authService, storeStaffService);
+            await SeedCoffeeHouseStaff(context, authService, storeStaffService);
 
             context.SaveChanges();
         }
 
         private static async Task SeedPassioStaff(
-            DataContext context, IAuthService service)
+            DataContext context,
+            IAuthService service,
+            IStoreStaffService storeStaffService)
         {
             var passioStaffRequests = new List<RegisterRequest>
             {
@@ -177,17 +171,98 @@ namespace STS.Seeding
                     LastName = "Scd"
                 }
             };
-
             foreach (var request in passioStaffRequests)
             {
                 await service.RegisterWithRole(1, 4, request);
             }
 
             context.SaveChanges();
+
+            var storeStaffs = new List<StoreStaffCreate>
+            {
+                new StoreStaffCreate
+                {
+                    StoreId = 1,
+                    Username = "mystaff01",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 1,
+                    Username = "mystaff02",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 1,
+                    Username = "mystaff03",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 1,
+                    Username = "mystaff04",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 1,
+                    Username = "mystaff05",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 1,
+                    Username = "mystaff06",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 2,
+                    Username = "mystaff07",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 2,
+                    Username = "mystaff08",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 2,
+                    Username = "mystaff09",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 2,
+                    Username = "mystaff10",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                }
+            };
+            foreach (var storeStaff in storeStaffs)
+            {
+                await storeStaffService.CreateStoreStaff(storeStaff);
+            }
+
+            context.SaveChanges();
         }
 
         private static async Task SeedCoffeeHouseStaff(
-            DataContext context, IAuthService service)
+            DataContext context,
+            IAuthService service,
+            IStoreStaffService storeStaffService)
         {
             var coffeeHouseStaffRequests = new List<RegisterRequest>
             {
@@ -266,6 +341,86 @@ namespace STS.Seeding
             foreach (var request in coffeeHouseStaffRequests)
             {
                 await service.RegisterWithRole(2, 4, request);
+            }
+
+            context.SaveChanges();
+
+            var storeStaffs = new List<StoreStaffCreate>
+            {
+                new StoreStaffCreate
+                {
+                    StoreId = 3,
+                    Username = "coffee01",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 3,
+                    Username = "coffee02",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 3,
+                    Username = "coffee03",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 3,
+                    Username = "coffee04",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 3,
+                    Username = "coffee05",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 4,
+                    Username = "coffee06",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 4,
+                    Username = "coffee07",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 4,
+                    Username = "coffee08",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 4,
+                    Username = "coffee09",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                },
+                new StoreStaffCreate
+                {
+                    StoreId = 4,
+                    Username = "coffee10",
+                    IsManager = false,
+                    IsPrimaryStore = true
+                }
+            };
+            foreach (var storeStaff in storeStaffs)
+            {
+                await storeStaffService.CreateStoreStaff(storeStaff);
             }
 
             context.SaveChanges();
