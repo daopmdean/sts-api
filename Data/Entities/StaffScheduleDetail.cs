@@ -6,11 +6,11 @@
 
         public int WeekScheduleId { get; set; }
 
-        public WeekSchedule WeekSchedule { get; set; }
+        //public WeekSchedule WeekSchedule { get; set; }
 
         public string Username { get; set; }
 
-        public User User { get; set; }
+        //public User User { get; set; }
 
         public float MinHoursPerWeek { get; set; }
 
@@ -23,10 +23,5 @@
         public float MinShiftDuration { get; set; }
 
         public float MaxShiftDuration { get; set; }
-
-        public StoreScheduleDetail ShallowCopy()
-        {
-            return (StoreScheduleDetail)MemberwiseClone();
-        }
     }
 }

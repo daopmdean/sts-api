@@ -50,6 +50,6 @@ namespace Data.Entities
 
         public ICollection<Attendance> Attendances { get; set; }
 
-        public ICollection<StaffScheduleDetail> StaffScheduleDetails { get; set; }
+        //public ICollection<StaffScheduleDetail> StaffScheduleDetails { get; set; }
     }
 }

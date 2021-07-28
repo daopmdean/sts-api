@@ -25,7 +25,7 @@ namespace Data.Entities
 
         public ICollection<WeekScheduleDetail> WeekScheduleDetails { get; set; }
 
-        public ICollection<StaffScheduleDetail> StaffScheduleDetails { get; set; }
+        //public ICollection<StaffScheduleDetail> StaffScheduleDetails { get; set; }
 
         public ICollection<ShiftRegister> ShiftRegisters { get; set; }
 
