@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
+using Data.Models.Responses;
+using Data.Pagings;
 
 namespace Service.Interfaces
 {
@@ -15,5 +17,9 @@ namespace Service.Interfaces
             PublishInfo create);
         Task UnpublishSchedule(
             UnpublishInfo create);
+        Task<BrandReportResponse> GetBrandReport(DateTimeParams @params);
+        Task<StoreReportResponse> GetStoreReport(DateTimeParams @params);
+        Task CalculateWorkTime(
+            int storeId, DateTimeParams @params, int timeRange);
     }
 }

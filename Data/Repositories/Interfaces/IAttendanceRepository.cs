@@ -9,5 +9,7 @@ namespace Data.Repositories.Interfaces
     {
         Task<IEnumerable<Attendance>> GetAttendancesAsync(
             string username, DateTimeParams @params);
+        Task<IEnumerable<Attendance>> GetAttendancesAsync(
+            int storeId, DateTimeParams @params);
     }
 }

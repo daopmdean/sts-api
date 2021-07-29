@@ -4,6 +4,8 @@ using AutoMapper;
 using Data.Entities;
 using Data.Enums;
 using Data.Models.Requests;
+using Data.Models.Responses;
+using Data.Pagings;
 using Data.Repositories.Interfaces;
 using Service.Enums;
 using Service.Exceptions;
@@ -22,6 +24,7 @@ namespace Service.Implementations
         private readonly IUserRepository _userRepo;
         private readonly IWeekScheduleRepository _weekScheduleRepo;
         private readonly IShiftAssignmentRepository _shiftAssignmentRepo;
+        private readonly IAttendanceRepository _attendanceRepo;
         private readonly IStoreRepository _storeRepo;
         private readonly ISkillRepository _skillRepo;
         private readonly IMapper _mapper;
@@ -35,6 +38,7 @@ namespace Service.Implementations
             IUserRepository userRepo,
             IWeekScheduleRepository weekScheduleRepo,
             IShiftAssignmentRepository shiftAssignmentRepo,
+            IAttendanceRepository attendanceRepo,
             IStoreRepository storeRepo,
             ISkillRepository skillRepo,
             IMapper mapper)
@@ -47,9 +51,53 @@ namespace Service.Implementations
             _userRepo = userRepo;
             _weekScheduleRepo = weekScheduleRepo;
             _shiftAssignmentRepo = shiftAssignmentRepo;
+            _attendanceRepo = attendanceRepo;
             _storeRepo = storeRepo;
             _skillRepo = skillRepo;
             _mapper = mapper;
+        }
+
+        public async Task CalculateWorkTime(
+            int storeId, DateTimeParams @params, int timeRange)
+        {
+            var assignments = await _shiftAssignmentRepo
+                .GetShiftAssignmentsAsync(storeId, @params);
+
+            var attendances = await _attendanceRepo
+                .GetAttendancesAsync(storeId, @params);
+
+            foreach (var attendance in attendances)
+            {
+                foreach (var assignment in assignments)
+                {
+                    if (attendance.Username.ToLower()
+                        == assignment.Username.ToLower())
+                    {
+                        if (Helper.InTimeRange(
+                            assignment.TimeStart, attendance.TimeCheck, timeRange))
+                        {
+                            if (assignment.TimeCheckIn == DateTime.MinValue
+                                || assignment.TimeCheckIn > attendance.TimeCheck)
+                            {
+                                assignment.TimeCheckIn = attendance.TimeCheck;
+                                _shiftAssignmentRepo.Update(assignment);
+                            }
+
+                        }
+                        else if (Helper.InTimeRange(
+                            assignment.TimeEnd, attendance.TimeCheck, timeRange))
+                        {
+                            if (assignment.TimeCheckOut < attendance.TimeCheck)
+                            {
+                                assignment.TimeCheckOut = attendance.TimeCheck;
+                                _shiftAssignmentRepo.Update(assignment);
+                            }
+                        }
+                    }
+                }
+            }
+
+            await _attendanceRepo.SaveChangesAsync();
         }
 
         public async Task<BrandManagerCreate> CreateBrandManager(
@@ -122,6 +170,18 @@ namespace Service.Implementations
                 "<p>password: " + storeManagerInfo.Password + "</p>"));
 
             return info;
+        }
+
+        public Task<BrandReportResponse> GetBrandReport(
+            DateTimeParams @params)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<StoreReportResponse> GetStoreReport(
+            DateTimeParams @params)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<ShiftAssignment> PublishSchedule(

@@ -23,6 +23,19 @@ namespace Data.Repositories.Implementations
                 .Where(s => s.Username == username)
                 .Where(s => s.TimeCheck >= @params.FromDate
                     && s.TimeCheck <= @params.ToDate)
+                .OrderByDescending(s => s.TimeCheck)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Attendance>> GetAttendancesAsync(
+            int storeId, DateTimeParams @params)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.StoreId == storeId)
+                .Where(s => s.TimeCheck >= @params.FromDate
+                    && s.TimeCheck <= @params.ToDate)
+                .OrderByDescending(s => s.TimeCheck)
                 .ToListAsync();
         }
     }

@@ -116,5 +116,17 @@ namespace Data.Repositories.Implementations
                 .OrderByDescending(s => s.TimeStart)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<ShiftAssignment>> GetShiftAssignmentsAsync(
+            int storeId, DateTimeParams @params)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.StoreId == storeId)
+                .Where(s => s.TimeStart >= @params.FromDate
+                    && s.TimeEnd <= @params.ToDate)
+                .OrderByDescending(s => s.TimeStart)
+                .ToListAsync();
+        }
     }
 }

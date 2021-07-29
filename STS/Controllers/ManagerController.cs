@@ -41,6 +41,48 @@ namespace STS.Controllers
             _attendanceService = attendanceService;
         }
 
+        [HttpGet("brands/report")]
+        public async Task<ActionResult> GetBrandReport(
+            [FromQuery] DateTimeParams @params)
+        {
+            try
+            {
+                await _managerService
+                    .GetBrandReport(@params);
+
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpGet("stores/report")]
+        public async Task<ActionResult> GetStoreReport(
+            [FromQuery] DateTimeParams @params)
+        {
+            try
+            {
+                await _managerService
+                    .GetStoreReport(@params);
+
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
         [HttpGet("stores/{storeId}/week-schedules")]
         public async Task<ActionResult<BrandOverview>> GetStoresOfBrand(
             int storeId, [FromQuery] WeekScheduleParams @params)
@@ -153,6 +195,28 @@ namespace STS.Controllers
             {
                 return Ok(await _attendanceService
                     .GetAttendancesAsync(username, @params));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpPost("stores/calculate-work-time")]
+        public async Task<ActionResult> CalculateWorkTime(
+            [FromQuery] DateTimeParams @params)
+        {
+            try
+            {
+                int storeId = int.Parse(User.GetStoreId());
+                await _managerService
+                    .CalculateWorkTime(storeId, @params, 15);
+
+                return NoContent();
             }
             catch (AppException ex)
             {
