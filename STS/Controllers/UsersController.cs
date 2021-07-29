@@ -20,21 +20,18 @@ namespace STS.Controllers
         private readonly IShiftRegisterService _shiftRegisterService;
         private readonly IShiftAssignmentService _shiftAssignmentService;
         private readonly IAttendanceService _attendanceService;
-        private readonly IReportService _reportService;
 
         public UsersController(IUserService userService,
             IStaffSkillService staffSkillService,
             IShiftRegisterService shiftRegisterService,
             IShiftAssignmentService shiftAssignmentService,
-            IAttendanceService attendanceService,
-            IReportService reportService)
+            IAttendanceService attendanceService)
         {
             _userService = userService;
             _staffSkillService = staffSkillService;
             _shiftRegisterService = shiftRegisterService;
             _shiftAssignmentService = shiftAssignmentService;
             _attendanceService = attendanceService;
-            _reportService = reportService;
         }
 
         [HttpGet("profile")]
@@ -154,7 +151,7 @@ namespace STS.Controllers
             try
             {
                 var username = User.GetUsername();
-                var workHours = await _reportService
+                var workHours = await _userService
                     .GetWorkHoursResponse(username, @params);
 
                 return Ok(workHours);

@@ -42,7 +42,6 @@ namespace STS.Extensions
 
             // Services
             services.AddScoped<IAdminService, AdminService>();
-            services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IManagerService, ManagerService>();
             services.AddScoped<IScheduleService, ScheduleService>();
             services.AddScoped<IEmailSender, EmailSender>();

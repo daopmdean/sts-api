@@ -19,6 +19,7 @@ namespace Service.Implementations
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepo;
+        private readonly IShiftAssignmentRepository _shiftAssignmentRepo;
         private readonly IStoreStaffRepository _storeStaffRepo;
         private readonly IStaffSkillRepository _staffSkillRepo;
         private readonly IEmailSender _emailSender;
@@ -26,12 +27,14 @@ namespace Service.Implementations
 
         public UserService(
             IUserRepository userRepo,
+            IShiftAssignmentRepository shiftAssignmentRepo,
             IStoreStaffRepository storeStaffRepo,
             IStaffSkillRepository staffSkillRepo,
             IEmailSender emailSender,
             IMapper mapper)
         {
             _userRepo = userRepo;
+            _shiftAssignmentRepo = shiftAssignmentRepo;
             _storeStaffRepo = storeStaffRepo;
             _staffSkillRepo = staffSkillRepo;
             _emailSender = emailSender;
@@ -114,6 +117,26 @@ namespace Service.Implementations
             UserParams @params)
         {
             return await _userRepo.GetUsersAsync(brandId, @params);
+        }
+
+        public async Task<WorkHoursResponse> GetWorkHoursResponse(
+            string username, DateTimeParams @params)
+        {
+            WorkHoursResponse result = new();
+            var shiftAssignments = await _shiftAssignmentRepo
+                .GetShiftAssignmentOverviewsAsync(username, @params);
+
+            foreach (var shiftAssignment in shiftAssignments)
+            {
+                TimeSpan hoursAssigned =
+                    shiftAssignment.TimeEnd - shiftAssignment.TimeStart;
+                TimeSpan hoursWorkd =
+                    shiftAssignment.TimeCheckOut - shiftAssignment.TimeCheckIn;
+                result.HoursAssigned += hoursAssigned.TotalHours;
+                result.HoursWorked += hoursWorkd.TotalHours;
+            }
+
+            return result;
         }
 
         public async Task RestorePasswordAsync(string username)
