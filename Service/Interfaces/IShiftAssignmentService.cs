@@ -18,7 +18,6 @@ namespace Service.Interfaces
         Task<IEnumerable<StaffAssignmentsResponse>> GetShiftAssignments(
             int storeId, DateTimeParams @params);
         Task<ShiftAssignment> GetShiftAssignment(int id);
-        Task<ShiftAssignment> CreateShiftAssignment(ShiftAssignmentCreate create);
         Task UpdateShiftAssignment(int id, ShiftAssignmentUpdate update);
         Task DeleteShiftAssignment(int id);
     }

@@ -22,6 +22,7 @@ namespace STS.Controllers
         private readonly IStoreStaffService _storeStaffService;
         private readonly IWeekScheduleService _weekService;
         private readonly IStoreService _storeService;
+        private readonly IAttendanceService _attendanceService;
 
         public ManagerController(
             IManagerService managerService,
@@ -30,7 +31,8 @@ namespace STS.Controllers
             IShiftAssignmentService shiftAssignmentService,
             IStoreStaffService storeStaffService,
             IWeekScheduleService weekService,
-            IStoreService storeService)
+            IStoreService storeService,
+            IAttendanceService attendanceService)
         {
             _managerService = managerService;
             _scheduleService = scheduleService;
@@ -39,6 +41,7 @@ namespace STS.Controllers
             _storeStaffService = storeStaffService;
             _weekService = weekService;
             _storeService = storeService;
+            _attendanceService = attendanceService;
         }
 
         [HttpGet("stores/{storeId}/week-schedules")]
@@ -126,6 +129,44 @@ namespace STS.Controllers
             }
         }
 
+        [HttpPost("users/attendances")]
+        public async Task<IActionResult> GetStaffAttendances(
+            AttendanceManualCreate create)
+        {
+            try
+            {
+                return Ok(await _attendanceService
+                    .CreateAttendanceManualAsync(create));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpGet("users/{username}/attendances")]
+        public async Task<IActionResult> GetStaffAttendances(
+            string username, DateTimeParams @params)
+        {
+            try
+            {
+                return Ok(await _attendanceService
+                    .GetAttendancesAsync(username, @params));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
         [HttpPost("schedule")]
         public async Task<IActionResult> ComputeSchedule(
             ComputeScheduleRequest request)
@@ -148,12 +189,12 @@ namespace STS.Controllers
 
         [HttpPost("schedule/publish")]
         public async Task<ActionResult> PublishSchedule(
-            ShiftAssignmentCreate create)
+            PublishInfo create)
         {
             try
             {
-                return Ok(await _shiftAssignmentService
-                    .CreateShiftAssignment(create));
+                return Ok(await _managerService
+                    .PublishSchedule(create));
             }
             catch (AppException ex)
             {
@@ -167,12 +208,12 @@ namespace STS.Controllers
 
         [HttpPost("schedule/unpublish")]
         public async Task<ActionResult> UnpublishSchedule(
-            ShiftAssignmentCreate create)
+            UnpublishInfo create)
         {
             try
             {
-                return Ok(await _shiftAssignmentService
-                    .CreateShiftAssignment(create));
+                await _managerService.UnpublishSchedule(create);
+                return NoContent();
             }
             catch (AppException ex)
             {

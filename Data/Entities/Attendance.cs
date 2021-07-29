@@ -14,6 +14,7 @@ namespace Data.Entities
         public string CreateBy { get; set; }
         public CheckType CheckType { get; set; }
         public string ImageUrl { get; set; }
+        public string Note { get; set; }
         public float RecognizePercentage { get; set; }
         public string DeviceCode { get; set; }
     }

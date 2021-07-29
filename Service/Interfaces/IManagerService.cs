@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Data.Entities;
 using Data.Models.Requests;
 
 namespace Service.Interfaces
@@ -10,5 +11,9 @@ namespace Service.Interfaces
             int brandId, StoreManagerCreate info);
         Task<BrandManagerCreate> CreateBrandManager(
             BrandManagerCreate info);
+        Task<ShiftAssignment> PublishSchedule(
+            PublishInfo create);
+        Task UnpublishSchedule(
+            UnpublishInfo create);
     }
 }

@@ -1,6 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper;
+using Data.Entities;
+using Data.Enums;
 using Data.Models.Requests;
+using Data.Repositories.Interfaces;
 using Service.Enums;
+using Service.Exceptions;
 using Service.Helpers;
 using Service.Interfaces;
 
@@ -13,19 +19,37 @@ namespace Service.Implementations
         private readonly IStaffSkillService _staffSkillService;
         private readonly IBrandService _brandService;
         private readonly IEmailSender _emailSender;
+        private readonly IUserRepository _userRepo;
+        private readonly IWeekScheduleRepository _weekScheduleRepo;
+        private readonly IShiftAssignmentRepository _shiftAssignmentRepo;
+        private readonly IStoreRepository _storeRepo;
+        private readonly ISkillRepository _skillRepo;
+        private readonly IMapper _mapper;
 
         public ManagerService(
             IAuthService authService,
             IStoreStaffService storeStaffService,
             IStaffSkillService staffSkillService,
             IBrandService brandService,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IUserRepository userRepo,
+            IWeekScheduleRepository weekScheduleRepo,
+            IShiftAssignmentRepository shiftAssignmentRepo,
+            IStoreRepository storeRepo,
+            ISkillRepository skillRepo,
+            IMapper mapper)
         {
             _authService = authService;
             _storeStaffService = storeStaffService;
             _staffSkillService = staffSkillService;
             _brandService = brandService;
             _emailSender = emailSender;
+            _userRepo = userRepo;
+            _weekScheduleRepo = weekScheduleRepo;
+            _shiftAssignmentRepo = shiftAssignmentRepo;
+            _storeRepo = storeRepo;
+            _skillRepo = skillRepo;
+            _mapper = mapper;
         }
 
         public async Task<BrandManagerCreate> CreateBrandManager(
@@ -98,6 +122,107 @@ namespace Service.Implementations
                 "<p>password: " + storeManagerInfo.Password + "</p>"));
 
             return info;
+        }
+
+        public async Task<ShiftAssignment> PublishSchedule(
+            PublishInfo create)
+        {
+            var weekSchedule = await _weekScheduleRepo
+                .GetByIdAsync(create.WeekScheduleId);
+
+            if (weekSchedule == null)
+                throw new AppException((int)StatusCode.BadRequest,
+                    "WeekSchedule not found");
+
+            if (weekSchedule.Status != Status.Unpublished)
+                throw new AppException((int)StatusCode.BadRequest,
+                    "Can only publish unpublished week schedule");
+
+            var publishedWeekSchedule = await _weekScheduleRepo
+                .GetWeekSchedulesAsync(weekSchedule.StoreId, weekSchedule.DateStart, Status.Published);
+
+            if (publishedWeekSchedule == null)
+            {
+                weekSchedule.Status = Status.Published;
+                _weekScheduleRepo.Update(weekSchedule);
+            }
+            else
+            {
+                foreach (var schedule in publishedWeekSchedule)
+                {
+                    schedule.Status = Status.Unpublished;
+                    _weekScheduleRepo.Update(schedule);
+
+                    var shiftAssignments = await _shiftAssignmentRepo
+                        .GetShiftAssignmentsAsync(create.WeekScheduleId, DateTime.Now);
+
+                    foreach (var shiftAssignment in shiftAssignments)
+                    {
+                        _shiftAssignmentRepo.Delete(shiftAssignment);
+                    }
+                }
+            }
+
+            foreach (var shift in create.ShiftAssignments)
+            {
+                var store = await _storeRepo
+                    .GetByIdAsync(shift.StoreId);
+                if (store == null)
+                    throw new AppException(400,
+                        "Conflicted with the FOREIGN KEY constraint, StoreId does not exist");
+
+                var skill = await _skillRepo
+                    .GetByIdAsync(shift.SkillId);
+                if (skill == null)
+                    throw new AppException(400,
+                        "Conflicted with the FOREIGN KEY constraint, SkillId does not exist");
+
+                var user = await _userRepo
+                    .GetUserByUsernameAsync(shift.Username);
+                if (user == null)
+                    throw new AppException(400,
+                        "Conflicted with the FOREIGN KEY constraint, Username does not exist");
+
+                var shiftAssignment = _mapper.Map<ShiftAssignment>(shift);
+                shiftAssignment.WeekScheduleId = create.WeekScheduleId;
+                await _shiftAssignmentRepo.CreateAsync(shiftAssignment);
+            }
+
+            if (await _shiftAssignmentRepo.SaveChangesAsync())
+                return null;
+
+            throw new AppException(400, "Can not create ShiftAssignments");
+        }
+
+        public async Task UnpublishSchedule(
+            UnpublishInfo create)
+        {
+            var weekSchedule = await _weekScheduleRepo
+                .GetByIdAsync(create.WeekScheduleId);
+
+            if (weekSchedule == null)
+                throw new AppException((int)StatusCode.BadRequest,
+                    "WeekSchedule not found");
+
+            if (weekSchedule.Status != Status.Published)
+                throw new AppException((int)StatusCode.BadRequest,
+                    "Can only unpublish published week schedule");
+
+            weekSchedule.Status = Status.Unpublished;
+            _weekScheduleRepo.Update(weekSchedule);
+
+            var shiftAssignments = await _shiftAssignmentRepo
+                        .GetShiftAssignmentsAsync(create.WeekScheduleId, DateTime.Now);
+
+            foreach (var shiftAssignment in shiftAssignments)
+            {
+                _shiftAssignmentRepo.Delete(shiftAssignment);
+            }
+
+            if (await _weekScheduleRepo.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not create ShiftAssignments");
         }
     }
 }

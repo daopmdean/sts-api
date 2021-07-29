@@ -78,6 +78,7 @@ namespace Service.Helpers
             CreateMap<ShiftAttendanceUpdate, ShiftAttendance>();
 
             CreateMap<AttendanceCreate, Attendance>();
+            CreateMap<AttendanceManualCreate, Attendance>();
             CreateMap<AttendanceUpdate, Attendance>();
 
             CreateMap<SkillOverview, SkillRequest>()

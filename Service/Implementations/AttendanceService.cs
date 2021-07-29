@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
+using Data.Enums;
 using Data.Models.Requests;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
@@ -48,6 +49,33 @@ namespace Service.Implementations
                     "User not found");
 
             var attendance = _mapper.Map<Attendance>(create);
+            await _attendanceRepo.CreateAsync(attendance);
+
+            if (await _attendanceRepo.SaveChangesAsync())
+                return attendance;
+
+            throw new AppException(400, "Can not create Attendance");
+        }
+
+        public async Task<Attendance> CreateAttendanceManualAsync(
+            AttendanceManualCreate create)
+        {
+            var store = await _storeRepo
+                .GetByIdAsync(create.StoreId);
+
+            if (store == null)
+                throw new AppException((int)StatusCode.BadRequest,
+                    "Store not found");
+
+            var user = await _userRepo
+                .GetUserByUsernameAsync(create.Username);
+
+            if (user == null)
+                throw new AppException((int)StatusCode.BadRequest,
+                    "User not found");
+
+            var attendance = _mapper.Map<Attendance>(create);
+            attendance.CheckType = CheckType.Manual;
             await _attendanceRepo.CreateAsync(attendance);
 
             if (await _attendanceRepo.SaveChangesAsync())

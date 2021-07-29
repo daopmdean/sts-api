@@ -4,6 +4,7 @@
     {
         FaceReg = 0,
         QRCode = 1,
-        FingerPrint = 2
+        FingerPrint = 2,
+        Manual = 3
     }
 }

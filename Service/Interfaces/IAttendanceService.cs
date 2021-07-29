@@ -12,6 +12,8 @@ namespace Service.Interfaces
         Task<IEnumerable<Attendance>> GetAttendancesAsync(
             string username, DateTimeParams @params);
         Task<Attendance> CreateAttendanceAsync(AttendanceCreate create);
+        Task<Attendance> CreateAttendanceManualAsync(
+            AttendanceManualCreate create);
         Task UpdateAttendanceAsync(int id, AttendanceUpdate update);
         Task DeleteAttendanceAsync(int id);
     }

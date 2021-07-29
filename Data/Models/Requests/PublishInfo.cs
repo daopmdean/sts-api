@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Data.Models.Requests
 {
-    public class ShiftAssignmentCreate
+    public class PublishInfo
     {
         public int WeekScheduleId { get; set; }
         public IEnumerable<ShiftAssignmentInfo> ShiftAssignments { get; set; }

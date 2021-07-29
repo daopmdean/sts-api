@@ -166,16 +166,16 @@ namespace STS.Controllers
         }
 
         [HttpGet("timekeeping")]
-        public async Task<ActionResult> GetShiftAttendancesResponse(
+        public async Task<ActionResult> GetShiftAssigmentsResponse(
             [FromQuery] DateTimeParams @params)
         {
             try
             {
                 int storeId = int.Parse(User.GetStoreId());
-                var shiftAttendances = await _shiftAssignmentService
+                var assignments = await _shiftAssignmentService
                     .GetShiftAssignments(storeId, @params);
 
-                return Ok(shiftAttendances);
+                return Ok(assignments);
             }
             catch (AppException ex)
             {
