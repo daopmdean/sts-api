@@ -135,5 +135,17 @@ namespace Service.Implementations
 
             throw new AppException(400, "Can not update ShiftAssignment");
         }
+
+        public async Task<IEnumerable<ShiftAssignment>> CreateShiftAssignments(
+            IEnumerable<ShiftAssignmentCreate> create)
+        {
+            foreach (var assign in create)
+            {
+                var assignment = _mapper.Map<ShiftAssignment>(assign);
+                await _shiftAssignmentRepo.CreateAsync(assignment);
+            }
+            await _shiftAssignmentRepo.SaveChangesAsync();
+            return null;
+        }
     }
 }

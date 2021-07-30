@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
@@ -27,6 +28,25 @@ namespace STS.Controllers
             try
             {
                 return Ok(await _shiftAssignmentService.GetShiftAssignment(id));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Assignments(
+            IEnumerable<ShiftAssignmentCreate> create)
+        {
+            try
+            {
+                return Ok(await _shiftAssignmentService
+                    .CreateShiftAssignments(create));
             }
             catch (AppException ex)
             {

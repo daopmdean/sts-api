@@ -178,7 +178,7 @@ namespace Service.Implementations
         }
 
         public async Task<IEnumerable<WeekSchedule>> GetWeekScheduleAsync(
-            int storeId, DateTime dateStart, Status weekStatus)
+            int storeId, DateTime dateStart, Status weekStatus, string createdBy)
         {
             var weekSchedule = await _weekRepo
                 .GetWeekSchedulesAsync(storeId, dateStart, weekStatus);
@@ -190,19 +190,21 @@ namespace Service.Implementations
                 switch (weekStatus)
                 {
                     case Status.Register:
-                        var res = await CreateWeekScheduleAsync(new WeekScheduleCreate
+                        var reg = await CreateWeekScheduleAsync(new WeekScheduleCreate
                         {
                             StoreId = storeId,
                             DateStart = dateStart,
+                            CreatedBy = createdBy,
                             Status = Status.Register
                         });
-                        result.Add(res);
+                        result.Add(reg);
                         break;
                     case Status.Unpublished:
                         var unp = await CreateWeekScheduleAsync(new WeekScheduleCreate
                         {
                             StoreId = storeId,
                             DateStart = dateStart,
+                            CreatedBy = createdBy,
                             Status = Status.Unpublished
                         });
                         result.Add(unp);

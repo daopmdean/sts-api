@@ -15,7 +15,7 @@ namespace Service.Interfaces
             WeekScheduleParams @params);
         Task<WeekSchedule> GetWeekScheduleAsync(int id);
         Task<IEnumerable<WeekSchedule>> GetWeekScheduleAsync(
-            int storeId, DateTime dateStart, Status weekStatus);
+            int storeId, DateTime dateStart, Status weekStatus, string createdBy);
         Task<WeekSchedule> CreateWeekScheduleAsync(
             WeekScheduleCreate weekSchedule);
         Task<WeekSchedule> CloneWeekScheduleAsync(
