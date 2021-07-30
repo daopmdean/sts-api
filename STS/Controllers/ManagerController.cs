@@ -19,6 +19,7 @@ namespace STS.Controllers
         private readonly IScheduleService _scheduleService;
         private readonly IShiftScheduleResultService _scheduleResultService;
         private readonly IStoreStaffService _storeStaffService;
+        private readonly IStaffSkillService _staffSkillService;
         private readonly IWeekScheduleService _weekService;
         private readonly IStoreService _storeService;
         private readonly IAttendanceService _attendanceService;
@@ -28,6 +29,7 @@ namespace STS.Controllers
             IScheduleService scheduleService,
             IShiftScheduleResultService scheduleResultService,
             IStoreStaffService storeStaffService,
+            IStaffSkillService staffSkillService,
             IWeekScheduleService weekService,
             IStoreService storeService,
             IAttendanceService attendanceService)
@@ -36,6 +38,7 @@ namespace STS.Controllers
             _scheduleService = scheduleService;
             _scheduleResultService = scheduleResultService;
             _storeStaffService = storeStaffService;
+            _staffSkillService = staffSkillService;
             _weekService = weekService;
             _storeService = storeService;
             _attendanceService = attendanceService;
@@ -157,6 +160,28 @@ namespace STS.Controllers
 
                 return Ok(await _managerService
                     .CreateStaff(brandId, info));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpGet("users/{username}/skills")]
+        public async Task<ActionResult> GetSkillsOfUser(
+            string username, [FromQuery] StaffSkillParams @params)
+        {
+            try
+            {
+                var skills = await _staffSkillService
+                    .GetSkillsFromStaffAsync(username, @params);
+                Response.AddPaginationHeader(skills);
+
+                return Ok(skills);
             }
             catch (AppException ex)
             {
