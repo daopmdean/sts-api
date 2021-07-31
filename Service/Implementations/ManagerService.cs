@@ -186,6 +186,7 @@ namespace Service.Implementations
                     .DeleteStoreStaff(storeStaff.StoreId, storeStaff.Username);
             }
             var storeStaffCreate = info.JobInformation;
+            storeStaffCreate.Username = user.Username;
             await _storeStaffService.CreateStoreStaff(storeStaffCreate);
         }
 

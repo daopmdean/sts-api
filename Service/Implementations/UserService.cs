@@ -65,7 +65,7 @@ namespace Service.Implementations
             throw new AppException(400, "Can not delete user");
         }
 
-        public async Task<PagedList<UserOverview>> GetBrandManagers(UserParams @params)
+        public async Task<PagedList<UserOverview>> GetBrandManagersAsync(UserParams @params)
         {
             return await _userRepo.GetBrandManagersAsync(@params);
         }
@@ -81,9 +81,10 @@ namespace Service.Implementations
             return await _userRepo.GetStaffAsync(brandId, @params);
         }
 
-        public async Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params)
+        public async Task<PagedList<UserOverview>> GetStoreManagersAsync(
+            int brandId, UserParams @params)
         {
-            return await _userRepo.GetStoreManagersAsync(@params);
+            return await _userRepo.GetStoreManagersAsync(brandId, @params);
         }
 
         public async Task<UserInfoResponse> GetUserAsync(string username)

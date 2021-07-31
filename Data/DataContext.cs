@@ -53,6 +53,13 @@ namespace Data
                 .HasForeignKey(u => u.BrandId);
 
             // shift assignment - user
+            modelBuilder.Entity<Attendance>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.Attendances)
+                .HasForeignKey(sr => sr.Username)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // attendance - user
             modelBuilder.Entity<ShiftAssignment>()
                 .HasOne(sa => sa.User)
                 .WithMany(u => u.ShiftAssignments)

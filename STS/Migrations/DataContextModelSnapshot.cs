@@ -56,14 +56,11 @@ namespace STS.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("text");
 
-                    b.Property<string>("Username1")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("Username1");
+                    b.HasIndex("Username");
 
                     b.ToTable("Attendances");
                 });
@@ -587,7 +584,8 @@ namespace STS.Migrations
 
                     b.HasOne("Data.Entities.User", "User")
                         .WithMany("Attendances")
-                        .HasForeignKey("Username1");
+                        .HasForeignKey("Username")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Store");
 

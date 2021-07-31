@@ -177,6 +177,29 @@ namespace STS.Controllers
             }
         }
 
+        [HttpGet("store-managers")]
+        public async Task<ActionResult<BrandOverview>> GetStoreManagers(
+            [FromQuery] UserParams @params)
+        {
+            try
+            {
+                var brandId = int.Parse(User.GetBrandId());
+                var storeManagers = await _userService
+                    .GetStoreManagersAsync(brandId, @params);
+
+                Response.AddPaginationHeader(storeManagers);
+                return Ok(storeManagers);
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
         [HttpGet("skills")]
         public async Task<ActionResult> GetSkillsOfBrand(
             [FromQuery] SkillParams @params)

@@ -98,11 +98,12 @@ namespace Data.Repositories.Implementations
         }
 
         public async Task<PagedList<UserOverview>> GetStoreManagersAsync(
-            UserParams @params)
+            int brandId, UserParams @params)
         {
             var query = _entities
                 .AsQueryable()
                 .OrderBy(u => u.Username)
+                .Where(u => u.BrandId == brandId)
                 .Where(u => u.RoleId == 3)
                 .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
 
