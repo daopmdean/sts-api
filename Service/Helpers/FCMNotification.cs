@@ -59,7 +59,7 @@ namespace Service.Helpers
             return result;
         }
 
-        public static async Task SendNotificationAsync(
+        public static async Task<string> SendNotificationAsync(
             string topic, string title, string msg)
         {
             var message = new Message()
@@ -72,7 +72,8 @@ namespace Service.Helpers
                 Topic = topic
             };
 
-            await FirebaseMessaging.DefaultInstance.SendAsync(message);
+            return await FirebaseMessaging.DefaultInstance
+                .SendAsync(message);
         }
 
         public static async Task SubscribeToTopicAsync(string topic)

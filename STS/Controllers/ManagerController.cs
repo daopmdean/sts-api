@@ -433,8 +433,9 @@ namespace STS.Controllers
         {
             try
             {
-                await FCMNotification
+                var result = await FCMNotification
                     .SendNotificationAsync(request.Topic, request.Title, request.Message);
+                return Ok(result);
             }
             catch (AppException ex)
             {
@@ -444,8 +445,6 @@ namespace STS.Controllers
             {
                 return InternalErrorResponse(ex);
             }
-
-            return NoContent();
         }
     }
 }
