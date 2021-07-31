@@ -33,7 +33,6 @@ namespace STS.Extensions
 
             services.AddScoped<IShiftRegisterRepository, ShiftRegisterRepository>();
             services.AddScoped<IShiftAssignmentRepository, ShiftAssignmentRepository>();
-            services.AddScoped<IShiftAttendanceRepository, ShiftAttendanceRepository>();
             services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 
             services.AddScoped<IShiftScheduleResultRepository, ShiftScheduleResultRepository>();
@@ -66,7 +65,6 @@ namespace STS.Extensions
                 StaffScheduleDetailService>();
             services.AddScoped<IShiftRegisterService, ShiftRegisterService>();
             services.AddScoped<IShiftAssignmentService, ShiftAssignmentService>();
-            services.AddScoped<IShiftAttendanceService, ShiftAttendanceService>();
             services.AddScoped<IAttendanceService, AttendanceService>();
 
             services.AddScoped<IShiftScheduleResultService, ShiftScheduleResultService>();

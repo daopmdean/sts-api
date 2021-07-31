@@ -28,7 +28,7 @@ namespace Data
         public DbSet<ShiftRegister> ShiftRegisters { get; set; }
         public DbSet<ShiftAssignment> ShiftAssignments { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
-        public DbSet<ShiftAttendance> ShiftAttendances { get; set; }
+        //public DbSet<ShiftAttendance> ShiftAttendances { get; set; }
 
         public DbSet<ShiftScheduleResult> ShiftScheduleResults { get; set; }
         public DbSet<ShiftScheduleDetailResult> ShiftScheduleDetailResults { get; set; }

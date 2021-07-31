@@ -22,7 +22,7 @@ namespace STS.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<ShiftAttendance>> CreateAttendance(
+        public async Task<ActionResult> CreateAttendance(
             AttendanceCreate create)
         {
             try

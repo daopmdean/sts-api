@@ -233,7 +233,7 @@ namespace STS.Controllers
 
         [HttpGet("users/{username}/attendances")]
         public async Task<IActionResult> GetStaffAttendances(
-            string username, DateTimeParams @params)
+            string username, [FromQuery] DateTimeParams @params)
         {
             try
             {

@@ -38,6 +38,9 @@ namespace STS.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
                     b.Property<float>("RecognizePercentage")
                         .HasColumnType("real");
 
@@ -190,25 +193,6 @@ namespace STS.Migrations
                     b.HasIndex("WeekScheduleId");
 
                     b.ToTable("ShiftAssignments");
-                });
-
-            modelBuilder.Entity("Data.Entities.ShiftAttendance", b =>
-                {
-                    b.Property<int>("ShiftAssignmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("TimeCheckIn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("TimeCheckOut")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("ShiftAssignmentId");
-
-                    b.ToTable("ShiftAttendances");
                 });
 
             modelBuilder.Entity("Data.Entities.ShiftRegister", b =>
@@ -655,17 +639,6 @@ namespace STS.Migrations
                     b.Navigation("WeekSchedule");
                 });
 
-            modelBuilder.Entity("Data.Entities.ShiftAttendance", b =>
-                {
-                    b.HasOne("Data.Entities.ShiftAssignment", "ShiftAssignment")
-                        .WithOne("ShiftAttendance")
-                        .HasForeignKey("Data.Entities.ShiftAttendance", "ShiftAssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ShiftAssignment");
-                });
-
             modelBuilder.Entity("Data.Entities.ShiftRegister", b =>
                 {
                     b.HasOne("Data.Entities.User", "User")
@@ -838,11 +811,6 @@ namespace STS.Migrations
             modelBuilder.Entity("Data.Entities.Role", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Data.Entities.ShiftAssignment", b =>
-                {
-                    b.Navigation("ShiftAttendance");
                 });
 
             modelBuilder.Entity("Data.Entities.ShiftScheduleResult", b =>
