@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Data;
 using Data.Repositories.Interfaces;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +42,8 @@ namespace STS
                 logger.LogError(ex, "Error occured during migration");
             }
 
+            InitializeFirebase();
+
             await host.RunAsync();
         }
 
@@ -50,5 +54,14 @@ namespace STS
                     webBuilder.UseStartup<Startup>();
                 });
 
+        private static void InitializeFirebase()
+        {
+            FirebaseApp.Create(new AppOptions()
+            {
+                Credential = GoogleCredential
+                    .FromFile("./sts-manager-firebase-adminsdk.json")
+                //Credential = GoogleCredential.GetApplicationDefault()
+            });
+        }
     }
 }

@@ -208,5 +208,20 @@ namespace Service.Implementations
 
             throw new AppException(400, "Can not update user");
         }
+
+        public async Task UpdateUserAsync(
+            StaffUpdateRequest updateInfo)
+        {
+            var user = await _userRepo
+                .GetUserByUsernameAsync(updateInfo.Username);
+
+            _mapper.Map(updateInfo, user);
+            _userRepo.Update(user);
+
+            if (await _userRepo.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not update user");
+        }
     }
 }

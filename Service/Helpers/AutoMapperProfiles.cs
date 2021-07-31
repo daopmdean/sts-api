@@ -12,6 +12,7 @@ namespace Service.Helpers
             CreateMap<User, UserOverview>();
             CreateMap<User, UserInfoResponse>();
             CreateMap<UserUpdate, User>();
+            CreateMap<StaffUpdateRequest, User>();
             CreateMap<RegisterRequest, User>()
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
 

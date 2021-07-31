@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
+using System.Threading.Tasks;
+using FirebaseAdmin.Messaging;
 using Newtonsoft.Json;
 
 namespace Service.Helpers
@@ -14,7 +18,8 @@ namespace Service.Helpers
             _config = config;
         }
 
-        public string SendNotification(string DeviceToken, string title, string msg)
+        public string SendNotification(
+            string DeviceToken, string title, string msg)
         {
             var result = "-1";
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(webAddr);
@@ -52,6 +57,52 @@ namespace Service.Helpers
                 result = streamReader.ReadToEnd();
             }
             return result;
+        }
+
+        public static async Task SendNotificationAsync(
+            string topic, string title, string msg)
+        {
+            var message = new Message()
+            {
+                Notification = new Notification()
+                {
+                    Title = title,
+                    Body = msg
+                },
+                Topic = topic
+            };
+
+            await FirebaseMessaging.DefaultInstance.SendAsync(message);
+        }
+
+        public static async Task SubscribeToTopicAsync(string topic)
+        {
+            // [START subscribe_to_topic]
+            // These registration tokens come from the client FCM SDKs.
+            var registrationTokens = new List<string>()
+            {
+                "REGISTRATION_TOKEN_1",
+                // ...
+                "REGISTRATION_TOKEN_n",
+            };
+
+            var response = await FirebaseMessaging.DefaultInstance
+                .SubscribeToTopicAsync(registrationTokens, topic);
+        }
+
+        public static async Task UnsubscribeFromTopicAsync(string topic)
+        {
+            // [START unsubscribe_from_topic]
+            // These registration tokens come from the client FCM SDKs.
+            var registrationTokens = new List<string>()
+            {
+                "REGISTRATION_TOKEN_1",
+                // ...
+                "REGISTRATION_TOKEN_n",
+            };
+
+            await FirebaseMessaging.DefaultInstance
+                .UnsubscribeFromTopicAsync(registrationTokens, topic);
         }
     }
 }

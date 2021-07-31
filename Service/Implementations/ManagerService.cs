@@ -20,6 +20,7 @@ namespace Service.Implementations
         private readonly IStoreStaffService _storeStaffService;
         private readonly IStaffSkillService _staffSkillService;
         private readonly IBrandService _brandService;
+        private readonly IUserService _userService;
         private readonly IEmailSender _emailSender;
         private readonly IUserRepository _userRepo;
         private readonly IWeekScheduleRepository _weekScheduleRepo;
@@ -34,6 +35,7 @@ namespace Service.Implementations
             IStoreStaffService storeStaffService,
             IStaffSkillService staffSkillService,
             IBrandService brandService,
+            IUserService userService,
             IEmailSender emailSender,
             IUserRepository userRepo,
             IWeekScheduleRepository weekScheduleRepo,
@@ -47,6 +49,7 @@ namespace Service.Implementations
             _storeStaffService = storeStaffService;
             _staffSkillService = staffSkillService;
             _brandService = brandService;
+            _userService = userService;
             _emailSender = emailSender;
             _userRepo = userRepo;
             _weekScheduleRepo = weekScheduleRepo;
@@ -147,6 +150,43 @@ namespace Service.Implementations
                 "<p>password: " + staffInfo.Password + "</p>"));
 
             return info;
+        }
+
+        public async Task UpdateStaff(StaffUpdate info)
+        {
+            var user = await _userRepo
+                .GetUserByUsernameAsync(info.GeneralInfo.Username);
+
+            if (user == null)
+                throw new AppException((int)StatusCode.BadRequest,
+                    "Username does not exist");
+
+            await _userService.UpdateUserAsync(info.GeneralInfo);
+
+            var currentStafSkills = await _staffSkillService
+                .GetSkillsFromStaffAsync(user.Username);
+            foreach (var skill in currentStafSkills)
+            {
+                await _staffSkillService
+                    .DeleteStaffSkill(skill.SkillId, skill.Username);
+            }
+            var skills = info.StaffSkills;
+            foreach (var skill in skills)
+            {
+                skill.Username = user.Username;
+                await _staffSkillService.CreateStaffSkill(skill);
+            }
+
+            var currentStoreStaffs = await _storeStaffService
+                .GetStoresFromStaffAsync(user.Username,
+                    new StoreStaffParams { PageSize = 100 });
+            foreach (var storeStaff in currentStoreStaffs)
+            {
+                await _storeStaffService
+                    .DeleteStoreStaff(storeStaff.StoreId, storeStaff.Username);
+            }
+            var storeStaffCreate = info.JobInformation;
+            await _storeStaffService.CreateStoreStaff(storeStaffCreate);
         }
 
         public async Task<StoreManagerCreate> CreateStoreManager(

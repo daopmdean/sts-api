@@ -6,6 +6,7 @@ using Data.Pagings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
+using Service.Helpers;
 using Service.Interfaces;
 using STS.Extensions;
 
@@ -172,14 +173,12 @@ namespace STS.Controllers
         }
 
         [HttpPut("users/staff")]
-        public async Task<IActionResult> UpdateStaff(StaffCreate info)
+        public async Task<IActionResult> UpdateStaff(StaffUpdate info)
         {
             try
             {
-                var brandId = int.Parse(User.GetBrandId());
-
-                return Ok(await _managerService
-                    .CreateStaff(brandId, info));
+                await _managerService.UpdateStaff(info);
+                return NoContent();
             }
             catch (AppException ex)
             {
@@ -415,6 +414,27 @@ namespace STS.Controllers
             try
             {
                 await _storeService.UpdateStore(id, storeUpdate);
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+
+            return NoContent();
+        }
+
+        [HttpPost("notification/testing")]
+        public async Task<ActionResult> NotificationTesting(
+            NotificationTopicRequest request)
+        {
+            try
+            {
+                await FCMNotification
+                    .SendNotificationAsync(request.Topic, request.Title, request.Message);
             }
             catch (AppException ex)
             {

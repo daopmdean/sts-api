@@ -20,6 +20,7 @@ namespace Service.Interfaces
         Task<WorkHoursResponse> GetWorkHoursResponse(
             string username, DateTimeParams @params);
         Task UpdateUserAsync(string username, UserUpdate updateInfo);
+        Task UpdateUserAsync(StaffUpdateRequest updateInfo);
         Task UpdatePasswordAsync(string username, PasswordUpdate update);
         Task RestorePasswordAsync(string username);
         Task DeleteUserAsync(string username);
