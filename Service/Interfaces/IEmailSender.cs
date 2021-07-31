@@ -6,6 +6,6 @@ namespace Service.Interfaces
 {
     public interface IEmailSender
     {
-        Task SendEmailAsync(Message message);
+        Task SendEmailAsync(MailMessage message);
     }
 }

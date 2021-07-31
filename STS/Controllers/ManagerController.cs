@@ -171,6 +171,26 @@ namespace STS.Controllers
             }
         }
 
+        [HttpPut("users/staff")]
+        public async Task<IActionResult> UpdateStaff(StaffCreate info)
+        {
+            try
+            {
+                var brandId = int.Parse(User.GetBrandId());
+
+                return Ok(await _managerService
+                    .CreateStaff(brandId, info));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
         [HttpGet("users/{username}/skills")]
         public async Task<ActionResult> GetSkillsOfUser(
             string username, [FromQuery] StaffSkillParams @params)

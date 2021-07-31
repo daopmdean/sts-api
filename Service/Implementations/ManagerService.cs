@@ -111,7 +111,7 @@ namespace Service.Implementations
                 .RegisterWithRole(brand.Id,
                     (int)UserRole.BrandManager, brandManagerInfo);
 
-            await _emailSender.SendEmailAsync(new Message(
+            await _emailSender.SendEmailAsync(new MailMessage(
                 new string[] { brandManagerInfo.Email },
                 "STS welcome you on board",
                 "<p>You have successfully register with username: " + brandManagerInfo.Username + "</p>" +
@@ -139,7 +139,7 @@ namespace Service.Implementations
             storeStaff.Username = staffInfo.Username;
             await _storeStaffService.CreateStoreStaff(storeStaff);
 
-            await _emailSender.SendEmailAsync(new Message(
+            await _emailSender.SendEmailAsync(new MailMessage(
                 new string[] { staffInfo.Email },
                 "STS staff account",
                 "<p>You are invited as staff.</p>" +
@@ -162,7 +162,7 @@ namespace Service.Implementations
             storeStaff.Username = storeManagerInfo.Username;
             await _storeStaffService.CreateStoreStaff(storeStaff);
 
-            await _emailSender.SendEmailAsync(new Message(
+            await _emailSender.SendEmailAsync(new MailMessage(
                 new string[] { storeManagerInfo.Email },
                 "STS store manager account",
                 "<p>You are invited as store manager</p>" +

@@ -156,7 +156,7 @@ namespace Service.Implementations
 
             if (await _userRepo.SaveChangesAsync())
             {
-                await _emailSender.SendEmailAsync(new Message(
+                await _emailSender.SendEmailAsync(new MailMessage(
                     new string[] { user.Email },
                     "STS account restore",
                     "<p>Your new password for username: " + user.Username + "</p>" +
