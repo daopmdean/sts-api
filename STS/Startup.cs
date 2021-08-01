@@ -1,10 +1,13 @@
+using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using STS.Extensions;
+using System;
 
 namespace STS
 {
@@ -22,7 +25,11 @@ namespace STS
             //services.AddDbContext<DataContext>(options =>
             //{
             //    string connectionString = Configuration.GetConnectionString("DevelopmentConnection");
-            //    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("STS"));
+            //    options.UseSqlServer(connectionString, b =>
+            //    {
+            //        b.MigrationsAssembly("STS");
+            //        b.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            //    });
             //});
 
             ConfigureServices(services);
@@ -33,7 +40,11 @@ namespace STS
             //services.AddDbContext<DataContext>(options =>
             //{
             //    string connectionString = Configuration.GetConnectionString("ProductionConnection");
-            //    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("STS"));
+            //    options.UseSqlServer(connectionString, b =>
+            //    {
+            //        b.MigrationsAssembly("STS");
+            //        b.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            //    });
             //});
 
             ConfigureServices(services);
