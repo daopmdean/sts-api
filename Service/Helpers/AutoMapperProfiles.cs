@@ -12,6 +12,7 @@ namespace Service.Helpers
             CreateMap<User, UserOverview>();
             CreateMap<User, UserInfoResponse>();
             CreateMap<UserUpdate, User>();
+            CreateMap<StaffUpdateRequest, User>();
             CreateMap<RegisterRequest, User>()
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
 
@@ -71,11 +72,12 @@ namespace Service.Helpers
 
             CreateMap<ShiftAssignment, ShiftAssignmentOverview>();
             CreateMap<ShiftAssignmentInfo, ShiftAssignment>();
+            CreateMap<ShiftAssignmentCreate, ShiftAssignment>();
             CreateMap<ShiftAssignmentUpdate, ShiftAssignment>();
 
-            CreateMap<ShiftAttendance, ShiftAttendanceOverview>();
-            CreateMap<ShiftAttendanceCreate, ShiftAttendance>();
-            CreateMap<ShiftAttendanceUpdate, ShiftAttendance>();
+            CreateMap<AttendanceCreate, Attendance>();
+            CreateMap<AttendanceManualCreate, Attendance>();
+            CreateMap<AttendanceUpdate, Attendance>();
 
             CreateMap<SkillOverview, SkillRequest>()
                 .ForMember(dest => dest.Id,

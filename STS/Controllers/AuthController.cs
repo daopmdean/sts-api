@@ -22,11 +22,11 @@ namespace STS.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterRequest info)
+        public async Task<IActionResult> Register(BrandManagerCreate info)
         {
             try
             {
-                return Ok(await _authService.Register(info));
+                return Ok(await _authService.CreateBrandManager(info));
             }
             catch (AppException appEx)
             {

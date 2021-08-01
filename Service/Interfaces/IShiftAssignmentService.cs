@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
 using Data.Models.Responses;
@@ -8,12 +9,17 @@ namespace Service.Interfaces
 {
     public interface IShiftAssignmentService
     {
-        Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(string username,
-            ShiftAssignmentParams @params);
-        Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(int storeId,
-            ShiftAssignmentParams @params);
+        Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(
+            string username, ShiftAssignmentParams @params);
+        Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentOverviews(
+            string username, DateTimeParams @params);
+        Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignments(
+            int storeId, ShiftAssignmentParams @params);
+        Task<IEnumerable<StaffAssignmentsResponse>> GetShiftAssignments(
+            int storeId, DateTimeParams @params);
+        Task<IEnumerable<ShiftAssignment>> CreateShiftAssignments(
+            IEnumerable<ShiftAssignmentCreate> create);
         Task<ShiftAssignment> GetShiftAssignment(int id);
-        Task<ShiftAssignment> CreateShiftAssignment(ShiftAssignmentCreate create);
         Task UpdateShiftAssignment(int id, ShiftAssignmentUpdate update);
         Task DeleteShiftAssignment(int id);
     }

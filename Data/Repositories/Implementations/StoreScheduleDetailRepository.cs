@@ -13,9 +13,7 @@ namespace Data.Repositories.Implementations
         BaseRepository<StoreScheduleDetail>, IStoreScheduleDetailRepository
     {
         public StoreScheduleDetailRepository(DataContext context)
-            : base(context)
-        {
-        }
+            : base(context) { }
 
         public async Task<IEnumerable<StoreScheduleDetail>> GetStoreScheduleDetailsAsync(
             int weekScheduleId)

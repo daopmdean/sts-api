@@ -9,6 +9,8 @@ namespace Data.Models.Requests
 
         public DateTime DateStart { get; set; }
 
+        public string CreatedBy { get; set; }
+
         public Status Status { get; set; }
     }
 }

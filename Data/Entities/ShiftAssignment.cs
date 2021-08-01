@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Data.Entities
 {
@@ -27,14 +26,10 @@ namespace Data.Entities
 
         public DateTime TimeEnd { get; set; }
 
-        public DateTime MealStart { get; set; }
+        public DateTime TimeCheckIn { get; set; }
 
-        public DateTime MealEnd { get; set; }
+        public DateTime TimeCheckOut { get; set; }
 
         public int ReferenceId { get; set; }
-
-        public ShiftAttendance ShiftAttendance { get; set; }
-
-        public ICollection<ShiftLog> ShiftLogs { get; set; }
     }
 }

@@ -30,9 +30,10 @@ namespace Service.Implementations
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<WeekScheduleDetailCreate>> CreateWeekScheduleDetailAsync(
+        public async Task<IEnumerable<WeekScheduleDetail>> CreateWeekScheduleDetailAsync(
             IEnumerable<WeekScheduleDetailCreate> creates)
         {
+            List<WeekScheduleDetail> result = new();
             foreach (var create in creates)
             {
                 var weekSchedule = await _weekScheduleRepo
@@ -51,10 +52,11 @@ namespace Service.Implementations
 
                 var weekScheduleDetail = _mapper.Map<WeekScheduleDetail>(create);
                 await _weekScheduleDetailRepo.CreateAsync(weekScheduleDetail);
+                result.Add(weekScheduleDetail);
             }
 
             if (await _weekScheduleDetailRepo.SaveChangesAsync())
-                return creates;
+                return result;
 
             throw new AppException(400, "Can not create week schedule detail");
         }

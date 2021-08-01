@@ -19,6 +19,7 @@ namespace Service.Implementations
         private readonly IShiftAssignmentRepository _shiftAssignmentRepo;
         private readonly IUserRepository _userRepo;
         private readonly IStoreRepository _storeRepo;
+        private readonly IStoreStaffService _storeStaffService;
         private readonly ISkillRepository _skillRepo;
         private readonly IWeekScheduleRepository _weekScheduleRepo;
         private readonly IMapper _mapper;
@@ -27,6 +28,7 @@ namespace Service.Implementations
             IShiftAssignmentRepository shiftAssignmentRepo,
             IUserRepository userRepo,
             IStoreRepository storeRepo,
+            IStoreStaffService storeStaffService,
             ISkillRepository skillRepo,
             IWeekScheduleRepository weekScheduleRepo,
             IMapper mapper)
@@ -34,80 +36,10 @@ namespace Service.Implementations
             _shiftAssignmentRepo = shiftAssignmentRepo;
             _userRepo = userRepo;
             _storeRepo = storeRepo;
+            _storeStaffService = storeStaffService;
             _skillRepo = skillRepo;
             _weekScheduleRepo = weekScheduleRepo;
             _mapper = mapper;
-        }
-
-        public async Task<ShiftAssignment> CreateShiftAssignment(
-            ShiftAssignmentCreate create)
-        {
-            var weekSchedule = await _weekScheduleRepo
-                .GetByIdAsync(create.WeekScheduleId);
-
-            if (weekSchedule == null)
-                throw new AppException((int)StatusCode.BadRequest, 
-                    "WeekSchedule not found");
-
-            if (weekSchedule.Status != Status.Unpublished)
-                throw new AppException((int)StatusCode.BadRequest, 
-                    "Can only publish unpublished week schedule");
-
-            var publishedWeekSchedule = await _weekScheduleRepo
-                .GetWeekSchedulesAsync(weekSchedule.StoreId, weekSchedule.DateStart, Status.Published);
-
-            if (publishedWeekSchedule == null)
-            {
-                weekSchedule.Status = Status.Published;
-            }
-            else
-            {
-                foreach (var schedule in publishedWeekSchedule)
-                {
-                    schedule.Status = Status.Unpublished;
-
-                    var shiftAssignments = await _shiftAssignmentRepo
-                        .GetShiftAssignmentsAsync(create.WeekScheduleId, DateTime.Now);
-
-                    foreach (var shiftAssignment in shiftAssignments)
-                    {
-                        _shiftAssignmentRepo.Delete(shiftAssignment);
-                    }
-                }
-            }
-
-            foreach (var shift in create.ShiftAssignments)
-            {
-                var store = await _storeRepo
-                    .GetByIdAsync(shift.StoreId);
-
-                if (store == null)
-                    throw new AppException(400,
-                        "Conflicted with the FOREIGN KEY constraint, StoreId does not exist");
-
-                var skill = await _skillRepo
-                    .GetByIdAsync(shift.SkillId);
-
-                if (skill == null)
-                    throw new AppException(400,
-                        "Conflicted with the FOREIGN KEY constraint, SkillId does not exist");
-
-                var user = await _userRepo
-                    .GetUserByUsernameAsync(shift.Username);
-
-                if (user == null)
-                    throw new AppException(400,
-                        "Conflicted with the FOREIGN KEY constraint, Username does not exist");
-
-                var shiftAssignment = _mapper.Map<ShiftAssignment>(shift);
-                shiftAssignment.WeekScheduleId = create.WeekScheduleId;
-                await _shiftAssignmentRepo.CreateAsync(shiftAssignment);
-            }
-            
-            if (await _shiftAssignmentRepo.SaveChangesAsync())
-                return null;
-
-            throw new AppException(400, "Can not create ShiftAssignments");
         }
 
         public async Task DeleteShiftAssignment(int id)
@@ -152,6 +84,39 @@ namespace Service.Implementations
                 .GetShiftAssignmentsAsync(storeId, @params);
         }
 
+        public async Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentOverviews(
+            string username, DateTimeParams @params)
+        {
+            return await _shiftAssignmentRepo
+                .GetShiftAssignmentOverviewsAsync(username, @params);
+        }
+
+        public async Task<IEnumerable<StaffAssignmentsResponse>> GetShiftAssignments(
+            int storeId, DateTimeParams @params)
+        {
+            List<StaffAssignmentsResponse> result = new();
+            var storeStaffs = await _storeStaffService
+                    .GetStaffFromStoreAsync(storeId);
+
+            foreach (var staff in storeStaffs)
+            {
+                var user = await _userRepo.GetUserByUsernameAsync(staff.Username);
+                IEnumerable<ShiftAssignmentOverview> assignments =
+                    await GetShiftAssignmentOverviews(user.Username, @params);
+
+                var staffAssignmentResponse = new StaffAssignmentsResponse()
+                {
+                    Username = user.Username,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Assignments = assignments
+                };
+                result.Add(staffAssignmentResponse);
+            }
+
+            return result;
+        }
+
         public async Task UpdateShiftAssignment(int id,
             ShiftAssignmentUpdate update)
         {
@@ -169,6 +134,18 @@ namespace Service.Implementations
                 return;
 
             throw new AppException(400, "Can not update ShiftAssignment");
+        }
+
+        public async Task<IEnumerable<ShiftAssignment>> CreateShiftAssignments(
+            IEnumerable<ShiftAssignmentCreate> create)
+        {
+            foreach (var assign in create)
+            {
+                var assignment = _mapper.Map<ShiftAssignment>(assign);
+                await _shiftAssignmentRepo.CreateAsync(assignment);
+            }
+            await _shiftAssignmentRepo.SaveChangesAsync();
+            return null;
         }
     }
 }

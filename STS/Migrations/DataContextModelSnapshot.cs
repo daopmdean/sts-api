@@ -19,6 +19,52 @@ namespace STS.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("Data.Entities.Attendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("CheckType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DeviceCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.Property<float>("RecognizePercentage")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StoreId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("TimeCheck")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
+
+                    b.HasIndex("Username");
+
+                    b.ToTable("Attendances");
+                });
+
             modelBuilder.Entity("Data.Entities.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -103,12 +149,6 @@ namespace STS.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("MealEnd")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("MealStart")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<int>("ReferenceId")
                         .HasColumnType("integer");
 
@@ -120,6 +160,12 @@ namespace STS.Migrations
 
                     b.Property<int>("StoreId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("TimeCheckIn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("TimeCheckOut")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("TimeEnd")
                         .HasColumnType("timestamp without time zone");
@@ -144,51 +190,6 @@ namespace STS.Migrations
                     b.HasIndex("WeekScheduleId");
 
                     b.ToTable("ShiftAssignments");
-                });
-
-            modelBuilder.Entity("Data.Entities.ShiftAttendance", b =>
-                {
-                    b.Property<int>("ShiftAssignmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("TimeCheckIn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("TimeCheckOut")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("ShiftAssignmentId");
-
-                    b.ToTable("ShiftAttendances");
-                });
-
-            modelBuilder.Entity("Data.Entities.ShiftLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Content")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ShiftAssignmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShiftAssignmentId");
-
-                    b.ToTable("ShiftLogs");
                 });
 
             modelBuilder.Entity("Data.Entities.ShiftRegister", b =>
@@ -228,12 +229,6 @@ namespace STS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("MealEnd")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("MealStart")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("ShiftScheduleResultId")
                         .HasColumnType("integer");
@@ -319,52 +314,6 @@ namespace STS.Migrations
                     b.HasIndex("BrandId");
 
                     b.ToTable("Skills");
-                });
-
-            modelBuilder.Entity("Data.Entities.StaffScheduleDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<float>("MaxHoursPerDay")
-                        .HasColumnType("real");
-
-                    b.Property<float>("MaxHoursPerWeek")
-                        .HasColumnType("real");
-
-                    b.Property<float>("MaxShiftDuration")
-                        .HasColumnType("real");
-
-                    b.Property<float>("MinHoursPerDay")
-                        .HasColumnType("real");
-
-                    b.Property<float>("MinHoursPerWeek")
-                        .HasColumnType("real");
-
-                    b.Property<float>("MinShiftDuration")
-                        .HasColumnType("real");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Username1")
-                        .HasColumnType("text");
-
-                    b.Property<int>("WeekScheduleId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Username1");
-
-                    b.HasIndex("WeekScheduleId");
-
-                    b.ToTable("StaffScheduleDetails");
                 });
 
             modelBuilder.Entity("Data.Entities.StaffSkill", b =>
@@ -619,6 +568,24 @@ namespace STS.Migrations
                     b.ToTable("WeekScheduleDetails");
                 });
 
+            modelBuilder.Entity("Data.Entities.Attendance", b =>
+                {
+                    b.HasOne("Data.Entities.Store", "Store")
+                        .WithMany("Attendances")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Entities.User", "User")
+                        .WithMany("Attendances")
+                        .HasForeignKey("Username")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Store");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Data.Entities.Post", b =>
                 {
                     b.HasOne("Data.Entities.Brand", "Brand")
@@ -662,28 +629,6 @@ namespace STS.Migrations
                     b.Navigation("User");
 
                     b.Navigation("WeekSchedule");
-                });
-
-            modelBuilder.Entity("Data.Entities.ShiftAttendance", b =>
-                {
-                    b.HasOne("Data.Entities.ShiftAssignment", "ShiftAssignment")
-                        .WithOne("ShiftAttendance")
-                        .HasForeignKey("Data.Entities.ShiftAttendance", "ShiftAssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ShiftAssignment");
-                });
-
-            modelBuilder.Entity("Data.Entities.ShiftLog", b =>
-                {
-                    b.HasOne("Data.Entities.ShiftAssignment", "ShiftAssignment")
-                        .WithMany("ShiftLogs")
-                        .HasForeignKey("ShiftAssignmentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("ShiftAssignment");
                 });
 
             modelBuilder.Entity("Data.Entities.ShiftRegister", b =>
@@ -735,23 +680,6 @@ namespace STS.Migrations
                         .IsRequired();
 
                     b.Navigation("Brand");
-                });
-
-            modelBuilder.Entity("Data.Entities.StaffScheduleDetail", b =>
-                {
-                    b.HasOne("Data.Entities.User", "User")
-                        .WithMany("StaffScheduleDetails")
-                        .HasForeignKey("Username1");
-
-                    b.HasOne("Data.Entities.WeekSchedule", "WeekSchedule")
-                        .WithMany("StaffScheduleDetails")
-                        .HasForeignKey("WeekScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("WeekSchedule");
                 });
 
             modelBuilder.Entity("Data.Entities.StaffSkill", b =>
@@ -877,13 +805,6 @@ namespace STS.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Data.Entities.ShiftAssignment", b =>
-                {
-                    b.Navigation("ShiftAttendance");
-
-                    b.Navigation("ShiftLogs");
-                });
-
             modelBuilder.Entity("Data.Entities.ShiftScheduleResult", b =>
                 {
                     b.Navigation("ShiftScheduleDetailResults");
@@ -896,6 +817,8 @@ namespace STS.Migrations
 
             modelBuilder.Entity("Data.Entities.Store", b =>
                 {
+                    b.Navigation("Attendances");
+
                     b.Navigation("StoreStaffs");
 
                     b.Navigation("WeekSchedules");
@@ -903,11 +826,11 @@ namespace STS.Migrations
 
             modelBuilder.Entity("Data.Entities.User", b =>
                 {
+                    b.Navigation("Attendances");
+
                     b.Navigation("ShiftAssignments");
 
                     b.Navigation("ShiftRegisters");
-
-                    b.Navigation("StaffScheduleDetails");
 
                     b.Navigation("StaffSkills");
 
@@ -921,8 +844,6 @@ namespace STS.Migrations
                     b.Navigation("ShiftRegisters");
 
                     b.Navigation("ShiftScheduleResults");
-
-                    b.Navigation("StaffScheduleDetails");
 
                     b.Navigation("StoreScheduleDetails");
 

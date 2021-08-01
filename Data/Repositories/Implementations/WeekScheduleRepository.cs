@@ -27,8 +27,6 @@ namespace Data.Repositories.Implementations
         public override async Task<WeekSchedule> GetByIdAsync(int id)
         {
             var result = await _entities
-                .Include(x => x.WeekScheduleDetails)
-                .Include(x => x.StaffScheduleDetails)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (result?.Status != Status.Deleted)

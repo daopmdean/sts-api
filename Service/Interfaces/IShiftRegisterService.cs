@@ -11,6 +11,8 @@ namespace Service.Interfaces
     {
         Task<PagedList<ShiftRegisterOverview>> GetShiftRegisters(string username,
             ShiftRegisterParams @params);
+        Task<IEnumerable<ShiftRegisterOverview>> GetShiftRegisters(string username,
+            DateTimeParams @params);
         Task<IEnumerable<ShiftRegister>> GetShiftRegisters(
             int weekScheduleId);
         Task<ShiftRegister> GetShiftRegister(int id);

@@ -23,7 +23,6 @@ namespace STS.Controllers
         private readonly IStaffSkillService _staffSkillService;
         private readonly IShiftRegisterService _shiftRegisterService;
         private readonly IShiftAssignmentService _shiftAssignmentService;
-        private readonly IShiftAttendanceService _shiftAttendanceService;
         private readonly IStoreService _storeService;
         private readonly ISkillService _skillService;
         private readonly IPostService _postService;
@@ -35,7 +34,6 @@ namespace STS.Controllers
             IStaffSkillService staffSkillService,
             IShiftRegisterService shiftRegisterService,
             IShiftAssignmentService shiftAssignmentService,
-            IShiftAttendanceService shiftAttendanceService,
             IStoreService storeService,
             ISkillService skillService,
             IPostService postService)
@@ -46,7 +44,6 @@ namespace STS.Controllers
             _staffSkillService = staffSkillService;
             _shiftRegisterService = shiftRegisterService;
             _shiftAssignmentService = shiftAssignmentService;
-            _shiftAttendanceService = shiftAttendanceService;
             _storeService = storeService;
             _skillService = skillService;
             _postService = postService;
@@ -65,21 +62,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -95,21 +82,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -127,21 +104,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -159,21 +126,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -191,53 +148,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
-            }
-        }
-
-        [HttpGet("users/{username}/shift-attendances")]
-        public async Task<ActionResult> GetShiftAttendancesOfUser(
-            string username, [FromQuery] ShiftAttendanceParams @params)
-        {
-            try
-            {
-                var shiftAttendances = await _shiftAttendanceService
-                    .GetShiftAttendencesAsync(username, @params);
-                Response.AddPaginationHeader(shiftAttendances);
-
-                return Ok(shiftAttendances);
-            }
-            catch (AppException ex)
-            {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -250,21 +165,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
 
             return NoContent();
@@ -282,21 +187,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -313,21 +208,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -343,21 +228,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -373,21 +248,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -400,21 +265,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
 
             return NoContent();
@@ -432,21 +287,11 @@ namespace STS.Controllers
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
         }
     }

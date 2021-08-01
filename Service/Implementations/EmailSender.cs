@@ -16,14 +16,14 @@ namespace Service.Implementations
             _config = config;
         }
 
-        public async Task SendEmailAsync(Message message)
+        public async Task SendEmailAsync(MailMessage message)
         {
             var mineMessage = CreateMineMessage(message);
 
             await SendAsync(mineMessage);
         }
 
-        private MimeMessage CreateMineMessage(Message message)
+        private MimeMessage CreateMineMessage(MailMessage message)
         {
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress(_config.From));

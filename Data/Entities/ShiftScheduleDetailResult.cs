@@ -20,9 +20,5 @@ namespace Data.Entities
         public DateTime TimeStart { get; set; }
 
         public DateTime TimeEnd { get; set; }
-
-        public DateTime MealStart { get; set; }
-
-        public DateTime MealEnd { get; set; }
     }
 }

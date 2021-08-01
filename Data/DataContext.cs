@@ -21,14 +21,14 @@ namespace Data
         public DbSet<StaffSkill> StaffSkills { get; set; }
 
         public DbSet<WeekSchedule> WeekSchedules { get; set; }
-        public DbSet<StaffScheduleDetail> StaffScheduleDetails { get; set; }
+        //public DbSet<StaffScheduleDetail> StaffScheduleDetails { get; set; }
         public DbSet<StoreScheduleDetail> StoreScheduleDetails { get; set; }
         public DbSet<WeekScheduleDetail> WeekScheduleDetails { get; set; }
 
         public DbSet<ShiftRegister> ShiftRegisters { get; set; }
         public DbSet<ShiftAssignment> ShiftAssignments { get; set; }
-        public DbSet<ShiftAttendance> ShiftAttendances { get; set; }
-        public DbSet<ShiftLog> ShiftLogs { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+        //public DbSet<ShiftAttendance> ShiftAttendances { get; set; }
 
         public DbSet<ShiftScheduleResult> ShiftScheduleResults { get; set; }
         public DbSet<ShiftScheduleDetailResult> ShiftScheduleDetailResults { get; set; }
@@ -53,22 +53,17 @@ namespace Data
                 .HasForeignKey(u => u.BrandId);
 
             // shift assignment - user
+            modelBuilder.Entity<Attendance>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.Attendances)
+                .HasForeignKey(sr => sr.Username)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // attendance - user
             modelBuilder.Entity<ShiftAssignment>()
                 .HasOne(sa => sa.User)
                 .WithMany(u => u.ShiftAssignments)
                 .HasForeignKey(sr => sr.Username)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            // shift attendance - shift assignment
-            modelBuilder.Entity<ShiftAssignment>()
-                .HasOne(sa => sa.ShiftAttendance)
-                .WithOne(sa => sa.ShiftAssignment);
-
-            // shift assignment - shift log
-            modelBuilder.Entity<ShiftLog>()
-                .HasOne(sl => sl.ShiftAssignment)
-                .WithMany(sa => sa.ShiftLogs)
-                .HasForeignKey(sl => sl.ShiftAssignmentId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // shift register - user
@@ -183,7 +178,7 @@ namespace Data
             }
         }
 
-        private Exception HandleDbUpdateException(DbUpdateException dbu)
+        private static Exception HandleDbUpdateException(DbUpdateException dbu)
         {
             var builder = new StringBuilder(
                 "A DbUpdateException was caught while saving changes. ");

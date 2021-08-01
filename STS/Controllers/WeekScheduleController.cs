@@ -66,8 +66,9 @@ namespace STS.Controllers
                         break;
                 }
 
+                var username = User.GetUsername();
                 var weekSchedule = await _weekScheduleService
-                    .GetWeekScheduleAsync(storeId, dateStart, weekStatus);
+                    .GetWeekScheduleAsync(storeId, dateStart, weekStatus, username);
                 return Ok(weekSchedule);
             }
             catch (AppException ex)

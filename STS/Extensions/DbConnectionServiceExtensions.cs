@@ -29,8 +29,9 @@ namespace STS.Extensions
 
                 var connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};SSL Mode=Prefer;TrustServerCertificate=True;";
 
-                options.UseNpgsql(connStr, b => 
-                { 
+                //options.UseLazyLoadingProxies();
+                options.UseNpgsql(connStr, b =>
+                {
                     b.MigrationsAssembly("STS");
                     b.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                 });

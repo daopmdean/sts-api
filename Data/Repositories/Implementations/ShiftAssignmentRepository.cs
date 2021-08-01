@@ -25,14 +25,25 @@ namespace Data.Repositories.Implementations
         }
 
         public async Task<ShiftAssignment> GetShiftAssignmentAsync(
-            string username, DateTime timeRequest, int timeRange)
+            string username, DateTime timeRequest, int timeRange, string type)
         {
-            return await _entities
-                .Where(s => (timeRequest <= s.TimeStart.AddMinutes(timeRange)
-                    && timeRequest >= s.TimeStart.AddMinutes(-timeRange))
-                    || (timeRequest <= s.TimeEnd.AddMinutes(timeRange)
-                    && timeRequest >= s.TimeEnd.AddMinutes(-timeRange)))
-                .FirstOrDefaultAsync(s => s.Username == username);
+            type = type.ToLower();
+            if (type == "checkin")
+            {
+                return await _entities
+                    .Where(s => timeRequest <= s.TimeStart.AddMinutes(timeRange)
+                        && timeRequest >= s.TimeStart.AddMinutes(-timeRange))
+                    .FirstOrDefaultAsync(s => s.Username == username);
+            }
+            else if (type == "checkout")
+            {
+                return await _entities
+                    .Where(s => timeRequest <= s.TimeEnd.AddMinutes(timeRange)
+                        && timeRequest >= s.TimeEnd.AddMinutes(-timeRange))
+                    .FirstOrDefaultAsync(s => s.Username == username);
+            }
+
+            return null;
         }
 
         public async Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
@@ -63,7 +74,7 @@ namespace Data.Repositories.Implementations
                 .CreateAsync(source, @params.PageNumber, @params.PageSize);
         }
 
-        public async Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
+        public async Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentOverviewsAsync(
             string username, DateTimeParams @params)
         {
             return await _entities
@@ -91,6 +102,30 @@ namespace Data.Repositories.Implementations
                 .Where(s => s.Status == Enums.Status.Active)
                 .Where(s => s.WeekScheduleId == weekScheduleId)
                 .Where(s => s.TimeStart > fromDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ShiftAssignment>> GetShiftAssignmentsAsync(
+            string username, DateTimeParams @params)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.Username == username)
+                .Where(s => s.TimeStart >= @params.FromDate &&
+                    s.TimeEnd <= @params.ToDate.AddDays(1))
+                .OrderByDescending(s => s.TimeStart)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ShiftAssignment>> GetShiftAssignmentsAsync(
+            int storeId, DateTimeParams @params)
+        {
+            return await _entities
+                .Where(s => s.Status == Enums.Status.Active)
+                .Where(s => s.StoreId == storeId)
+                .Where(s => s.TimeStart >= @params.FromDate
+                    && s.TimeEnd <= @params.ToDate)
+                .OrderByDescending(s => s.TimeStart)
                 .ToListAsync();
         }
     }

@@ -98,15 +98,12 @@ namespace Data.Repositories.Implementations
         }
 
         public async Task<PagedList<UserOverview>> GetStoreManagersAsync(
-            UserParams @params)
+            int brandId, UserParams @params)
         {
-            // not implemented
-            //var brand = await _context.Brands
-            //    .FirstOrDefaultAsync(b => b.Id == @params.BrandId);
-
             var query = _entities
                 .AsQueryable()
                 .OrderBy(u => u.Username)
+                .Where(u => u.BrandId == brandId)
                 .Where(u => u.RoleId == 3)
                 .ProjectTo<UserOverview>(_mapper.ConfigurationProvider);
 
@@ -127,7 +124,7 @@ namespace Data.Repositories.Implementations
                 .Where(e => e.Status == Status.Active)
                 .FirstOrDefaultAsync(user => user.Username.ToLower() == username.ToLower());
 
-            if (user.Type != null)
+            if (user?.Type != null)
                 return (StaffType)user.Type;
 
             return StaffType.Undefine;

@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
-using Data.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
@@ -14,39 +14,11 @@ namespace STS.Controllers
     [Route("api/shift-assignments")]
     public class ShiftAssignmentController : ApiBaseController
     {
-        private readonly IShiftAssignmentService _service;
+        private readonly IShiftAssignmentService _shiftAssignmentService;
 
         public ShiftAssignmentController(IShiftAssignmentService service)
         {
-            _service = service;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<ShiftAssignment>> CreateShiftAssignment(
-            ShiftAssignmentCreate create)
-        {
-            try
-            {
-                return Ok(await _service.CreateShiftAssignment(create));
-            }
-            catch (AppException ex)
-            {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
-            }
+            _shiftAssignmentService = service;
         }
 
         [HttpGet("{id}")]
@@ -55,25 +27,34 @@ namespace STS.Controllers
         {
             try
             {
-                return Ok(await _service.GetShiftAssignment(id));
+                return Ok(await _shiftAssignmentService.GetShiftAssignment(id));
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Assignments(
+            IEnumerable<ShiftAssignmentCreate> create)
+        {
+            try
+            {
+                return Ok(await _shiftAssignmentService
+                    .CreateShiftAssignments(create));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
             }
         }
 
@@ -83,25 +64,15 @@ namespace STS.Controllers
         {
             try
             {
-                await _service.UpdateShiftAssignment(id, update);
+                await _shiftAssignmentService.UpdateShiftAssignment(id, update);
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
 
             return NoContent();
@@ -113,25 +84,15 @@ namespace STS.Controllers
         {
             try
             {
-                await _service.DeleteShiftAssignment(id);
+                await _shiftAssignmentService.DeleteShiftAssignment(id);
             }
             catch (AppException ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = ex.StatusCode,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return BadRequestResponse(ex);
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse
-                {
-                    StatusCode = (int)Service.Enums.StatusCode.InternalError,
-                    Message = ex.Message,
-                    StackTrace = ex.StackTrace
-                });
+                return InternalErrorResponse(ex);
             }
 
             return NoContent();

@@ -12,13 +12,18 @@ namespace Data.Repositories.Interfaces
     {
         Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
             string username, ShiftAssignmentParams @params);
+        Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentOverviewsAsync(
+            string username, DateTimeParams @params);
+        Task<IEnumerable<ShiftAssignment>> GetShiftAssignmentsAsync(
+            string username, DateTimeParams @params);
+
         Task<PagedList<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
             int storeId, ShiftAssignmentParams @params);
-        Task<IEnumerable<ShiftAssignmentOverview>> GetShiftAssignmentsAsync(
-            string username, DateTimeParams @params);
+        Task<IEnumerable<ShiftAssignment>> GetShiftAssignmentsAsync(
+            int storeId, DateTimeParams @params);
         Task<IEnumerable<ShiftAssignment>> GetShiftAssignmentsAsync(
             int weekScheduleId, DateTime fromDate);
         Task<ShiftAssignment> GetShiftAssignmentAsync(
-            string username, DateTime timeRequest, int timeRange);
+            string username, DateTime timeRequest, int timeRange, string type);
     }
 }

@@ -19,5 +19,7 @@ namespace Data.Entities
         public ICollection<StoreStaff> StoreStaffs { get; set; }
 
         public ICollection<WeekSchedule> WeekSchedules { get; set; }
+
+        public ICollection<Attendance> Attendances { get; set; }
     }
 }

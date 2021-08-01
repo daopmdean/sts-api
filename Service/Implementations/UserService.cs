@@ -19,6 +19,7 @@ namespace Service.Implementations
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepo;
+        private readonly IShiftAssignmentRepository _shiftAssignmentRepo;
         private readonly IStoreStaffRepository _storeStaffRepo;
         private readonly IStaffSkillRepository _staffSkillRepo;
         private readonly IEmailSender _emailSender;
@@ -26,12 +27,14 @@ namespace Service.Implementations
 
         public UserService(
             IUserRepository userRepo,
+            IShiftAssignmentRepository shiftAssignmentRepo,
             IStoreStaffRepository storeStaffRepo,
             IStaffSkillRepository staffSkillRepo,
             IEmailSender emailSender,
             IMapper mapper)
         {
             _userRepo = userRepo;
+            _shiftAssignmentRepo = shiftAssignmentRepo;
             _storeStaffRepo = storeStaffRepo;
             _staffSkillRepo = staffSkillRepo;
             _emailSender = emailSender;
@@ -62,7 +65,7 @@ namespace Service.Implementations
             throw new AppException(400, "Can not delete user");
         }
 
-        public async Task<PagedList<UserOverview>> GetBrandManagers(UserParams @params)
+        public async Task<PagedList<UserOverview>> GetBrandManagersAsync(UserParams @params)
         {
             return await _userRepo.GetBrandManagersAsync(@params);
         }
@@ -78,9 +81,10 @@ namespace Service.Implementations
             return await _userRepo.GetStaffAsync(brandId, @params);
         }
 
-        public async Task<PagedList<UserOverview>> GetStoreManagers(UserParams @params)
+        public async Task<PagedList<UserOverview>> GetStoreManagersAsync(
+            int brandId, UserParams @params)
         {
-            return await _userRepo.GetStoreManagersAsync(@params);
+            return await _userRepo.GetStoreManagersAsync(brandId, @params);
         }
 
         public async Task<UserInfoResponse> GetUserAsync(string username)
@@ -116,6 +120,26 @@ namespace Service.Implementations
             return await _userRepo.GetUsersAsync(brandId, @params);
         }
 
+        public async Task<WorkHoursResponse> GetWorkHoursResponse(
+            string username, DateTimeParams @params)
+        {
+            WorkHoursResponse result = new();
+            var shiftAssignments = await _shiftAssignmentRepo
+                .GetShiftAssignmentOverviewsAsync(username, @params);
+
+            foreach (var shiftAssignment in shiftAssignments)
+            {
+                TimeSpan hoursAssigned =
+                    shiftAssignment.TimeEnd - shiftAssignment.TimeStart;
+                TimeSpan hoursWorkd =
+                    shiftAssignment.TimeCheckOut - shiftAssignment.TimeCheckIn;
+                result.HoursAssigned += hoursAssigned.TotalHours;
+                result.HoursWorked += hoursWorkd.TotalHours;
+            }
+
+            return result;
+        }
+
         public async Task RestorePasswordAsync(string username)
         {
             var user = await _userRepo.GetUserByUsernameAsync(username);
@@ -133,7 +157,7 @@ namespace Service.Implementations
 
             if (await _userRepo.SaveChangesAsync())
             {
-                await _emailSender.SendEmailAsync(new Message(
+                await _emailSender.SendEmailAsync(new MailMessage(
                     new string[] { user.Email },
                     "STS account restore",
                     "<p>Your new password for username: " + user.Username + "</p>" +
@@ -176,6 +200,21 @@ namespace Service.Implementations
             UserUpdate updateInfo)
         {
             var user = await _userRepo.GetUserByUsernameAsync(username);
+
+            _mapper.Map(updateInfo, user);
+            _userRepo.Update(user);
+
+            if (await _userRepo.SaveChangesAsync())
+                return;
+
+            throw new AppException(400, "Can not update user");
+        }
+
+        public async Task UpdateUserAsync(
+            StaffUpdateRequest updateInfo)
+        {
+            var user = await _userRepo
+                .GetUserByUsernameAsync(updateInfo.Username);
 
             _mapper.Map(updateInfo, user);
             _userRepo.Update(user);

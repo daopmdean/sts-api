@@ -167,6 +167,7 @@ namespace Service.Implementations
             int weekScheduleId, int brandId)
         {
             ScheduleRequest request = new();
+            request.WeekScheduleId = weekScheduleId;
 
             var weekSchedule = await _weekScheduleService
                     .GetWeekScheduleAsync(weekScheduleId);
@@ -190,7 +191,7 @@ namespace Service.Implementations
 
             var weekRegister = (await _weekScheduleService
                 .GetWeekScheduleAsync(weekSchedule.StoreId,
-                    weekSchedule.DateStart, Status.Register))
+                    weekSchedule.DateStart, Status.Register, "unknown"))
                 .First();
             var shiftRegisters = await _shiftRegisterService
                 .GetShiftRegisters(weekRegister.Id);

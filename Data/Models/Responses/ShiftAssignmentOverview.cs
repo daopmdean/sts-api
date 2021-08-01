@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Data.Models.Responses
 {
     public class ShiftAssignmentOverview
@@ -15,9 +16,9 @@ namespace Data.Models.Responses
 
         public DateTime TimeEnd { get; set; }
 
-        public DateTime MealStart { get; set; }
+        public DateTime TimeCheckIn { get; set; }
 
-        public DateTime MealEnd { get; set; }
+        public DateTime TimeCheckOut { get; set; }
 
         public int ReferenceId { get; set; }
     }

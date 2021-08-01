@@ -68,5 +68,10 @@ namespace Data.Repositories.Implementations
                 && ss.Username == username
                 && ss.Status == Enums.Status.Active);
         }
+
+        public override void Delete(StaffSkill entity)
+        {
+            _entities.Remove(entity);
+        }
     }
 }

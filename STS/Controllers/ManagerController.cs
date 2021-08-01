@@ -5,8 +5,8 @@ using Data.Models.Responses;
 using Data.Pagings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Service.Enums;
 using Service.Exceptions;
+using Service.Helpers;
 using Service.Interfaces;
 using STS.Extensions;
 
@@ -20,29 +20,71 @@ namespace STS.Controllers
         private readonly IScheduleService _scheduleService;
         private readonly IShiftScheduleResultService _scheduleResultService;
         private readonly IStoreStaffService _storeStaffService;
+        private readonly IStaffSkillService _staffSkillService;
         private readonly IWeekScheduleService _weekService;
         private readonly IStoreService _storeService;
-        private readonly IUserService _userService;
-        private readonly IAuthService _authService;
+        private readonly IAttendanceService _attendanceService;
 
         public ManagerController(
             IManagerService managerService,
             IScheduleService scheduleService,
             IShiftScheduleResultService scheduleResultService,
             IStoreStaffService storeStaffService,
+            IStaffSkillService staffSkillService,
             IWeekScheduleService weekService,
             IStoreService storeService,
-            IUserService userService,
-            IAuthService authService)
+            IAttendanceService attendanceService)
         {
             _managerService = managerService;
             _scheduleService = scheduleService;
             _scheduleResultService = scheduleResultService;
             _storeStaffService = storeStaffService;
+            _staffSkillService = staffSkillService;
             _weekService = weekService;
             _storeService = storeService;
-            _userService = userService;
-            _authService = authService;
+            _attendanceService = attendanceService;
+        }
+
+        [HttpGet("brands/report")]
+        public async Task<ActionResult> GetBrandReport(
+            [FromQuery] DateTimeParams @params)
+        {
+            try
+            {
+                await _managerService
+                    .GetBrandReport(@params);
+
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpGet("stores/report")]
+        public async Task<ActionResult> GetStoreReport(
+            [FromQuery] DateTimeParams @params)
+        {
+            try
+            {
+                await _managerService
+                    .GetStoreReport(@params);
+
+                return Ok();
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
         }
 
         [HttpGet("stores/{storeId}/week-schedules")]
@@ -78,26 +120,6 @@ namespace STS.Controllers
                 Response.AddPaginationHeader(staff);
 
                 return Ok(staff);
-            }
-            catch (AppException ex)
-            {
-                return BadRequestResponse(ex);
-            }
-            catch (Exception ex)
-            {
-                return InternalErrorResponse(ex);
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpPost("users/brand-manager")]
-        public async Task<IActionResult> RegisterBrandManager(
-            BrandManagerCreate info)
-        {
-            try
-            {
-                return Ok(await _managerService
-                    .CreateBrandManager(info));
             }
             catch (AppException ex)
             {
@@ -150,6 +172,106 @@ namespace STS.Controllers
             }
         }
 
+        [HttpPut("users/staff")]
+        public async Task<IActionResult> UpdateStaff(StaffUpdate info)
+        {
+            try
+            {
+                await _managerService.UpdateStaff(info);
+                return NoContent();
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpGet("users/{username}/skills")]
+        public async Task<ActionResult> GetSkillsOfUser(
+            string username, [FromQuery] StaffSkillParams @params)
+        {
+            try
+            {
+                var skills = await _staffSkillService
+                    .GetSkillsFromStaffAsync(username, @params);
+                Response.AddPaginationHeader(skills);
+
+                return Ok(skills);
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpPost("users/attendances")]
+        public async Task<IActionResult> GetStaffAttendances(
+            AttendanceManualCreate create)
+        {
+            try
+            {
+                return Ok(await _attendanceService
+                    .CreateAttendanceManualAsync(create));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpGet("users/{username}/attendances")]
+        public async Task<IActionResult> GetStaffAttendances(
+            string username, [FromQuery] DateTimeParams @params)
+        {
+            try
+            {
+                return Ok(await _attendanceService
+                    .GetAttendancesAsync(username, @params));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpPost("stores/calculate-work-time")]
+        public async Task<ActionResult> CalculateWorkTime(
+            [FromQuery] DateTimeParams @params)
+        {
+            try
+            {
+                int storeId = int.Parse(User.GetStoreId());
+                await _managerService
+                    .CalculateWorkTime(storeId, @params, 15);
+
+                return NoContent();
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
         [HttpPost("schedule")]
         public async Task<IActionResult> ComputeSchedule(
             ComputeScheduleRequest request)
@@ -159,6 +281,44 @@ namespace STS.Controllers
                 var brandId = int.Parse(User.GetBrandId());
                 return Ok(await _scheduleService
                     .ComputeSchedule(request.WeekScheduleId, brandId));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpPost("schedule/publish")]
+        public async Task<ActionResult> PublishSchedule(
+            PublishInfo create)
+        {
+            try
+            {
+                return Ok(await _managerService
+                    .PublishSchedule(create));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpPost("schedule/unpublish")]
+        public async Task<ActionResult> UnpublishSchedule(
+            UnpublishInfo create)
+        {
+            try
+            {
+                await _managerService.UnpublishSchedule(create);
+                return NoContent();
             }
             catch (AppException ex)
             {
@@ -265,6 +425,26 @@ namespace STS.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPost("notification/testing")]
+        public async Task<ActionResult> NotificationTesting(
+            NotificationTopicRequest request)
+        {
+            try
+            {
+                var result = await FCMNotification
+                    .SendNotificationAsync(request.Topic, request.Title, request.Message);
+                return Ok(result);
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
         }
     }
 }
