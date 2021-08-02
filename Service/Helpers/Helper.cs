@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Data.Models.Requests;
 
 namespace Service.Helpers
 {
@@ -25,6 +27,26 @@ namespace Service.Helpers
             }
 
             return false;
+        }
+
+        public static List<string> GetUsers(IEnumerable<ShiftAssignmentInfo> assignments)
+        {
+            Dictionary<string, string> keyValues = new();
+
+            foreach (var assign in assignments)
+            {
+                try
+                {
+                    keyValues.Add(assign.Username, "");
+                }
+                catch
+                {
+
+                }
+            }
+            Dictionary<string, string>.KeyCollection keys = keyValues.Keys;
+
+            return keys.ToList();
         }
     }
 }

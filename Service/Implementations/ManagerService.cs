@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
@@ -290,7 +291,17 @@ namespace Service.Implementations
             }
 
             if (await _shiftAssignmentRepo.SaveChangesAsync())
+            {
+                List<string> users = Helper.GetUsers(create.ShiftAssignments);
+                foreach (var user in users)
+                {
+                    await FCMNotification
+                        .SendNotificationAsync(user,
+                        "Assignments Announcement",
+                        "You have received your new shift assignments");
+                }
                 return null;
+            }
 
             throw new AppException(400, "Can not create ShiftAssignments");
         }

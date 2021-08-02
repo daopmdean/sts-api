@@ -8,6 +8,7 @@ using Data.Pagings;
 using Data.Repositories.Interfaces;
 using Service.Enums;
 using Service.Exceptions;
+using Service.Helpers;
 using Service.Interfaces;
 
 namespace Service.Implementations
@@ -52,7 +53,14 @@ namespace Service.Implementations
             await _attendanceRepo.CreateAsync(attendance);
 
             if (await _attendanceRepo.SaveChangesAsync())
+            {
+                await FCMNotification
+                    .SendNotificationAsync(attendance.Username,
+                    "Attendance Recorded",
+                    "Your attendance had been recorded");
                 return attendance;
+            }
+
 
             throw new AppException(400, "Can not create Attendance");
         }
