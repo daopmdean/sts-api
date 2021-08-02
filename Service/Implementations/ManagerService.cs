@@ -221,7 +221,7 @@ namespace Service.Implementations
         }
 
         public Task<StoreReportResponse> GetStoreReport(
-            DateTimeParams @params)
+            int storeId, DateTimeParams @params)
         {
             throw new NotImplementedException();
         }
