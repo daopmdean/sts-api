@@ -127,6 +127,13 @@ namespace Service.Implementations
                 .GetAttendancesAsync(username, @params);
         }
 
+        public async Task<IEnumerable<Attendance>> GetAttendancesAsync(
+            int storeId, DateTimeParams @params)
+        {
+            return await _attendanceRepo
+                .GetAttendancesAsync(storeId, @params);
+        }
+
         public async Task UpdateAttendanceAsync(
             int id, AttendanceUpdate update)
         {

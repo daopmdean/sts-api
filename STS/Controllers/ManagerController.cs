@@ -72,10 +72,10 @@ namespace STS.Controllers
         {
             try
             {
-                await _managerService
-                    .GetStoreReport(@params);
+                int storeId = int.Parse(User.GetStoreId());
 
-                return Ok();
+                return Ok(await _managerService
+                    .GetStoreReport(storeId, @params));
             }
             catch (AppException ex)
             {
@@ -220,6 +220,26 @@ namespace STS.Controllers
             {
                 return Ok(await _attendanceService
                     .CreateAttendanceManualAsync(create));
+            }
+            catch (AppException ex)
+            {
+                return BadRequestResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return InternalErrorResponse(ex);
+            }
+        }
+
+        [HttpGet("users/attendances")]
+        public async Task<IActionResult> GetStaffAttendances(
+            [FromQuery] DateTimeParams @params)
+        {
+            try
+            {
+                int storeId = int.Parse(User.GetStoreId());
+                return Ok(await _attendanceService
+                    .GetAttendancesAsync(storeId, @params));
             }
             catch (AppException ex)
             {
