@@ -50,6 +50,7 @@ namespace Service.Implementations
                     "User not found");
 
             var attendance = _mapper.Map<Attendance>(create);
+            attendance.CreatedBy = create.Username;
             await _attendanceRepo.CreateAsync(attendance);
 
             if (await _attendanceRepo.SaveChangesAsync())
