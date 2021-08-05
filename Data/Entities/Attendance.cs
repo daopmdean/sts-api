@@ -11,7 +11,7 @@ namespace Data.Entities
         public string Username { get; set; }
         public User User { get; set; }
         public DateTime TimeCheck { get; set; }
-        public string CreateBy { get; set; }
+        public string CreatedBy { get; set; }
         public CheckType CheckType { get; set; }
         public string ImageUrl { get; set; }
         public string Note { get; set; }
