@@ -34,7 +34,7 @@ namespace STS.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BrandOverview>>> GetBrands(
+        public async Task<ActionResult> GetBrands(
             [FromQuery] BrandParams @params)
         {
             try
@@ -74,7 +74,7 @@ namespace STS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<BrandOverview>> GetBrand(
+        public async Task<ActionResult> GetBrand(
             int id)
         {
             try
@@ -92,7 +92,7 @@ namespace STS.Controllers
         }
 
         [HttpGet("stores")]
-        public async Task<ActionResult<BrandOverview>> GetStoresOfBrand(
+        public async Task<ActionResult> GetStoresOfBrand(
             [FromQuery] StoreParams @params)
         {
             try
@@ -132,7 +132,7 @@ namespace STS.Controllers
         }
 
         [HttpGet("users")]
-        public async Task<ActionResult<BrandOverview>> GetUsersOfBrand(
+        public async Task<ActionResult> GetUsersOfBrand(
             [FromQuery] UserParams @params)
         {
             try
@@ -155,7 +155,7 @@ namespace STS.Controllers
         }
 
         [HttpGet("staff")]
-        public async Task<ActionResult<BrandOverview>> GetStaffOfBrand(
+        public async Task<ActionResult> GetStaffOfBrand(
             [FromQuery] UserParams @params)
         {
             try
@@ -262,7 +262,7 @@ namespace STS.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<System.Collections.Generic.IEnumerable<BrandOverview>>> CreateBrand(
+        public async Task<ActionResult> CreateBrand(
             BrandCreate brand)
         {
             try
@@ -280,7 +280,7 @@ namespace STS.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<System.Collections.Generic.IEnumerable<BrandOverview>>> UpdateBrand(
+        public async Task<ActionResult> UpdateBrand(
             int id, BrandUpdate brandUpdate)
         {
             try
@@ -300,7 +300,7 @@ namespace STS.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<System.Collections.Generic.IEnumerable<BrandOverview>>> DeleteBrand(
+        public async Task<ActionResult> DeleteBrand(
             int id)
         {
             try

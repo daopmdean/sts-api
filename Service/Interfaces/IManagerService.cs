@@ -18,7 +18,7 @@ namespace Service.Interfaces
             PublishInfo create);
         Task UnpublishSchedule(
             UnpublishInfo create);
-        Task<BrandReportResponse> GetBrandReport(DateTimeParams @params);
+        Task<StaffReportResponse> GetStaffReport(DateTimeParams @params);
         Task<StoreReportResponse> GetStoreReport(int storeId,
             DateTimeParams @params);
         Task CalculateWorkTime(

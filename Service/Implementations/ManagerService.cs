@@ -214,7 +214,7 @@ namespace Service.Implementations
             return info;
         }
 
-        public Task<BrandReportResponse> GetBrandReport(
+        public Task<StaffReportResponse> GetStaffReport(
             DateTimeParams @params)
         {
             throw new NotImplementedException();

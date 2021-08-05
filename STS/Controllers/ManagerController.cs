@@ -52,7 +52,7 @@ namespace STS.Controllers
             try
             {
                 await _managerService
-                    .GetBrandReport(@params);
+                    .GetStaffReport(@params);
 
                 return Ok();
             }
