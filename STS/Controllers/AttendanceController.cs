@@ -27,7 +27,8 @@ namespace STS.Controllers
         {
             try
             {
-                return Ok(await _attendanceService.CreateAttendanceAsync(create));
+                return Ok(await _attendanceService
+                    .CreateAttendanceAsync(create));
             }
             catch (AppException ex)
             {

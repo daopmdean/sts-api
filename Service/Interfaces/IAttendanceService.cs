@@ -15,7 +15,7 @@ namespace Service.Interfaces
             int storeId, DateTimeParams @params);
         Task<Attendance> CreateAttendanceAsync(AttendanceCreate create);
         Task<Attendance> CreateAttendanceManualAsync(
-            AttendanceManualCreate create);
+            string username, AttendanceManualCreate create);
         Task UpdateAttendanceAsync(int id, AttendanceUpdate update);
         Task DeleteAttendanceAsync(int id);
     }

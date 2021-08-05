@@ -66,7 +66,7 @@ namespace Service.Implementations
         }
 
         public async Task<Attendance> CreateAttendanceManualAsync(
-            AttendanceManualCreate create)
+            string username, AttendanceManualCreate create)
         {
             var store = await _storeRepo
                 .GetByIdAsync(create.StoreId);
@@ -84,6 +84,7 @@ namespace Service.Implementations
 
             var attendance = _mapper.Map<Attendance>(create);
             attendance.CheckType = CheckType.Manual;
+            attendance.CreatedBy = username;
             await _attendanceRepo.CreateAsync(attendance);
 
             if (await _attendanceRepo.SaveChangesAsync())

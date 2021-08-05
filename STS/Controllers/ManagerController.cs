@@ -218,8 +218,9 @@ namespace STS.Controllers
         {
             try
             {
+                string username = User.GetUsername();
                 return Ok(await _attendanceService
-                    .CreateAttendanceManualAsync(create));
+                    .CreateAttendanceManualAsync(username, create));
             }
             catch (AppException ex)
             {
