@@ -45,14 +45,14 @@ namespace STS.Controllers
             _attendanceService = attendanceService;
         }
 
-        [HttpGet("brands/report")]
+        [HttpGet("stores/{username}/report")]
         public async Task<ActionResult> GetBrandReport(
-            [FromQuery] DateTimeParams @params)
+            string username, [FromQuery] DateTimeParams @params)
         {
             try
             {
                 await _managerService
-                    .GetStaffReport(@params);
+                    .GetStaffReport(username, @params);
 
                 return Ok();
             }

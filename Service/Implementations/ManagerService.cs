@@ -215,7 +215,7 @@ namespace Service.Implementations
         }
 
         public Task<StaffReportResponse> GetStaffReport(
-            DateTimeParams @params)
+            string username, DateTimeParams @params)
         {
             throw new NotImplementedException();
         }
