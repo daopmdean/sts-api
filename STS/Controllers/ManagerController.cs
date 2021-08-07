@@ -51,10 +51,8 @@ namespace STS.Controllers
         {
             try
             {
-                await _managerService
-                    .GetStaffReport(username, @params);
-
-                return Ok();
+                return Ok(await _managerService
+                    .GetStaffReport(username, @params));
             }
             catch (AppException ex)
             {

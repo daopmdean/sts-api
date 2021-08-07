@@ -31,6 +31,7 @@ namespace Data.Repositories.Implementations
             if (type == "checkin")
             {
                 return await _entities
+                    .Where(s => s.Status == Enums.Status.Active)
                     .Where(s => timeRequest <= s.TimeStart.AddMinutes(timeRange)
                         && timeRequest >= s.TimeStart.AddMinutes(-timeRange))
                     .FirstOrDefaultAsync(s => s.Username == username);
@@ -38,6 +39,7 @@ namespace Data.Repositories.Implementations
             else if (type == "checkout")
             {
                 return await _entities
+                    .Where(s => s.Status == Enums.Status.Active)
                     .Where(s => timeRequest <= s.TimeEnd.AddMinutes(timeRange)
                         && timeRequest >= s.TimeEnd.AddMinutes(-timeRange))
                     .FirstOrDefaultAsync(s => s.Username == username);

@@ -214,10 +214,14 @@ namespace Service.Implementations
             return info;
         }
 
-        public Task<StaffReportResponse> GetStaffReport(
+        public async Task<StaffReportResponse> GetStaffReport(
             string username, DateTimeParams @params)
         {
-            throw new NotImplementedException();
+            var assignments = await _shiftAssignmentRepo
+                .GetShiftAssignmentOverviewsAsync(username, @params);
+            var result = new StaffReportResponse(assignments);
+
+            return result;
         }
 
         public Task<StoreReportResponse> GetStoreReport(
