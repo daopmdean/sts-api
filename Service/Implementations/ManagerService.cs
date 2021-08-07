@@ -224,10 +224,23 @@ namespace Service.Implementations
             return result;
         }
 
-        public Task<StoreReportResponse> GetStoreReport(
+        public async Task<StoreReportResponse> GetStoreReport(
             int storeId, DateTimeParams @params)
         {
-            throw new NotImplementedException();
+            StoreReportResponse result = new(@params);
+            var storeStaff = await _storeStaffService
+                .GetStaffFromStoreAsync(storeId);
+
+            foreach (var staff in storeStaff)
+            {
+                var assignments = await _shiftAssignmentRepo
+                    .GetShiftAssignmentOverviewsAsync(staff.Username, @params);
+                var staffReport = new StaffReportResponse(assignments);
+
+                result.AddStaff(staffReport, staff);
+            }
+
+            return result;
         }
 
         public async Task<ShiftAssignment> PublishSchedule(

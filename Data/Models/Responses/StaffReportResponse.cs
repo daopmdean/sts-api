@@ -9,6 +9,8 @@ namespace Data.Models.Responses
         public int TotalArriveLate { get; set; } = 0;
         public int TotalLeaveEarly { get; set; } = 0;
         public int TotalAbsent { get; set; } = 0;
+        public int TotalLackCheckIn { get; set; } = 0;
+        public int TotalLackCheckOut { get; set; } = 0;
         public IEnumerable<StaffDetailReportResponse> Records { get; set; }
 
         public StaffReportResponse(
@@ -31,6 +33,10 @@ namespace Data.Models.Responses
                     TotalLeaveEarly += 1;
                 if (item.Absent)
                     TotalAbsent += 1;
+                if (item.LackCheckIn)
+                    TotalLackCheckIn += 1;
+                if (item.LackCheckOut)
+                    TotalLackCheckOut += 1;
             }
 
             Records = list;
@@ -49,6 +55,8 @@ namespace Data.Models.Responses
         public bool ArrivedLate { get; set; } = false;
         public bool LeftEarly { get; set; } = false;
         public bool Absent { get; set; } = false;
+        public bool LackCheckIn { get; set; } = false;
+        public bool LackCheckOut { get; set; } = false;
 
         public StaffDetailReportResponse(
             ShiftAssignmentOverview assignment)
@@ -84,6 +92,18 @@ namespace Data.Models.Responses
                 && TimeCheckOut == DateTime.MinValue)
             {
                 Absent = true;
+            }
+            else if (DateTime.Now > TimeEnd
+                && TimeCheckIn == DateTime.MinValue
+                && TimeCheckOut != DateTime.MinValue)
+            {
+                LackCheckIn = true;
+            }
+            else if (DateTime.Now > TimeEnd
+                && TimeCheckIn != DateTime.MinValue
+                && TimeCheckOut == DateTime.MinValue)
+            {
+                LackCheckOut = true;
             }
         }
     }
