@@ -781,16 +781,16 @@ namespace STS.Seeding
             {
                 new Brand
                 {
+                    Name = "The Coffee House",
+                    Address = "Some where",
+                    Hotline = "0989898978"
+                },
+                new Brand
+                {
                     Name = "Passio",
                     Address = "Some where",
                     Hotline = "0989898989"
                 },
-                new Brand
-                {
-                    Name = "The Coffee House",
-                    Address = "Some where",
-                    Hotline = "0989898978"
-                }
             };
 
             foreach (var brand in brands)
@@ -803,77 +803,67 @@ namespace STS.Seeding
 
         private static void SeedSkillsIfNeeded(DataContext context)
         {
-            if (context.Brands.Any())
+            if (context.Skills.Any())
                 return;
 
             var skills = new List<Skill>
             {
                 new Skill
                 {
-                    Id = 1,
                     BrandId = 1,
                     Name = "Bartender",
                     Description = "Make drinks"
                 },
                 new Skill
                 {
-                    Id = 2,
                     BrandId = 1,
                     Name = "Security",
                     Description = "Secure the store"
                 },
                 new Skill
                 {
-                    Id = 3,
                     BrandId = 1,
                     Name = "Labor",
                     Description = "Clean the store"
                 },
                 new Skill
                 {
-                    Id = 4,
                     BrandId = 1,
                     Name = "Waiter",
                     Description = "Serve the customer"
                 },
                 new Skill
                 {
-                    Id = 5,
                     BrandId = 1,
                     Name = "Cashier",
                     Description = "Collect money"
                 },
                 new Skill
                 {
-                    Id = 6,
                     BrandId = 2,
                     Name = "Bartender",
                     Description = "Make drinks"
                 },
                 new Skill
                 {
-                    Id = 7,
                     BrandId = 2,
                     Name = "Security",
                     Description = "Secure the store"
                 },
                 new Skill
                 {
-                    Id = 8,
                     BrandId = 2,
                     Name = "Labor",
                     Description = "Clean the store"
                 },
                 new Skill
                 {
-                    Id = 9,
                     BrandId = 2,
                     Name = "Waiter",
                     Description = "Serve the customer"
                 },
                 new Skill
                 {
-                    Id = 10,
                     BrandId = 2,
                     Name = "Cashier",
                     Description = "Collect money"
@@ -897,15 +887,8 @@ namespace STS.Seeding
             {
                 new Store
                 {
-                    BrandId = 1,
-                    Name = "Passio S1",
-                    Address = "Some where",
-                    Phone = "0123412345"
-                },
-                new Store
-                {
-                    BrandId = 1,
-                    Name = "Passio S2",
+                    BrandId = 2,
+                    Name = "CoffeeHouse S2",
                     Address = "Some where",
                     Phone = "0123412346"
                 },
@@ -918,11 +901,18 @@ namespace STS.Seeding
                 },
                 new Store
                 {
-                    BrandId = 2,
-                    Name = "CoffeeHouse S2",
+                    BrandId = 1,
+                    Name = "Passio S2",
                     Address = "Some where",
                     Phone = "0123412346"
-                }
+                },
+                new Store
+                {
+                    BrandId = 1,
+                    Name = "Passio S1",
+                    Address = "Some where",
+                    Phone = "0123412345"
+                },
             };
 
             foreach (var store in stores)
