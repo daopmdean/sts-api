@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
@@ -11,6 +12,7 @@ namespace Data.Entities
 
         public Store Store { get; set; }
 
+        [StringLength(50)]
         public string Name { get; set; }
 
         public string CreatedBy { get; set; }

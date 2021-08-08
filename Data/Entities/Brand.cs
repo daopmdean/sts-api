@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
@@ -6,12 +7,15 @@ namespace Data.Entities
     {
         public int Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public string LogoImg { get; set; }
 
+        [StringLength(200)]
         public string Address { get; set; }
 
+        [StringLength(20)]
         public string Hotline { get; set; }
 
         public ICollection<User> Users { get; set; }
@@ -20,6 +24,6 @@ namespace Data.Entities
 
         public ICollection<Skill> Skills { get; set; }
 
-        public ICollection<Post> Posts { get; set; }
+        //public ICollection<Post> Posts { get; set; }
     }
 }

@@ -33,7 +33,7 @@ namespace Data.Models.Responses
             StoreTotalLackCheckOut += staffReport.TotalLackCheckOut;
 
             List<WorkDay> staffWorkDays = new();
-            for (DateTime i = TimeRange.FromDate; i < TimeRange.ToDate; i = i.AddDays(1))
+            for (DateTime i = TimeRange.FromDate; i <= TimeRange.ToDate; i = i.AddDays(1))
             {
                 float workHours = 0;
 

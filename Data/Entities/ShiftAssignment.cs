@@ -30,6 +30,6 @@ namespace Data.Entities
 
         public DateTime TimeCheckOut { get; set; }
 
-        public int ReferenceId { get; set; }
+        //public int ReferenceId { get; set; }
     }
 }

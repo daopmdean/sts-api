@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Data.Enums;
 
 namespace Data.Entities
@@ -14,8 +15,10 @@ namespace Data.Entities
         public string CreatedBy { get; set; }
         public CheckType CheckType { get; set; }
         public string ImageUrl { get; set; }
+        [StringLength(200)]
         public string Note { get; set; }
         public float RecognizePercentage { get; set; }
+        [StringLength(100)]
         public string DeviceCode { get; set; }
     }
 }
