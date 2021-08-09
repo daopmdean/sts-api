@@ -63,8 +63,8 @@ namespace Service.Implementations
                 .CreateShiftScheduleResult(weekScheduleId);
             request.Id = result.Id;
             var message = JsonConvert.SerializeObject(request);
-            if (message.Length >= 10000)
-                throw new AppException(400, "message length exceed 10000");
+            //if (message.Length >= 10000)
+            //    throw new AppException(400, "message length exceed 10000");
 
             var body = Encoding.UTF8.GetBytes(message);
             var properties = _rabbitMqChannel.CreateBasicProperties();
@@ -187,7 +187,6 @@ namespace Service.Implementations
             var skills = await _skillService.GetSkills(brandId);
             var skillRequests = ConvertToSkills(skills);
             request.Skills = skillRequests;
-
 
             var weekRegister = (await _weekScheduleService
                 .GetWeekScheduleAsync(weekSchedule.StoreId,
