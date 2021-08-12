@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Data.Entities;
-using Data.Enums;
 using Data.Models.Requests;
 using Data.Models.Responses;
 using Data.Pagings;
 using Data.Repositories.Interfaces;
-using Service.Enums;
 using Service.Exceptions;
 using Service.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Service.Implementations
 {
