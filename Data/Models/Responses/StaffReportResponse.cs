@@ -6,6 +6,7 @@ namespace Data.Models.Responses
     public class StaffReportResponse
     {
         public double TotalWorkHours { get; set; } = 0;
+        public double TotalAssignedHours { get; set; } = 0;
         public int TotalArriveLate { get; set; } = 0;
         public int TotalLeaveEarly { get; set; } = 0;
         public int TotalAbsent { get; set; } = 0;
@@ -26,6 +27,7 @@ namespace Data.Models.Responses
 
             foreach (var item in list)
             {
+                TotalAssignedHours += item.AssignedHours;
                 TotalWorkHours += item.WorkHours;
                 if (item.ArrivedLate)
                     TotalArriveLate += 1;
@@ -52,6 +54,7 @@ namespace Data.Models.Responses
         public DateTime TimeCheckOut { get; set; }
         public DateTime Date { get; set; }
         public float WorkHours { get; set; } = 0;
+        public float AssignedHours { get; set; } = 0;
         public bool ArrivedLate { get; set; } = false;
         public bool LeftEarly { get; set; } = false;
         public bool Absent { get; set; } = false;
@@ -67,6 +70,9 @@ namespace Data.Models.Responses
             TimeCheckIn = assignment.TimeCheckIn;
             TimeCheckOut = assignment.TimeCheckOut;
             Date = new DateTime(TimeStart.Year, TimeStart.Month, TimeStart.Day);
+
+            TimeSpan assignedTime = TimeEnd - TimeStart;
+            AssignedHours = (float)assignedTime.TotalHours;
 
             if (TimeCheckIn != DateTime.MinValue
                 && TimeCheckOut != DateTime.MinValue)
