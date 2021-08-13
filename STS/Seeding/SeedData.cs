@@ -48,6 +48,20 @@ namespace STS.Seeding
                 },
                 new RegisterRequest
                 {
+                    Username = "passbrand",
+                    Password = "123456",
+                    FirstName = "Dao",
+                    LastName = "Pham"
+                },
+                new RegisterRequest
+                {
+                    Username = "coffeebrand",
+                    Password = "123456",
+                    FirstName = "Dao",
+                    LastName = "Pham"
+                },
+                new RegisterRequest
+                {
                     Username = "quanly",
                     Password = "123456",
                     FirstName = "quan",
