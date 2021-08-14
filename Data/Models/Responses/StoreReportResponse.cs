@@ -7,6 +7,7 @@ namespace Data.Models.Responses
     public class StoreReportResponse
     {
         public double StoreTotalWorkHours { get; set; } = 0;
+        public double StoreTotalAssignedHours { get; set; } = 0;
         public int StoreTotalArriveLate { get; set; } = 0;
         public int StoreTotalLeaveEarly { get; set; } = 0;
         public int StoreTotalAbsent { get; set; } = 0;
@@ -26,6 +27,7 @@ namespace Data.Models.Responses
             StoreStaffOverview staffOverview)
         {
             StoreTotalWorkHours += staffReport.TotalWorkHours;
+            StoreTotalAssignedHours += staffReport.TotalAssignedHours;
             StoreTotalArriveLate += staffReport.TotalArriveLate;
             StoreTotalLeaveEarly += staffReport.TotalLeaveEarly;
             StoreTotalAbsent += staffReport.TotalAbsent;
@@ -55,6 +57,7 @@ namespace Data.Models.Responses
                 FirstName = staffOverview.FirstName,
                 LastName = staffOverview.LastName,
                 StaffTotalWorkHours = staffReport.TotalWorkHours,
+                StaffTotalAssignedHours = staffReport.TotalAssignedHours,
                 StaffTotalArriveLate = staffReport.TotalArriveLate,
                 StaffTotalLeaveEarly = staffReport.TotalLeaveEarly,
                 StaffTotalAbsent = staffReport.TotalAbsent,
@@ -71,6 +74,7 @@ namespace Data.Models.Responses
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public double StaffTotalWorkHours { get; set; }
+        public double StaffTotalAssignedHours { get; set; }
         public int StaffTotalArriveLate { get; set; }
         public int StaffTotalLeaveEarly { get; set; }
         public int StaffTotalAbsent { get; set; }
