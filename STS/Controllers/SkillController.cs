@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.Models.Requests;
-using Data.Models.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Exceptions;
