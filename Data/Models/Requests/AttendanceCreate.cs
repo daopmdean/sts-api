@@ -10,5 +10,6 @@ namespace Data.Models.Requests
         public string ImageUrl { get; set; }
         public float RecognizePercentage { get; set; }
         public string DeviceCode { get; set; }
+        public string Note { get; set; }
     }
 }
