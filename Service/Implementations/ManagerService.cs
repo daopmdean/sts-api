@@ -371,7 +371,7 @@ namespace Service.Implementations
             if (await _weekScheduleRepo.SaveChangesAsync())
                 return;
 
-            throw new AppException(400, "Can not create ShiftAssignments");
+            throw new AppException(400, "Can not Unpublish WeekSchedule");
         }
     }
 }
