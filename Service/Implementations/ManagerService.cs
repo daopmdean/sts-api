@@ -253,7 +253,7 @@ namespace Service.Implementations
                 throw new AppException((int)StatusCode.BadRequest,
                     "WeekSchedule not found");
 
-            if (weekSchedule.Status != Status.Unpublished)
+            if (weekSchedule.Status == Status.Published)
                 throw new AppException((int)StatusCode.BadRequest,
                     "Can only publish unpublished week schedule");
 
