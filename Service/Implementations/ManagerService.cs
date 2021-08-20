@@ -217,6 +217,16 @@ namespace Service.Implementations
         public async Task<StaffReportResponse> GetStaffReport(
             string username, DateTimeParams @params)
         {
+            int fromYear = @params.FromDate.Year;
+            int fromMonth = @params.FromDate.Month;
+            int fromDay = @params.FromDate.Day;
+            @params.FromDate = new DateTime(fromYear, fromMonth, fromDay);
+
+            int toYear = @params.ToDate.Year;
+            int toMonth = @params.ToDate.Month;
+            int toDay = @params.ToDate.Day;
+            @params.ToDate = new DateTime(toYear, toMonth, toDay);
+
             var assignments = await _shiftAssignmentRepo
                 .GetShiftAssignmentOverviewsAsync(username, @params);
             var result = new StaffReportResponse(assignments);
@@ -227,6 +237,16 @@ namespace Service.Implementations
         public async Task<StoreReportResponse> GetStoreReport(
             int storeId, DateTimeParams @params)
         {
+            int fromYear = @params.FromDate.Year;
+            int fromMonth = @params.FromDate.Month;
+            int fromDay = @params.FromDate.Day;
+            @params.FromDate = new DateTime(fromYear, fromMonth, fromDay);
+
+            int toYear = @params.ToDate.Year;
+            int toMonth = @params.ToDate.Month;
+            int toDay = @params.ToDate.Day;
+            @params.ToDate = new DateTime(toYear, toMonth, toDay);
+
             StoreReportResponse result = new(@params);
             var storeStaff = await _storeStaffService
                 .GetStaffFromStoreAsync(storeId);
