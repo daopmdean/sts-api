@@ -27,8 +27,11 @@ namespace Data.Models.Responses
 
             foreach (var item in list)
             {
-                TotalAssignedHours += item.AssignedHours;
                 TotalWorkHours += item.WorkHours;
+                TotalAssignedHours += item.AssignedHours;
+                TotalWorkHours = Math.Round(TotalWorkHours, 2);
+                TotalAssignedHours = Math.Round(TotalAssignedHours, 2);
+
                 if (item.ArrivedLate)
                     TotalArriveLate += 1;
                 if (item.LeftEarly)

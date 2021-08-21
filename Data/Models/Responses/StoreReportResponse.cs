@@ -33,6 +33,8 @@ namespace Data.Models.Responses
             StoreTotalAbsent += staffReport.TotalAbsent;
             StoreTotalLackCheckIn += staffReport.TotalLackCheckIn;
             StoreTotalLackCheckOut += staffReport.TotalLackCheckOut;
+            StoreTotalWorkHours = Math.Round(StoreTotalWorkHours, 2);
+            StoreTotalAssignedHours = Math.Round(StoreTotalAssignedHours, 2);
 
             List<WorkDay> staffWorkDays = new();
             for (DateTime i = TimeRange.FromDate; i <= TimeRange.ToDate; i = i.AddDays(1))
