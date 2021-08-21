@@ -284,6 +284,7 @@ namespace Service.Implementations
             {
                 weekSchedule.Status = Status.Published;
                 _weekScheduleRepo.Update(weekSchedule);
+                await _weekScheduleRepo.SaveChangesAsync();
             }
             else
             {
@@ -291,15 +292,19 @@ namespace Service.Implementations
                 {
                     schedule.Status = Status.Unpublished;
                     _weekScheduleRepo.Update(schedule);
-
+                    
                     var shiftAssignments = await _shiftAssignmentRepo
-                        .GetShiftAssignmentsAsync(create.WeekScheduleId, DateTime.Now);
+                        .GetShiftAssignmentsAsync(schedule.Id, DateTime.Now);
 
                     foreach (var shiftAssignment in shiftAssignments)
                     {
                         _shiftAssignmentRepo.Delete(shiftAssignment);
                     }
                 }
+
+                weekSchedule.Status = Status.Published;
+                _weekScheduleRepo.Update(weekSchedule);
+                await _weekScheduleRepo.SaveChangesAsync();
             }
 
             foreach (var shift in create.ShiftAssignments)
