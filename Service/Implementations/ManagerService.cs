@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Entities;
@@ -276,6 +277,14 @@ namespace Service.Implementations
             if (weekSchedule.Status == Status.Published)
                 throw new AppException((int)StatusCode.BadRequest,
                     "Can only publish unpublished week schedule");
+
+            if (create.ShiftAssignments == null)
+                throw new AppException((int)StatusCode.BadRequest,
+                    "Schedule empty");
+
+            if (!create.ShiftAssignments.Any())
+                throw new AppException((int)StatusCode.BadRequest,
+                    "Schedule empty");
 
             var publishedWeekSchedule = await _weekScheduleRepo
                 .GetWeekSchedulesAsync(weekSchedule.StoreId, weekSchedule.DateStart, Status.Published);
