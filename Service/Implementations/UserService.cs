@@ -131,10 +131,15 @@ namespace Service.Implementations
             {
                 TimeSpan hoursAssigned =
                     shiftAssignment.TimeEnd - shiftAssignment.TimeStart;
-                TimeSpan hoursWorkd =
-                    shiftAssignment.TimeCheckOut - shiftAssignment.TimeCheckIn;
+                
+                if (shiftAssignment.TimeCheckOut > DateTime.MinValue 
+                    && shiftAssignment.TimeCheckIn > DateTime.MinValue)
+                {
+                    TimeSpan hoursWorkd =
+                        shiftAssignment.TimeCheckOut - shiftAssignment.TimeCheckIn;
+                    result.HoursWorked += hoursWorkd.TotalHours;
+                }
                 result.HoursAssigned += hoursAssigned.TotalHours;
-                result.HoursWorked += hoursWorkd.TotalHours;
             }
 
             return result;
