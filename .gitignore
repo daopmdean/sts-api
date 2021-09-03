@@ -11,6 +11,9 @@ autom4te.cache/
 tarballs/
 test-results/
 
+STS/appsettings.json
+STS/sts-manager-firebase-adminsdk.json
+
 # Mac bundle stuff
 *.dmg
 *.app
